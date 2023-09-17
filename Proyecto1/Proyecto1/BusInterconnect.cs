@@ -42,8 +42,32 @@ namespace Proyecto1
         /// <returns>the next  request made by a cache in the queue</returns>
         public Request GetNextRequest() { return this.queue.Dequeue(); }
 
+        /// <summary>
+        /// Updates the address bus
+        /// </summary>
+        /// <param name="addr">memory address that will be accessed</param>
+        public void updateAddrBus(int addr)
+        {
+            this.AddrBus = addr;
+        }
 
-        
+        /// <summary>
+        /// Updates the DataBus
+        /// </summary>
+        /// <param name="data">Data returning from memory</param>
+        public void updateDataBus(int data) 
+        {  
+            this.DataBus = data; 
+        }
+
+        /// <summary>
+        /// Updates the Shared data bus
+        /// </summary>
+        /// <param name="shared">shared data between caches</param>
+        public void updateSharedBus(int shared) 
+        {  
+            this.SharedBus = shared; 
+        }   
 
 
 
