@@ -6,23 +6,46 @@ using System.Threading.Tasks;
 
 namespace Proyecto1
 {
+    /// <summary>
+    /// Represents the interconnection bus in a simulated system
+    /// </summary>
     public class BusInterconnect
     {
-        static void Main(string[] args)
-        {
-            // Display the number of command line arguments.
-            Console.WriteLine(args.Length);
-        }
 
-        private int AddrBus {  get; set; }
-        private int DataBus {  get; set; }
-        private int SharedBus { get; set; }
-        private List<Request> queue {  get; set; }
 
-        private BusInterconnect() 
+        public int AddrBus;
+        public int DataBus;
+        public int SharedBus;
+        private Queue<Request> queue;
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BusInterconnect"/> class.
+        /// </summary>
+        public BusInterconnect() 
         { 
-            this.queue = new List<Request>();
+            this.queue = new Queue<Request>();
         }
+
+        /// <summary>
+        /// Adds request to a queue
+        /// </summary>
+        /// <param name="request"> Request made by the cache</param>
+        public void MakeRequest(Request request)
+        {
+            this.queue.Enqueue(request);
+        }
+
+        /// <summary>
+        /// Gets the next request in the queue
+        /// </summary>
+        /// <returns>the next  request made by a cache in the queue</returns>
+        public Request GetNextRequest() { return this.queue.Dequeue(); }
+
+
+        
+
+
 
     }
 

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Proyecto1
 {
+    /// <summary>
+    /// Represents a request made by a cache to the bus
+    /// </summary>
     public class Request
     {
         private int Addr {  get; set; }
