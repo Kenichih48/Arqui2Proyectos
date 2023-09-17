@@ -5,6 +5,8 @@
     /// </summary>
     internal class InstructionGenerator
     {
+        private readonly int minInstrs;
+        private readonly int maxInstrs;
         private int instrLen;
         private readonly List<string> instructions;
         private readonly Random random;
@@ -12,10 +14,18 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="InstructionGenerator"/> class.
         /// </summary>
-        public InstructionGenerator()
+        /// <param name="minInstrs">
+        /// Minimum amount of instructions.
+        /// </param>
+        /// <param name="maxInstrs">
+        /// Maximum amount of instructions.
+        /// </param>
+        public InstructionGenerator(int minInstrs, int maxInstrs)
         {
             random = new Random();
             instructions = new List<string>();
+            this.minInstrs = minInstrs;
+            this.maxInstrs = maxInstrs; 
         }
 
         /// <summary>
@@ -24,7 +34,7 @@
         /// <returns>A list of randomly generated instructions.</returns>
         public List<string> MakeInstructions()
         {
-            instrLen = random.Next(5, 9);
+            instrLen = random.Next(minInstrs, maxInstrs+1);
 
             while (instructions.Count < instrLen)
             {
