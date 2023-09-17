@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a processing element in a simulated system.
     /// </summary>
-    internal class ProcessingElement
+    public class ProcessingElement
     {
         private int id;
         private int pc;
