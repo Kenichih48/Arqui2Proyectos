@@ -21,6 +21,14 @@
         }
 
         /// <summary>
+        /// Gets the current PC associated with this processing element.
+        /// </summary>
+        public int PC
+        { 
+            get { return pc; } 
+        
+        }
+        /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingElement"/> class.
         /// </summary>
         /// <param name="id">The identifier of the processing element.</param>
