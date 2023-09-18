@@ -18,12 +18,11 @@ namespace Proyecto1
         private List<string> instrList1;
         private List<string> instrList2;
         private List<string> instrList3;
-        private List<string> instrList4;
         private ProcessingElement pe1;
         private ProcessingElement pe2;
         private ProcessingElement pe3;
-        private ProcessingElement pe4;
-
+        private int minInstr = 7;
+        private int maxInstr = 9;
         /// <summary>
         /// Initializes a new instance of the <see cref="GUI"/> class.
         /// </summary>
@@ -32,12 +31,17 @@ namespace Proyecto1
             instrList1 = new List<string>();
             instrList2 = new List<string>();
             instrList3 = new List<string>();
-            instrList4 = new List<string>();
-            pe1 = new ProcessingElement(1, 7, 9);
-            pe2 = new ProcessingElement(2, 7, 9);
-            pe3 = new ProcessingElement(3, 7, 9);
-            pe4 = new ProcessingElement(4, 7, 9);
+            pe1 = new(1, minInstr, maxInstr);
+            pe2 = new(2, minInstr, maxInstr);
+            pe3 = new(3, minInstr, maxInstr);
             InitializeComponent();
+            step1.Enabled = false;
+            step2.Enabled = false;
+            step3.Enabled = false;
+            auto1.Enabled = false;
+            auto2.Enabled = false;
+            auto3.Enabled = false;
+
         }
 
         /// <summary>
@@ -52,40 +56,25 @@ namespace Proyecto1
             instrList2 = pe2.InstrList;
             pe3.GenerateInstructions();
             instrList3 = pe3.InstrList;
-            pe4.GenerateInstructions();
-            instrList4 = pe4.InstrList;
             string textInstr1 = "";
             string textInstr2 = "";
             string textInstr3 = "";
-            string textInstr4 = "";
-            foreach (string instr in instrList1)
+            for (int i = 0; i < instrList1.Count; i++)
             {
-                textInstr1 += instr + Environment.NewLine;
+                textInstr1 += i + ". " + instrList1[i] + Environment.NewLine;
             }
-            foreach (string instr in instrList2)
+            for (int i = 0; i < instrList2.Count; i++)
             {
-                textInstr2 += instr + Environment.NewLine;
+                textInstr2 += i + ". " + instrList2[i] + Environment.NewLine;
             }
-            foreach (string instr in instrList3)
+            for (int i = 0; i < instrList3.Count; i++)
             {
-                textInstr3 += instr + Environment.NewLine;
-            }
-            foreach (string instr in instrList4)
-            {
-                textInstr4 += instr + Environment.NewLine;
+                textInstr3 += i + ". " + instrList3[i] + Environment.NewLine;
             }
             instrBox1.Text = textInstr1;
             instrBox2.Text = textInstr2;
             instrBox3.Text = textInstr3;
-            instrBox4.Text = textInstr4;
-        }
-
-        /// <summary>
-        /// Handles the click event for the "Auto" button.
-        /// </summary>
-        private void auto_Click(object sender, EventArgs e)
-        {
-            
+            generate.Enabled = false;
         }
 
         /// <summary>
@@ -93,7 +82,30 @@ namespace Proyecto1
         /// </summary>
         private void reset_Click(object sender, EventArgs e)
         {
-            
+            //TODO: pe1.clean();
+            //TODO: pe2.clean();
+            //TODO: pe3.clean();
+            step1.Enabled = false;
+            step2.Enabled = false;
+            step3.Enabled = false;
+            auto1.Enabled = false;
+            auto2.Enabled = false;
+            auto3.Enabled = false;
+            generate.Enabled = true;
+            instrBox1.Text = "";
+            instrBox2.Text = "";
+            instrBox3.Text = "";
+            pe1 = new(1, minInstr, maxInstr);
+            pe2 = new(2, minInstr, maxInstr);
+            pe3 = new(3, minInstr, maxInstr);
+            PC1.Text = "";
+            PC2.Text = "";
+            PC3.Text = "";
+            instrList1 = new List<string>();
+            instrList2 = new List<string>();
+            instrList3 = new List<string>();
+            protocol.SelectedIndex = -1;
+            protocol.Enabled = true;
         }
 
         /// <summary>
@@ -104,8 +116,19 @@ namespace Proyecto1
         {
             if (validateInstr())
             {
-                PC1.Text = "" + pe1.PC;
-                pe1.ExecuteInstr();
+                if (pe1.PC == instrList1.Count - 1)
+                {
+                    step1.Enabled = false;
+                    PC1.Text = "" + pe1.PC;
+                }
+                else
+                {
+                    protocol.Enabled = false;
+                    auto1.Enabled = false;
+                    PC1.Text = "" + pe1.PC;
+                    pe1.ExecuteInstr();
+                }
+
             }
         }
 
@@ -117,8 +140,19 @@ namespace Proyecto1
         {
             if (validateInstr())
             {
-                PC2.Text = "" + pe2.PC;
-                pe2.ExecuteInstr();
+                if (pe2.PC == instrList2.Count - 1)
+                {
+                    step2.Enabled = false;
+                    PC2.Text = "" + pe2.PC;
+                }
+                else
+                {
+                    protocol.Enabled = false;
+                    auto2.Enabled = false;
+                    PC2.Text = "" + pe2.PC;
+                    pe2.ExecuteInstr();
+                }
+
             }
         }
 
@@ -130,23 +164,21 @@ namespace Proyecto1
         {
             if (validateInstr())
             {
-                PC3.Text = "" + pe3.PC;
-                pe3.ExecuteInstr();
+                if (pe3.PC == instrList3.Count - 1)
+                {
+                    step3.Enabled = false;
+                    PC3.Text = "" + pe3.PC;
+                }
+                else
+                {
+                    protocol.Enabled = false;
+                    auto3.Enabled = false;
+                    PC3.Text = "" + pe3.PC;
+                    pe3.ExecuteInstr();
+                }
             }
         }
 
-        /// <summary>
-        /// Handles the click event for the "Step 4" button.
-        /// Validates instructions and executes the next instruction for Processing Element 4.
-        /// </summary>
-        private void step4_Click(object sender, EventArgs e)
-        {
-            if (validateInstr())
-            {
-                PC4.Text = "" + pe4.PC;
-                pe4.ExecuteInstr();
-            }
-        }
 
         /// <summary>
         /// Validates if instructions have been generated for all processing elements.
@@ -155,7 +187,7 @@ namespace Proyecto1
         /// <returns>True if instructions are available; otherwise, false.</returns>
         private bool validateInstr()
         {
-            if (instrList1.Capacity == 0 || instrList2.Capacity == 0 || instrList3.Capacity == 0 || instrList4.Capacity == 0)
+            if (instrList1.Count == 0 || instrList2.Count == 0 || instrList3.Count == 0)
             {
                 MessageBox.Show("You must generate the instructions first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -163,6 +195,68 @@ namespace Proyecto1
             else
             {
                 return true;
+            }
+        }
+
+        /// <summary>
+        /// Handles the click event for the "Auto1" button.
+        /// </summary>
+        private void auto1_Click(object sender, EventArgs e)
+        {
+            if (validateInstr())
+            {
+                protocol.Enabled = false;
+                step1.Enabled = false;
+                auto1.Enabled = false;
+                pe1.ExecuteAll();
+                PC1.Text = "" + (pe1.PC - 1);
+            }
+        }
+        /// <summary>
+        /// Handles the click event for the "Auto2" button.
+        /// </summary>
+        private void auto2_Click(object sender, EventArgs e)
+        {
+            if (validateInstr())
+            {
+                protocol.Enabled = false;
+                step2.Enabled = false;
+                auto2.Enabled = false;
+                pe2.ExecuteAll();
+                PC2.Text = "" + (pe2.PC - 1);
+            }
+        }
+        /// <summary>
+        /// Handles the click event for the "Auto3" button.
+        /// </summary>
+        private void auto3_Click(object sender, EventArgs e)
+        {
+            if (validateInstr())
+            {
+                protocol.Enabled = false;
+                step3.Enabled = false;
+                auto3.Enabled = false;
+                pe3.ExecuteAll();
+                PC3.Text = "" + (pe3.PC - 1);
+            }
+        }
+
+        private void protocol_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender; // Cast the sender to ComboBox
+
+            if (comboBox.SelectedItem != null)
+            {
+                string selectedValue = comboBox.SelectedItem.ToString();
+                //TODO: pe1.setProtocol(selectedValue);
+                //TODO: pe2.setProtocol(selectedValue);
+                //TODO: pe3.setProtocol(selectedValue);
+                step1.Enabled = true;
+                step2.Enabled = true;
+                step3.Enabled = true;
+                auto1.Enabled = true;
+                auto2.Enabled = true;
+                auto3.Enabled = true;
             }
         }
     }
