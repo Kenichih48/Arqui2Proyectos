@@ -52,5 +52,5 @@ namespace Proyecto1
             throw new KeyNotFoundException($"CacheLine with tag {tag} not found.");
         }
     }
-
+    }
 }
