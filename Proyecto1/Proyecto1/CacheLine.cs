@@ -10,16 +10,16 @@ namespace Proyecto1 {
         public int Tag { get; set; }
         public int Block { get; set; }
 
-        public byte data; //cambiar a 4
+        public byte[] data; 
 
-        public CacheLine(int tag)
+        public CacheLine(int addr)
         {
             Valid = false;
             Dirty = false;
             State = ' ';
-            Tag = tag;
+            Tag = -1;
             Block = -1;
-            data = 0;
+            data = new byte[4];
         }
     }
 }
