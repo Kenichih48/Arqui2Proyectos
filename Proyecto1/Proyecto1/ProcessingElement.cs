@@ -79,7 +79,7 @@
         private void DecodeInstr(string instr)
         {
             string[] words = instr.Split();
-
+            pc++;
             if (words[0].Equals("incr"))
             {
                 string reg = words[1];
@@ -119,6 +119,24 @@
                     throw new InvalidOperationException("Invalid instruction format.");
                 }
             }
+        }
+
+        /// <summary>
+        /// Resets the processor state by clearing the program counter, register array, and instruction list.
+        /// </summary>
+        public void Clean() {
+            pc = 0;
+            Array.Clear(regs, 0, regs.Length);
+            instrList.Clear();
+            //TODO:cache.clean();
+        }
+
+        /// <summary>
+        /// Sets the protocol for cache operations.
+        /// </summary>
+        /// <param name="protocol">The protocol to be set for cache operations.</param>
+        public void SetProtocol(string protocol) {
+            //cache.SetProtoco(protocol);
         }
     }
 }
