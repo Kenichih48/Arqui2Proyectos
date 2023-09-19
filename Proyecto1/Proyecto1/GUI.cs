@@ -82,9 +82,9 @@ namespace Proyecto1
         /// </summary>
         private void reset_Click(object sender, EventArgs e)
         {
-            //TODO: pe1.clean();
-            //TODO: pe2.clean();
-            //TODO: pe3.clean();
+            pe1.Clean();
+            pe2.Clean();
+            pe3.Clean();
             step1.Enabled = false;
             step2.Enabled = false;
             step3.Enabled = false;
@@ -95,15 +95,12 @@ namespace Proyecto1
             instrBox1.Text = "";
             instrBox2.Text = "";
             instrBox3.Text = "";
-            pe1 = new(1, minInstr, maxInstr);
-            pe2 = new(2, minInstr, maxInstr);
-            pe3 = new(3, minInstr, maxInstr);
             PC1.Text = "";
             PC2.Text = "";
             PC3.Text = "";
-            instrList1 = new List<string>();
-            instrList2 = new List<string>();
-            instrList3 = new List<string>();
+            instrList1 = pe1.InstrList;
+            instrList2 = pe2.InstrList;
+            instrList3 = pe3.InstrList;
             protocol.SelectedIndex = -1;
             protocol.Enabled = true;
         }
@@ -250,9 +247,9 @@ namespace Proyecto1
             if (comboBox.SelectedItem != null)
             {
                 string selectedValue = comboBox.SelectedItem.ToString();
-                //TODO: pe1.setProtocol(selectedValue);
-                //TODO: pe2.setProtocol(selectedValue);
-                //TODO: pe3.setProtocol(selectedValue);
+                pe1.SetProtocol(selectedValue);
+                pe2.SetProtocol(selectedValue);
+                pe3.SetProtocol(selectedValue);
                 step1.Enabled = true;
                 step2.Enabled = true;
                 step3.Enabled = true;
