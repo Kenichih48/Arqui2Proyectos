@@ -178,8 +178,6 @@ namespace Proyecto1
                 }
             }
         }
-
-
         /// <summary>
         /// Validates if instructions have been generated for all processing elements.
         /// Displays an error message if instructions are missing.
@@ -240,7 +238,11 @@ namespace Proyecto1
                 PC3.Text = "" + (pe3.PC - 1);
             }
         }
-
+        /// <summary>
+        /// Event handler for the selected index change in the protocol ComboBox.
+        /// </summary>
+        /// <param name="sender">The sender of the event, which is a ComboBox.</param>
+        /// <param name="e">The event arguments.</param>
         private void protocol_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender; // Cast the sender to ComboBox
