@@ -43,15 +43,16 @@ namespace Proyecto1.Tests
             BusInterconnect Bus = new BusInterconnect();
 
             //Act
+            byte[] data = { 0b01101000 };
             Bus.updateAddrBus(8);
-            Bus.updateDataBus(1024);
-            Bus.updateSharedBus(1024);
+            Bus.updateDataBus(data);
+            Bus.updateSharedBus(data);
 
             //Assert
 
             Assert.AreEqual(8, Bus.AddrBus);
-            Assert.AreEqual(1024, Bus.DataBus);
-            Assert.AreEqual(1024, Bus.SharedBus);
+            Assert.AreEqual(data, Bus.DataBus);
+            Assert.AreEqual(data, Bus.SharedBus);
         }
     }
 }

@@ -14,22 +14,30 @@ namespace Proyecto1
     {
         private int Addr {  get; set; }
         private int TypeInstr {  get; set; }
-        private int Datawrite {  get; set; }
+        private byte Datawrite {  get; set; }
         private Cache cache {  get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Request"/> class.
         /// </summary>
         /// <param name="addr">Memory address requested</param>
-        /// <param name="typeinstr">Number representing the type of instruction. (0:read,1:write)</param>
+        /// <param name="typeinstr">Number representing the type of instruction. (1:read,2:write)</param>
         /// <param name="cache">Reference to the Cache from where the request was made </param>
         /// <param name="datawrite"> Data in case of a write operation</param>
-        public Request(int addr,int typeinstr,Cache cache,int datawrite = -1) 
+        public Request(int addr,int typeinstr,Cache cache) 
         { 
             this.Addr = addr;
             this.TypeInstr = typeinstr;
             this.cache = cache;
-            this.Datawrite = datawrite;
+            
+        }
+
+        public Request(int addr, int typeinstr, Cache cache, byte data ) 
+        {
+            this.Addr = addr;
+            this.TypeInstr = typeinstr;
+            this.cache = cache;
+            this.Datawrite = data;
         }
     }
 }

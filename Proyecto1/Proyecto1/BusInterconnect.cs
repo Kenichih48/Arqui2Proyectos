@@ -14,8 +14,8 @@ namespace Proyecto1
 
 
         public int AddrBus;
-        public int DataBus;
-        public int SharedBus;
+        public byte[] DataBus;
+        public byte[] SharedBus;
         private Queue<Request> queue;
 
 
@@ -55,7 +55,7 @@ namespace Proyecto1
         /// Updates the DataBus
         /// </summary>
         /// <param name="data">Data returning from memory</param>
-        public void updateDataBus(int data) 
+        public void updateDataBus(byte[] data) 
         {  
             this.DataBus = data; 
         }
@@ -64,7 +64,7 @@ namespace Proyecto1
         /// Updates the Shared data bus
         /// </summary>
         /// <param name="shared">shared data between caches</param>
-        public void updateSharedBus(int shared) 
+        public void updateSharedBus(byte[] shared) 
         {  
             this.SharedBus = shared; 
         }   
