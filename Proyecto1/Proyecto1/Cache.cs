@@ -41,11 +41,11 @@ namespace Proyecto1
             {
                 if (line.Tag == tag)
                 {
-                    //controller.readHit(addr, id);
+                    //controller.readHit(addr, tag, id);
                     return line.data[offset]; //Hit
                 }
             }
-            //byte[] data = controller.readMiss(addr, id);
+            //byte[] data = controller.readMiss(addr, tag, id);
             //TODO: replacement policy
             //return line.data[offset];
 
@@ -70,11 +70,11 @@ namespace Proyecto1
             {
                 if (line.Tag == tag)
                 {
-                    //controller.writeHit(line, offset, data, id);
+                    //controller.writeHit(line, offset, data, id, tag);
                     return; 
                 }
             }
-            //byte[] newLine = controller.writeMiss(addr, id);
+            //byte[] newLine = controller.writeMiss(addr, id, tag);
             //TODO: replacement policy
             //newLine[offset] = data;
 
