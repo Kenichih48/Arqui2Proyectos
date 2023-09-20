@@ -47,6 +47,7 @@ namespace Proyecto1
             }
             //byte[] data = controller.readMiss(addr, id);
             //TODO: replacement policy
+            //return line.data[offset];
 
             throw new KeyNotFoundException($"CacheLine with address {addr} not found.");
         }
@@ -73,7 +74,10 @@ namespace Proyecto1
                     return; 
                 }
             }
-            //byte[] data = controller.writeMiss(addr, id);
+            //byte[] newLine = controller.writeMiss(addr, id);
+            //TODO: replacement policy
+            //newLine[offset] = data;
+
 
             // If no matching CacheLine is found, throw a KeyNotFoundException
             throw new KeyNotFoundException($"CacheLine with address {addr} not found.");
