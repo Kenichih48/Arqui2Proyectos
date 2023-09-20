@@ -5,7 +5,7 @@
     /// </summary>
     public class Memory
     {
-        private readonly byte[] memory;
+        private readonly List<byte[]> memory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Memory"/> class.
@@ -13,14 +13,13 @@
         /// <param name="sizeInBytes">
         /// Size of the RAM memory in bytes.
         /// </param>
-        public Memory(int sizeInBytes = 64)
+        public Memory(int rows = 16, int columns = 4)
         {
-            if (sizeInBytes % 4 != 0)
+            memory = new List<byte[]>();
+            for(int i = 0; i < rows; i++)
             {
-                throw new ArgumentException("Size in bytes must be a multiple of 4.");
+                memory.Add(new byte[columns]);
             }
-
-            memory = new byte[sizeInBytes];
         }
 
         /// <summary>
@@ -35,11 +34,20 @@
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when parameter is greater than size of memory.
         /// </exception>
-        public byte ReadAddr(int address)
+        public byte[] ReadAddr(int address)
         {
-            if (address >= 0 && address < memory.Length)
+            string binaryAddr = Convert.ToString(address, 2);
+            int desiredLength = 6;
+            if (binaryAddr.Length < desiredLength)
             {
-                return memory[address];
+                binaryAddr = binaryAddr.PadLeft(desiredLength, '0');
+            }
+            string strLine = binaryAddr[..4];
+            int line = Convert.ToInt32(strLine, 2);
+
+            if (address >= 0 && address < 64)
+            {
+                return memory[line];
             }
             else
             {
@@ -54,17 +62,26 @@
         /// <param name="address">
         /// Desired memory address to write to.
         /// </param>
-        /// <param name="data">
-        /// The data to be written.
+        /// <param name="newLine">
+        /// The new line to be written.
         /// </param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when parameter is greater than size of memory.
         /// </exception>        
-        public void WriteByte(int address, byte data)
+        public void WriteByte(int address, byte[] newLine)
         {
-            if (address >= 0 && address < memory.Length)
+            string binaryAddr = Convert.ToString(address, 2);
+            int desiredLength = 6;
+            if (binaryAddr.Length < desiredLength)
             {
-                memory[address] = data;
+                binaryAddr = binaryAddr.PadLeft(desiredLength, '0');
+            }
+            string strLine = binaryAddr[..4];
+            int line = Convert.ToInt32(strLine, 2);
+
+            if (address >= 0 && address < 64)
+            {
+                memory[line] = newLine;
             }
             else
             {
