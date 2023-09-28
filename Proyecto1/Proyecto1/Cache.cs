@@ -15,10 +15,11 @@ namespace Proyecto1
         //private controller CacheContoller;
         public Cache(int numberOfLines, int id)
         {
+            this.id = id;
             cacheLines = new List<CacheLine>(numberOfLines);
             for (int i = 0; i < numberOfLines; i++)
             {
-                cacheLines.Add(new CacheLine(i));
+                cacheLines.Add(new CacheLine());
             }
         }
 
@@ -42,6 +43,7 @@ namespace Proyecto1
                 if (line.Tag == tag)
                 {
                     //controller.readHit(addr, tag, id);
+                    line.StateMachine.ReadHit();
                     return line.data[offset]; //Hit
                 }
             }

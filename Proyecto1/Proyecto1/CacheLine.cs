@@ -6,20 +6,19 @@ namespace Proyecto1 {
     {
         public bool Valid { get; set; }
         public bool Dirty { get; set; }
-        public char State { get; set; }
         public int Tag { get; set; }
         public int Block { get; set; }
-
+        public StateMachineMESI StateMachine;
         public byte[] data; 
 
-        public CacheLine(int addr)
+        public CacheLine()
         {
             Valid = false;
             Dirty = false;
-            State = ' ';
             Tag = -1;
             Block = -1;
             data = new byte[4];
+            StateMachine = new StateMachineMESI();
         }
     }
 }
