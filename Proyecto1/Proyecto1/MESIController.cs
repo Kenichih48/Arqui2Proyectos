@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto1
 {
-    internal class MESIController:CacheController
+    public class MESIController:CacheController
     {
 
     }

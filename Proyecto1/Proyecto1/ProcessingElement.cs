@@ -7,8 +7,8 @@
     {
         private int id;
         private int pc;
-        public int[] regs;
-        // private Cache cache;
+        public byte[] regs;
+        private Cache cache;
         private List<string> instrList;
         private readonly InstructionGenerator instrGenerator;
 
@@ -34,14 +34,14 @@
         /// <param name="id">The identifier of the processing element.</param>
         /// <param name="minInstrs">The minimum number of instructions to generate.</param>
         /// <param name="maxInstrs">The maximum number of instructions to generate.</param>
-        public ProcessingElement(int id, int minInstrs, int maxInstrs)
+        public ProcessingElement(int id, Cache cache, int minInstrs, int maxInstrs)
         {
             pc = 0;
             this.id = id;
-            regs = new int[9];
+            regs = new byte[9];
             instrList = new List<string>();
             instrGenerator = new InstructionGenerator(minInstrs, maxInstrs);
-            // cache = new();
+            this.cache = cache;
         }
 
         /// <summary>
@@ -105,13 +105,13 @@
                 {
                     if (words[0].Equals("read"))
                     {
-                        //int data = cache.ReadAddr(addrNum);
-                        //regs[regIndex] = data;
+                        byte data = cache.ReadAddr(addrNum);
+                        regs[regIndex] = data;
                     }
                     else
                     {
-                        //int data = regs[regIndex];
-                        //cache.WriteAddr(addrNum, data);
+                        byte data = regs[regIndex];
+                        cache.WriteAddr(addrNum, data);
                     }
                 }
                 else

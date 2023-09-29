@@ -84,7 +84,7 @@ namespace Proyecto1
 
         public MesiState GetCurrentState()
         {
-            return stateMachine.State;
+            return stateMachine.State.;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Proyecto1
 {
@@ -17,14 +18,18 @@ namespace Proyecto1
         public byte[] DataBus;
         public byte[] SharedBus;
         private Queue<Request> queue;
+        private List<Cache> caches;
+        private Memory memory;
 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BusInterconnect"/> class.
         /// </summary>
-        public BusInterconnect() 
+        public BusInterconnect(Memory memory) 
         { 
             this.queue = new Queue<Request>();
+            this.caches = new List<Cache>();
+            this.memory = memory;
         }
 
         /// <summary>
@@ -69,6 +74,68 @@ namespace Proyecto1
             this.SharedBus = shared; 
         }   
 
+
+        public void setCaches(List<Cache> caches)
+        {
+            this.caches = caches;
+        }
+
+
+        public void ReadHit(int tag, int id)
+        {
+            foreach (Cache cache in this.caches) { 
+                if(cache.id != id)
+                {
+                    CacheLine cacheline = cache.SearchAddrRH(tag);
+
+                    if (cacheline != null)
+                    {
+                        if(cacheline.StateMachine.GetCurrentState() == StateMachineMESI.MesiState.Modified)
+                        {
+                            int memoryline = cache.getMemoryLine(cacheline.Tag, cacheline.Line);
+                            WriteBack(memoryline,cacheline.data);
+                        }
+                        cacheline.StateMachine.SnoopHitRead();
+                        
+                    }
+                }
+            }
+        }
+
+        public (byte[],bool) ReadMiss(int addr, int tag, int id, int offset) {
+            bool shared = false;
+            byte[] data = new byte[4];
+            foreach (Cache cache in this.caches)
+            {
+                if (cache.id != id)
+                {
+                    (data, bool found) = cache.SearchAddrRM(tag);
+
+                    if (found)
+                    {
+                        shared = true;
+                    }
+                }
+            }
+            if(shared)
+            {
+               return (data, shared);
+            }
+            else
+            {
+               //request
+               //Wait hasta que memoria retorne
+
+               data = memory.ReadAddr(addr);
+               return (data, shared);
+            }
+            
+        }
+
+        public void WriteBack(int addr, byte[] data)
+        {
+            memory.WriteByte(addr, data);
+        }
 
 
     }
