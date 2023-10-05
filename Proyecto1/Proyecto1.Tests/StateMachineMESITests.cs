@@ -23,7 +23,7 @@ namespace Proyecto1.Tests
             MESI.SnoopHitRead();
             Assert.AreEqual(StateMachineMESI.MesiState.Shared, MESI.GetCurrentState());
 
-            MESI
+            
 
         }
 

@@ -11,7 +11,7 @@ namespace Proyecto1
     public class Cache
     {
         public int id {  get; set; }
-        private List<CacheLine> cacheLines;
+        public List<CacheLine> cacheLines;
         private BusInterconnect Bus;
         
         //private controller CacheContoller;
@@ -29,30 +29,17 @@ namespace Proyecto1
         //Nota: puede modificarse para buscar tag, validez, y mas
         public byte ReadAddr(int addr)
         {
-            string binaryAddr = Convert.ToString(addr, 2);
-            int desiredLength = 6;
-            if (binaryAddr.Length < desiredLength)
-            {
-                binaryAddr = binaryAddr.PadLeft(desiredLength, '0');
-            }
-            string strTag = binaryAddr[..2];
-            int tag = Convert.ToInt32(strTag, 2);
+            (int tag, int line, int offset) = parseAddr(addr);
+            CacheLine cacheline = cacheLines[line];
 
-            string strOf = binaryAddr.Substring(4, 2);
-            int offset = Convert.ToInt32(strOf, 2);
-
-            foreach (CacheLine line in cacheLines)
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
             {
-                if (line.Tag == tag)
-                {
-                    if (line.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
-                    {
-                        Bus.ReadHit(tag, id);
-                        line.StateMachine.ReadHit();
-                        return line.data[offset]; //Hit
-                    }   
-                }
+                Bus.ReadHit(tag, id);
+                cacheline.StateMachine.ReadHit();
+                return cacheline.data[offset]; //Hit
             }
+
+             
             (byte[] data,bool shared) = Bus.ReadMiss(addr, tag, id, offset);
 
             int linenum = ReplacementPolicy(data,addr,tag);
@@ -65,47 +52,43 @@ namespace Proyecto1
             {
                 cacheLines[linenum].StateMachine.ReadMissExclusive();
             }
-            
+            return data[offset];
 
-            throw new KeyNotFoundException($"CacheLine with address {addr} not found.");
+            
         }
 
         public void WriteAddr(int addr, byte data)
         {
-            string binaryAddr = Convert.ToString(addr, 2);
-            int desiredLength = 6;
-            if (binaryAddr.Length < desiredLength)
+            (int tag, int line, int offset) =  parseAddr(addr);
+
+            bool found = false;
+            CacheLine cacheline = cacheLines[line];
+
+            if(cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
             {
-                binaryAddr = binaryAddr.PadLeft(desiredLength, '0');
+                Bus.WriteHit(cacheline, id, tag);
+                cacheline.Dirty = true;
+
+                cacheline.data[offset] = data;
+                found = true;
             }
-            string strTag = binaryAddr[..2];
-            int tag = Convert.ToInt32(strTag, 2);
-
-            string strOf = binaryAddr.Substring(4, 2);
-            int offset = Convert.ToInt32(strOf, 2);
-
-            foreach (CacheLine line in cacheLines)
-            {
-                if (line.Tag == tag && line.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
-                {
-                    
-                    Bus.WriteHit(line,id,tag);
-                    line.Dirty = true;
-                    line.data[offset] = data;
-                    
-                }
-            }
-
-            byte[] newdata = Bus.WriteMiss(addr, tag, id);
             
-            int linenum = ReplacementPolicy(newdata, addr, tag);
 
-            cacheLines[linenum].StateMachine.WriteMiss();
-            cacheLines[linenum].data[offset] = data;
-            cacheLines[linenum].Dirty= true;
+            if (!found)
+            {
+                byte[] newdata = Bus.WriteMiss(addr, tag, id);
+
+                int linenum = ReplacementPolicy(newdata, addr, tag);
+
+                cacheLines[linenum].StateMachine.WriteMiss();
+                cacheLines[linenum].data[offset] = data;
+                cacheLines[linenum].Dirty = true;
+            }
+           
+            
 
             // If no matching CacheLine is found, throw a KeyNotFoundException
-            throw new KeyNotFoundException($"CacheLine with address {addr} not found.");
+            
         }
 
         private int ReplacementPolicy(byte[] data, int addr,int tag) {
@@ -158,7 +141,7 @@ namespace Proyecto1
         {
             foreach (CacheLine line in cacheLines)
             {
-                if (line.Tag == tag && line.Valid)
+                if (line.Tag == tag && line.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
                 {
                     line.StateMachine.SnoopHitRead();
                     return (line.data, true);
@@ -207,6 +190,26 @@ namespace Proyecto1
             int result = Convert.ToInt32(concatenatedBinaryStr, 2);
 
             return result;
+        }
+
+        public (int tag,int line, int offset) parseAddr(int addr)
+        {
+            string binaryAddr = Convert.ToString(addr, 2);
+            int desiredLength = 6;
+            if (binaryAddr.Length < desiredLength)
+            {
+                binaryAddr = binaryAddr.PadLeft(desiredLength, '0');
+            }
+            string strTag = binaryAddr[..2];
+            int tag = Convert.ToInt32(strTag, 2);
+
+            string strOf = binaryAddr.Substring(4, 2);
+            int offset = Convert.ToInt32(strOf, 2);
+
+            string strLn = binaryAddr.Substring(2, 2);
+            int line = Convert.ToInt32(strLn, 2);
+
+            return (tag, line, offset);
         }
     }
 }
