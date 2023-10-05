@@ -1,77 +1,153 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Proyecto1
+﻿namespace Proyecto1
 {
     /// <summary>
-    /// Represents the interconnection bus in a simulated system
+    /// Represents the bus interconnect used for communication between caches and memory.
     /// </summary>
     public class BusInterconnect
     {
-
-
-        public int AddrBus;
-        public byte[] DataBus;
-        public byte[] SharedBus;
-        private Queue<Request> queue;
-
+        private List<Cache> caches;
+        private readonly Memory memory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BusInterconnect"/> class.
         /// </summary>
-        public BusInterconnect() 
+        /// <param name="memory">The memory module connected to the bus.</param>
+        public BusInterconnect(Memory memory) 
         { 
-            this.queue = new Queue<Request>();
+            caches = new List<Cache>();
+            this.memory = memory;
         }
 
         /// <summary>
-        /// Adds request to a queue
+        /// Sets the list of caches connected to the bus.
         /// </summary>
-        /// <param name="request"> Request made by the cache</param>
-        public void MakeRequest(Request request)
+        /// <param name="caches">The list of cache instances.</param>
+        public void SetCaches(List<Cache> caches)
         {
-            this.queue.Enqueue(request);
+            this.caches = caches;
         }
 
         /// <summary>
-        /// Gets the next request in the queue
+        /// Handles a Read Hit operation on the bus.
         /// </summary>
-        /// <returns>the next  request made by a cache in the queue</returns>
-        public Request GetNextRequest() { return this.queue.Dequeue(); }
+        /// <param name="tag">The tag associated with the read operation.</param>
+        /// <param name="id">The ID of the cache performing the read.</param>
+        /// <param name="line">The line of the cache performing the read.</param>
 
-        /// <summary>
-        /// Updates the address bus
-        /// </summary>
-        /// <param name="addr">memory address that will be accessed</param>
-        public void updateAddrBus(int addr)
+        public void ReadHit(int tag, int id, int line)
         {
-            this.AddrBus = addr;
+            foreach (Cache cache in this.caches) { 
+                if(cache.id != id)
+                {
+                    CacheLine? cacheline = cache.SearchAddrRH(tag, line);
+                    if (cacheline != null)
+                    {
+                        if(cacheline.StateMachine.GetCurrentState() == StateMachine.State.Modified)
+                        {
+                            // write back
+                            int memoryline = cache.GetMemoryLine(cacheline.Tag, cacheline.Line);
+                            WriteBack(memoryline,cacheline.data);
+                        }
+                        cacheline.StateMachine.SnoopHitRead();
+                        
+                    }
+                }
+            }
         }
 
         /// <summary>
-        /// Updates the DataBus
+        /// Handles a Read Miss operation on the bus.
         /// </summary>
-        /// <param name="data">Data returning from memory</param>
-        public void updateDataBus(byte[] data) 
-        {  
-            this.DataBus = data; 
+        /// <param name="addr">The memory address for the read operation.</param>
+        /// <param name="tag">The tag associated with the read operation.</param>
+        /// <param name="id">The ID of the cache performing the read.</param>
+        /// <param name="line">The line of the cache performing the read.</param>
+        /// <returns>A tuple containing the read data and a flag indicating if the data is shared.</returns>
+        public (byte[],bool) ReadMiss(int addr, int tag, int id,int line) {
+            bool shared = false;
+            byte[] Finaldata = new byte[4];
+            foreach (Cache cache in this.caches)
+            {
+                if (cache.id != id)
+                {
+                    (byte[] data, bool found) = cache.SearchAddrRM(tag, line);
+                    
+                    if (found)
+                    {
+                        shared = true;
+                        Finaldata = data;
+                    }
+                }
+            }
+            if(shared)
+            {
+               return (Finaldata, shared);
+            }
+            else
+            {
+               Finaldata = memory.ReadAddr(addr);
+               return (Finaldata, shared);
+            }
         }
 
         /// <summary>
-        /// Updates the Shared data bus
+        /// Writes back data to memory.
         /// </summary>
-        /// <param name="shared">shared data between caches</param>
-        public void updateSharedBus(byte[] shared) 
-        {  
-            this.SharedBus = shared; 
-        }   
+        /// <param name="addr">The memory address to write back to.</param>
+        /// <param name="data">The data to write back.</param>
+        public void WriteBack(int addr, byte[] data)
+        {
+            memory.WriteByte(addr, data);
+        }
 
+        /// <summary>
+        /// Handles a Write Hit operation on the bus.
+        /// </summary>
+        /// <param name="line">The cache line associated with the write operation.</param>
+        /// <param name="id">The ID of the cache performing the write.</param>
+        /// <param name="tag">The tag associated with the write operation.</param>
+        /// <param name="line">The line of the cache performing the write.</param>
+        public void WriteHit(CacheLine cacheline,int id,int tag, int line)
+        {
+            
+            if (cacheline.StateMachine.GetCurrentState() == StateMachine.State.Shared)
+            {
+                foreach (Cache cache in this.caches)
+                {
+                    if (cache.id != id) 
+                    {
+                        cache.SearchAddrWH(tag,line);
+                    }
+                }
+            }
+            cacheline.StateMachine.WriteHit();
+        }
 
+        /// <summary>
+        /// Handles a Write Miss operation on the bus.
+        /// </summary>
+        /// <param name="addr">The memory address for the write operation.</param>
+        /// <param name="tag">The tag associated with the write operation.</param>
+        /// <param name="id">The ID of the cache performing the write.</param>
+        /// <returns>The data to be written to the cache line.</returns>
+        public byte[] WriteMiss(int addr, int tag, int id, int line)
+        {
+            
+            byte[] finaldata = new byte[4];
+            foreach (Cache cache in this.caches)
+            {
+                if (cache.id != id)
+                {
+                    (byte[] data, bool found) = cache.SearchAddrWM(tag,line);
 
+                    if (found)
+                    {
+                       finaldata = data;
+                    }
+                }
+            }
+            finaldata = memory.ReadAddr(addr);
+            return finaldata;
+        }
     }
-
-    
 }

@@ -5,10 +5,9 @@
     /// </summary>
     public class ProcessingElement
     {
-        private int id;
         private int pc;
-        public int[] regs;
-        // private Cache cache;
+        public byte[] regs;
+        private readonly Cache cache;
         private List<string> instrList;
         private readonly InstructionGenerator instrGenerator;
 
@@ -34,14 +33,13 @@
         /// <param name="id">The identifier of the processing element.</param>
         /// <param name="minInstrs">The minimum number of instructions to generate.</param>
         /// <param name="maxInstrs">The maximum number of instructions to generate.</param>
-        public ProcessingElement(int id, int minInstrs, int maxInstrs)
+        public ProcessingElement(Cache cache, int minInstrs, int maxInstrs)
         {
             pc = 0;
-            this.id = id;
-            regs = new int[9];
+            this.cache = cache;
+            regs = new byte[9];
             instrList = new List<string>();
             instrGenerator = new InstructionGenerator(minInstrs, maxInstrs);
-            // cache = new();
         }
 
         /// <summary>
@@ -105,13 +103,13 @@
                 {
                     if (words[0].Equals("read"))
                     {
-                        //int data = cache.ReadAddr(addrNum);
-                        //regs[regIndex] = data;
+                        byte data = cache.ReadAddr(addrNum);
+                        regs[regIndex] = data;
                     }
                     else
                     {
-                        //int data = regs[regIndex];
-                        //cache.WriteAddr(addrNum, data);
+                        byte data = regs[regIndex];
+                        cache.WriteAddr(addrNum, data);
                     }
                 }
                 else
@@ -128,15 +126,6 @@
             pc = 0;
             Array.Clear(regs, 0, regs.Length);
             instrList.Clear();
-            //TODO:cache.clean();
-        }
-
-        /// <summary>
-        /// Sets the protocol for cache operations.
-        /// </summary>
-        /// <param name="protocol">The protocol to be set for cache operations.</param>
-        public void SetProtocol(string protocol) {
-            //cache.SetProtoco(protocol);
         }
     }
 }

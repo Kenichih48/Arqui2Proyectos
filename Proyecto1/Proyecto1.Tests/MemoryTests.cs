@@ -48,11 +48,11 @@
             // Arrange
             Memory memory = new(64);
             int address = 10;
-            byte expectedData = 42;
+            byte[] expectedData = { 42 };
 
             // Act
             memory.WriteByte(address, expectedData);
-            byte actualData = memory.ReadAddr(address);
+            byte[] actualData = memory.ReadAddr(address);
 
             // Assert
             Assert.AreEqual(expectedData, actualData);
@@ -85,7 +85,7 @@
             // Arrange
             Memory memory = new(64);
             int invalidAddress = 100;
-            byte data = 75;
+            byte[] data = { 75 };
 
             // Act
             memory.WriteByte(invalidAddress, data);

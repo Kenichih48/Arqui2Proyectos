@@ -68,24 +68,15 @@
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when parameter is greater than size of memory.
         /// </exception>        
-        public void WriteByte(int address, byte[] newLine)
+        public void WriteByte(int memoryline, byte[] newLine)
         {
-            string binaryAddr = Convert.ToString(address, 2);
-            int desiredLength = 6;
-            if (binaryAddr.Length < desiredLength)
+            if (memoryline >= 0 && memoryline < 64)
             {
-                binaryAddr = binaryAddr.PadLeft(desiredLength, '0');
-            }
-            string strLine = binaryAddr[..4];
-            int line = Convert.ToInt32(strLine, 2);
-
-            if (address >= 0 && address < 64)
-            {
-                memory[line] = newLine;
+                memory[memoryline] = newLine;
             }
             else
             {
-                throw new ArgumentOutOfRangeException(nameof(address),
+                throw new ArgumentOutOfRangeException(nameof(memoryline),
                     $"Address must be inside the memory range.");
             }
         }

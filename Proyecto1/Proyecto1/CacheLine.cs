@@ -1,25 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace Proyecto1 {
 
-namespace Proyecto1 {
+    /// <summary>
+    /// Represents a single cache line in a cache memory.
+    /// </summary>
     public class CacheLine
     {
+        public byte[] data;
         public bool Valid { get; set; }
         public bool Dirty { get; set; }
-        public char State { get; set; }
         public int Tag { get; set; }
-        public int Block { get; set; }
+        public int Line {  get; set; }
+        public StateMachine StateMachine;
 
-        public byte[] data; 
-
-        public CacheLine(int addr)
+        public CacheLine(int line, string protocol)
         {
+            Tag = -1;
+            Line = line;
             Valid = false;
             Dirty = false;
-            State = ' ';
-            Tag = -1;
-            Block = -1;
             data = new byte[4];
+            
+            if (protocol.Equals("MESI"))
+            {
+                StateMachine = new StateMachine(protocol);
+            }
+            else
+            {
+                //StateMachine = new StateMachineMOESI();
+            }
+        }
+
+        /// <summary>
+        /// Updates the cache line with new data and attributes.
+        /// </summary>
+        /// <param name="data">The new data to store in the cache line.</param>
+        /// <param name="tag">The new tag to associate with the cache line.</param>
+        /// <param name="valid">A value indicating whether the cache line is valid.</param>
+        /// <param name="dirty">A value indicating whether the cache line is dirty.</param>
+        public void UpdateLine(byte[] data, int tag, bool valid, bool dirty)
+        {
+            this.data = data;
+            Tag = tag;
+            Valid = valid;
+            Dirty = dirty;
+        }
+
+        /// <summary>
+        /// Cleans the cache line by resetting its attributes.
+        /// </summary>
+        public void Clean() {
+            Tag = -1;
+            Valid = false;
+            Dirty = false;
         }
     }
 }
