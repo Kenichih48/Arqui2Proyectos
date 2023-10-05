@@ -32,13 +32,14 @@
         /// </summary>
         /// <param name="tag">The tag associated with the read operation.</param>
         /// <param name="id">The ID of the cache performing the read.</param>
-        public void ReadHit(int tag, int id)
+        /// <param name="line">The line of the cache performing the read.</param>
+
+        public void ReadHit(int tag, int id, int line)
         {
             foreach (Cache cache in this.caches) { 
                 if(cache.id != id)
                 {
-                    CacheLine? cacheline = cache.SearchAddrRH(tag);
-
+                    CacheLine? cacheline = cache.SearchAddrRH(tag, line);
                     if (cacheline != null)
                     {
                         if(cacheline.StateMachine.GetCurrentState() == StateMachineMESI.MesiState.Modified)
@@ -60,30 +61,32 @@
         /// <param name="addr">The memory address for the read operation.</param>
         /// <param name="tag">The tag associated with the read operation.</param>
         /// <param name="id">The ID of the cache performing the read.</param>
+        /// <param name="line">The line of the cache performing the read.</param>
         /// <returns>A tuple containing the read data and a flag indicating if the data is shared.</returns>
-        public (byte[],bool) ReadMiss(int addr, int tag, int id) {
+        public (byte[],bool) ReadMiss(int addr, int tag, int id,int line) {
             bool shared = false;
-            byte[] data = new byte[4];
+            byte[] Finaldata = new byte[4];
             foreach (Cache cache in this.caches)
             {
                 if (cache.id != id)
                 {
-                    (data, bool found) = cache.SearchAddrRM(tag);
-
+                    (byte[] data, bool found) = cache.SearchAddrRM(tag, line);
+                    
                     if (found)
                     {
                         shared = true;
+                        Finaldata = data;
                     }
                 }
             }
             if(shared)
             {
-               return (data, shared);
+               return (Finaldata, shared);
             }
             else
             {
-               data = memory.ReadAddr(addr);
-               return (data, shared);
+               Finaldata = memory.ReadAddr(addr);
+               return (Finaldata, shared);
             }
         }
 
@@ -103,21 +106,21 @@
         /// <param name="line">The cache line associated with the write operation.</param>
         /// <param name="id">The ID of the cache performing the write.</param>
         /// <param name="tag">The tag associated with the write operation.</param>
-        public void WriteHit(CacheLine line,int id,int tag)
+        /// <param name="line">The line of the cache performing the write.</param>
+        public void WriteHit(CacheLine cacheline,int id,int tag, int line)
         {
-            if (line.StateMachine.GetCurrentState() == StateMachineMESI.MesiState.Shared)
+            
+            if (cacheline.StateMachine.GetCurrentState() == StateMachineMESI.MesiState.Shared)
             {
                 foreach (Cache cache in this.caches)
                 {
                     if (cache.id != id) 
                     {
-                        cache.SearchAddrWH(tag);
+                        cache.SearchAddrWH(tag,line);
                     }
-                    
                 }
             }
-
-            line.StateMachine.WriteHit();
+            cacheline.StateMachine.WriteHit();
         }
 
         /// <summary>
@@ -127,23 +130,24 @@
         /// <param name="tag">The tag associated with the write operation.</param>
         /// <param name="id">The ID of the cache performing the write.</param>
         /// <returns>The data to be written to the cache line.</returns>
-        public byte[] WriteMiss(int addr, int tag, int id)
+        public byte[] WriteMiss(int addr, int tag, int id, int line)
         {
-            byte[] data = new byte[4];
-            foreach (Cache cache in caches)
+            
+            byte[] finaldata = new byte[4];
+            foreach (Cache cache in this.caches)
             {
                 if (cache.id != id)
                 {
-                    (data, bool found) = cache.SearchAddrWM(tag);
+                    (byte[] data, bool found) = cache.SearchAddrWM(tag,line);
 
                     if (found)
                     {
-                        return data;
+                       finaldata = data;
                     }
                 }
             }
-            data = memory.ReadAddr(addr);
-            return data;
+            finaldata = memory.ReadAddr(addr);
+            return finaldata;
         }
     }
 }

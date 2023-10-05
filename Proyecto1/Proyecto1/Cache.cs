@@ -54,17 +54,18 @@
             // read hit
             if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
             {
-                Bus.ReadHit(tag, id);
+                Bus.ReadHit(tag, id, line);
                 cacheline.StateMachine.ReadHit();
                 return cacheline.data[offset]; // return read to PE
             }
              
             // get line from other caches / memory
-            (byte[] data, bool shared) = Bus.ReadMiss(addr, tag, id);
-
-            // execute the replacement policy
-            int linenum = ReplacementPolicy(data, addr, tag);
+            (byte[] data,bool shared) = Bus.ReadMiss(addr, tag, id, line);
             
+             // execute the replacement policy
+            int linenum = ReplacementPolicy(data,addr,tag);
+
+
             // change state depending if read miss was shared or exclusive
             if (shared)
             {
@@ -93,8 +94,7 @@
             // write hit
             if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
             {
-                Bus.WriteHit(cacheline, id, tag);
-
+                Bus.WriteHit(cacheline, id, tag, line);
                 found = true;
                 cacheline.Dirty = true;
                 cacheline.data[offset] = data;
@@ -104,7 +104,7 @@
             if (!found)
             {
                 // get line from other caches / memory
-                byte[] newdata = Bus.WriteMiss(addr, tag, id);
+                byte[] newdata = Bus.WriteMiss(addr, tag, id, line);
 
                 // execute the replacement policy
                 int linenum = ReplacementPolicy(newdata, addr, tag);
@@ -147,49 +147,53 @@
         /// </summary>
         /// <param name="tag">The tag to search for.</param>
         /// <returns>The cache line if found, otherwise null.</returns>
-        public CacheLine? SearchAddrRH(int tag)
+        public CacheLine? SearchAddrRH(int tag, int line)
         {
-            foreach (CacheLine line in cacheLines)
+            CacheLine cacheline = cacheLines[line];
+      
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
             {
-                if (line.Tag == tag)
-                {
-                    return line;
-                }
+                return cacheline;
             }
-            return null;
+            else
+            {
+                return null;
+            } 
         }
 
         /// <summary>
         /// Searches for a cache line with a given tag for a Read Miss operation.
         /// </summary>
         /// <param name="tag">The tag to search for.</param>
+        /// <param name="line">The line to search for.</param>
         /// <returns>A tuple containing the data (if found) and a boolean indicating if it was found.</returns>
-        public (byte[],bool) SearchAddrRM(int tag)
+        public (byte[],bool) SearchAddrRM(int tag, int line)
         {
-            foreach (CacheLine line in cacheLines)
-            {
-                if (line.Tag == tag && line.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
-                {
-                    line.StateMachine.SnoopHitRead();
-                    return (line.data, true);
-                }
+            CacheLine cacheline = cacheLines[line];
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
+            { 
+                cacheline.StateMachine.SnoopHitRead();
+                
+                return (cacheline.data, true);    
             }
-            byte[] empty = new byte[4];
-            return (empty, false);
+            else
+            {
+                byte[] empty = new byte[4];
+                return (empty, false);
+            }
         }
 
         /// <summary>
         /// Updates a cache line with a given tag for a Write Hit operation.
         /// </summary>
         /// <param name="tag">The tag to search for.</param>
-        public void SearchAddrWH(int tag)
+        /// <param name="line">The line to search for.</param>
+        public void SearchAddrWH(int tag, int line)
         {
-            foreach (CacheLine line in cacheLines)
+            CacheLine cacheline = cacheLines[line];
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
             {
-                if (line.Tag == tag)
-                {
-                    line.StateMachine.SnoopHitWrite();
-                }
+                cacheline.StateMachine.SnoopHitWrite();
             }
         }
 
@@ -198,18 +202,19 @@
         /// </summary>
         /// <param name="tag">The tag to search for.</param>
         /// <returns>A tuple containing the data (if found) and a boolean indicating whether the data is valid.</returns>
-        public (byte[], bool) SearchAddrWM(int tag)
+        public (byte[], bool) SearchAddrWM(int tag, int line)
         {
-            foreach (CacheLine line in cacheLines)
-            {
-                if (line.Tag == tag && line.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
-                {
-                    line.StateMachine.SnoopHitWrite();
-                    return (line.data,true);
-                }
+            CacheLine cacheline = cacheLines[line];
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
+            { 
+                cacheline.StateMachine.SnoopHitWrite();
+                return (cacheline.data, true);
             }
-            byte[] empty = new byte[4];
-            return (empty, false);
+            else
+            {
+                byte[] empty = new byte[4];
+                return (empty, false);
+            }
         }
 
         /// <summary>

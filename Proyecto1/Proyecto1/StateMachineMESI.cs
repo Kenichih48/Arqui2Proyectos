@@ -50,7 +50,8 @@ namespace Proyecto1
                 .PermitReentry(MesiTrigger.WriteHit)
                 .PermitReentry(MesiTrigger.ReadHit)
                 .Permit(MesiTrigger.SnoopHitRead, MesiState.Shared)
-                .Permit(MesiTrigger.SnoopHitWrite, MesiState.Invalid);
+                .Permit(MesiTrigger.SnoopHitWrite, MesiState.Invalid)
+                .Permit(MesiTrigger.ReadMissExclusive, MesiState.Exclusive);
 
             stateMachine.Configure(MesiState.Exclusive)
                 .PermitReentry(MesiTrigger.ReadHit)
