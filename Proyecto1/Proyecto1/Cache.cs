@@ -86,16 +86,23 @@ namespace Proyecto1
 
             foreach (CacheLine line in cacheLines)
             {
-                if (line.Tag == tag)
+                if (line.Tag == tag && line.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
                 {
-                    //controller.writeHit(line, offset, data, id, tag);
-                    return; 
+                    
+                    Bus.WriteHit(line,id,tag);
+                    line.Dirty = true;
+                    line.data[offset] = data;
+                    
                 }
             }
-            //byte[] newLine = controller.writeMiss(addr, id, tag);
-            //TODO: replacement policy
-            //newLine[offset] = data;
 
+            byte[] newdata = Bus.WriteMiss(addr, tag, id);
+            
+            int linenum = ReplacementPolicy(newdata, addr, tag);
+
+            cacheLines[linenum].StateMachine.WriteMiss();
+            cacheLines[linenum].data[offset] = data;
+            cacheLines[linenum].Dirty= true;
 
             // If no matching CacheLine is found, throw a KeyNotFoundException
             throw new KeyNotFoundException($"CacheLine with address {addr} not found.");
@@ -159,6 +166,31 @@ namespace Proyecto1
             }
             byte[] empty = new byte[4];
             return (empty,false);
+        }
+
+        public void SearchAddrWH(int tag)
+        {
+            foreach (CacheLine line in cacheLines)
+            {
+                if (line.Tag == tag)
+                {
+                    line.StateMachine.SnoopHitWrite();
+                }
+            }
+        }
+
+        public (byte[], bool) SearchAddrWM(int tag)
+        {
+            foreach (CacheLine line in cacheLines)
+            {
+                if (line.Tag == tag && line.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
+                {
+                    line.StateMachine.SnoopHitWrite();
+                    return (line.data,true);
+                }
+            }
+            byte[] empty = new byte[4];
+            return (empty, false);
         }
 
 

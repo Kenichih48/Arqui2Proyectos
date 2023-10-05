@@ -137,6 +137,48 @@ namespace Proyecto1
             memory.WriteByte(addr, data);
         }
 
+        public void WriteHit(CacheLine line,int id,int tag)
+        {
+            
+            if (line.StateMachine.GetCurrentState() == StateMachineMESI.MesiState.Shared)
+            {
+                foreach (Cache cache in this.caches)
+                {
+                    if (cache.id != id) 
+                    {
+                        cache.SearchAddrWH(tag);
+                    }
+                    
+                }
+            }
+
+            line.StateMachine.WriteHit();
+
+        }
+
+
+        public byte[] WriteMiss(int addr, int tag, int id)
+        {
+           
+            byte[] data = new byte[4];
+            foreach (Cache cache in this.caches)
+            {
+                if (cache.id != id)
+                {
+                    (data, bool found) = cache.SearchAddrWM(tag);
+
+                    if (found)
+                    {
+                        return data;
+                    }
+                }
+            }
+
+            data = memory.ReadAddr(addr);
+            return data;
+
+        }
+
 
     }
 

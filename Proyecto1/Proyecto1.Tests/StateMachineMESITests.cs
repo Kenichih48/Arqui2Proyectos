@@ -10,9 +10,9 @@ namespace Proyecto1.Tests
     public class StateMachineMESITests
     {
         [TestMethod]
-        public void MESI()
+        public void MESITest()
         {
-            StateMachineMESI MESI = new StateMachineMESI(); 
+            StateMachineMESI MESI = new StateMachineMESI();
 
             Assert.IsNotNull(MESI);
             Assert.AreEqual(StateMachineMESI.MesiState.Invalid, MESI.GetCurrentState());
@@ -23,7 +23,7 @@ namespace Proyecto1.Tests
             MESI.SnoopHitRead();
             Assert.AreEqual(StateMachineMESI.MesiState.Shared, MESI.GetCurrentState());
 
-
+            MESI
 
         }
 
