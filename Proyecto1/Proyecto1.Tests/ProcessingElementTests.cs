@@ -35,17 +35,18 @@
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestInvalidInstructionFormat()
         {
-            /*
-            // Arrange
             int id = 1;
             int minInstrs = 1;
             int maxInstrs = 1;
-            ProcessingElement pe = new(id, minInstrs, maxInstrs);
+            TopLevel top = new TopLevel(minInstrs,maxInstrs);
+            // Arrange
+            
+            ProcessingElement pe = top.PE1;
             pe.InstrList.Add("read 0x34 rax");
 
             // Act
             pe.ExecuteAll();
-            */
+            
         }
     }
 }

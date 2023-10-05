@@ -27,11 +27,11 @@ namespace Proyecto1.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(KeyNotFoundException))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Cache_Exception()
         {
             // Arrange
-            /*
+            
             Memory memory = new(64);
             int invalidAddress = 100;
 
@@ -39,7 +39,7 @@ namespace Proyecto1.Tests
             _ = memory.ReadAddr(invalidAddress);
 
             // Assert (Exception is expected)
-            */
+            
         }
 
     }

@@ -38,5 +38,28 @@
 
             Bus.SetCaches(cacheList);
         }
+
+
+        public TopLevel(int minI, int maxI)
+        {
+
+            Protocol = "MESI";
+
+            Memory = new Memory();
+
+            Bus = new BusInterconnect(Memory);
+
+            Cache1 = new Cache(cachelines, 0, Bus, Protocol);
+            Cache2 = new Cache(cachelines, 1, Bus, Protocol);
+            Cache3 = new Cache(cachelines, 2, Bus, Protocol);
+
+            PE1 = new ProcessingElement(Cache1, minI, maxI);
+            PE2 = new ProcessingElement(Cache2, minI, maxI);
+            PE3 = new ProcessingElement(Cache3, minI, maxI);
+
+            List<Cache> cacheList = new() { Cache1, Cache2, Cache3 };
+
+            Bus.SetCaches(cacheList);
+        }
     }
 }

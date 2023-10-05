@@ -5,7 +5,7 @@
     /// </summary>
     public class Memory
     {
-        private readonly List<byte[]> memory;
+        public List<byte[]> memory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Memory"/> class.

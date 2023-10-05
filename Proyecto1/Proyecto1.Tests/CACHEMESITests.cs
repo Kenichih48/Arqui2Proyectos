@@ -114,8 +114,8 @@ namespace Proyecto1.Tests
 
             TopLevel top = new TopLevel();
 
-            top.Cache1.WriteAddr(0, 1);
-            Assert.AreEqual(1, top.Cache1.cacheLines[0].data[0]);
+            top.Cache1.WriteAddr(0, 10);
+            Assert.AreEqual(10, top.Cache1.cacheLines[0].data[0]);
             Assert.AreEqual(StateMachine.State.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
 
             top.Cache2.ReadAddr(0);
@@ -123,7 +123,7 @@ namespace Proyecto1.Tests
             Assert.AreEqual(StateMachine.State.Shared, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
 
             byte[] data = top.Memory.ReadAddr(0);
-            Assert.AreEqual(1, data[0]);
+            Assert.AreEqual(10, data[0]);
 
         }
 
