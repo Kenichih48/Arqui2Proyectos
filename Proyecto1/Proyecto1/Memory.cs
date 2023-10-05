@@ -70,8 +70,6 @@
         /// </exception>        
         public void WriteByte(int memoryline, byte[] newLine)
         {
-
-
             if (memoryline >= 0 && memoryline < 64)
             {
                 memory[memoryline] = newLine;
