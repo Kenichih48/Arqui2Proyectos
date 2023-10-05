@@ -34,15 +34,16 @@ namespace Proyecto1
 
             if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
             {
-                Bus.ReadHit(tag, id);
+                Bus.ReadHit(tag, id, line);
                 cacheline.StateMachine.ReadHit();
                 return cacheline.data[offset]; //Hit
             }
 
              
-            (byte[] data,bool shared) = Bus.ReadMiss(addr, tag, id, offset);
-
+            (byte[] data,bool shared) = Bus.ReadMiss(addr, tag, id, line);
+            
             int linenum = ReplacementPolicy(data,addr,tag);
+
             
             if (shared)
             {
@@ -52,6 +53,8 @@ namespace Proyecto1
             {
                 cacheLines[linenum].StateMachine.ReadMissExclusive();
             }
+            
+               
             return data[offset];
 
             
@@ -66,7 +69,7 @@ namespace Proyecto1
 
             if(cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
             {
-                Bus.WriteHit(cacheline, id, tag);
+                Bus.WriteHit(cacheline, id, tag, line);
                 cacheline.Dirty = true;
 
                 cacheline.data[offset] = data;
@@ -76,7 +79,7 @@ namespace Proyecto1
 
             if (!found)
             {
-                byte[] newdata = Bus.WriteMiss(addr, tag, id);
+                byte[] newdata = Bus.WriteMiss(addr, tag, id, line);
 
                 int linenum = ReplacementPolicy(newdata, addr, tag);
 
@@ -122,58 +125,69 @@ namespace Proyecto1
         }
 
 
-        public CacheLine SearchAddrRH(int tag)
+        public CacheLine SearchAddrRH(int tag,int line)
         {
+            CacheLine cacheline = cacheLines[line];
+
+            
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
+            {
+
+                return cacheline;
+            }
+            else
+            {
+                return null;
+            }
+            
+        }
+
+
+        public (byte[],bool) SearchAddrRM(int tag,int line)
+        {
+            CacheLine cacheline = cacheLines[line];
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
+            { 
+                cacheline.StateMachine.SnoopHitRead();
+                
+                return (cacheline.data, true);
+                
+            }
+            else
+            {
+                byte[] empty = new byte[4];
+                return (empty, false);
+            }
+        
            
-            foreach (CacheLine line in cacheLines)
-            {
-                if (line.Tag == tag)
-                {
-
-                    return line;
-                }
-            }
-            return null;
         }
 
-
-        public (byte[],bool) SearchAddrRM(int tag)
+        public void SearchAddrWH(int tag,int line)
         {
-            foreach (CacheLine line in cacheLines)
+            CacheLine cacheline = cacheLines[line];
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
             {
-                if (line.Tag == tag && line.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
-                {
-                    line.StateMachine.SnoopHitRead();
-                    return (line.data, true);
-                }
+                cacheline.StateMachine.SnoopHitWrite();
             }
-            byte[] empty = new byte[4];
-            return (empty,false);
+               
         }
 
-        public void SearchAddrWH(int tag)
+        public (byte[], bool) SearchAddrWM(int tag, int line)
         {
-            foreach (CacheLine line in cacheLines)
+            CacheLine cacheline = cacheLines[line];
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
             {
-                if (line.Tag == tag)
-                {
-                    line.StateMachine.SnoopHitWrite();
-                }
+                
+               
+                cacheline.StateMachine.SnoopHitWrite();
+                return (cacheline.data, true);
             }
-        }
-
-        public (byte[], bool) SearchAddrWM(int tag)
-        {
-            foreach (CacheLine line in cacheLines)
+            else
             {
-                if (line.Tag == tag && line.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
-                {
-                    line.StateMachine.SnoopHitWrite();
-                    return (line.data,true);
-                }
+                byte[] empty = new byte[4];
+                return (empty, false);
             }
-            byte[] empty = new byte[4];
-            return (empty, false);
+                
         }
 
 

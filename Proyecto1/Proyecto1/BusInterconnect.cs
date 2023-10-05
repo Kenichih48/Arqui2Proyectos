@@ -81,12 +81,12 @@ namespace Proyecto1
         }
 
 
-        public void ReadHit(int tag, int id)
+        public void ReadHit(int tag, int id, int line)
         {
             foreach (Cache cache in this.caches) { 
                 if(cache.id != id)
                 {
-                    CacheLine cacheline = cache.SearchAddrRH(tag);
+                    CacheLine cacheline = cache.SearchAddrRH(tag, line);
 
                     if (cacheline != null)
                     {
@@ -102,32 +102,30 @@ namespace Proyecto1
             }
         }
 
-        public (byte[],bool) ReadMiss(int addr, int tag, int id, int offset) {
+        public (byte[],bool) ReadMiss(int addr, int tag, int id,int line) {
             bool shared = false;
-            byte[] data = new byte[4];
+            byte[] Finaldata = new byte[4];
             foreach (Cache cache in this.caches)
             {
                 if (cache.id != id)
                 {
-                    (data, bool found) = cache.SearchAddrRM(tag);
-
+                    (byte[] data, bool found) = cache.SearchAddrRM(tag, line);
+                    
                     if (found)
                     {
                         shared = true;
+                        Finaldata = data;
                     }
                 }
             }
             if(shared)
             {
-               return (data, shared);
+               return (Finaldata, shared);
             }
             else
             {
-               //request
-               //Wait hasta que memoria retorne
-
-               data = memory.ReadAddr(addr);
-               return (data, shared);
+               Finaldata = memory.ReadAddr(addr);
+               return (Finaldata, shared);
             }
             
         }
@@ -137,45 +135,45 @@ namespace Proyecto1
             memory.WriteByte(addr, data);
         }
 
-        public void WriteHit(CacheLine line,int id,int tag)
+        public void WriteHit(CacheLine cacheline,int id,int tag, int line)
         {
             
-            if (line.StateMachine.GetCurrentState() == StateMachineMESI.MesiState.Shared)
+            if (cacheline.StateMachine.GetCurrentState() == StateMachineMESI.MesiState.Shared)
             {
                 foreach (Cache cache in this.caches)
                 {
                     if (cache.id != id) 
                     {
-                        cache.SearchAddrWH(tag);
+                        cache.SearchAddrWH(tag,line);
                     }
                     
                 }
             }
 
-            line.StateMachine.WriteHit();
+            cacheline.StateMachine.WriteHit();
 
         }
 
 
-        public byte[] WriteMiss(int addr, int tag, int id)
+        public byte[] WriteMiss(int addr, int tag, int id, int line)
         {
-           
-            byte[] data = new byte[4];
+            
+            byte[] finaldata = new byte[4];
             foreach (Cache cache in this.caches)
             {
                 if (cache.id != id)
                 {
-                    (data, bool found) = cache.SearchAddrWM(tag);
+                    (byte[] data, bool found) = cache.SearchAddrWM(tag,line);
 
                     if (found)
                     {
-                        return data;
+                       finaldata = data;
                     }
                 }
             }
 
-            data = memory.ReadAddr(addr);
-            return data;
+            finaldata = memory.ReadAddr(addr);
+            return finaldata;
 
         }
 
