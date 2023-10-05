@@ -1,10 +1,14 @@
 ﻿using Stateless;
 namespace Proyecto1
 {
-    public class StateMachineMESI
+    /// <summary>
+    /// Represents a MESI state machine for cache coherence management.
+    /// </summary>
+    public class StateMachineMESI : BaseStateMachine<StateMachineMESI.MesiState, StateMachineMESI.MesiTrigger>
     {
-        private StateMachine<MesiState, MesiTrigger> stateMachine;
-
+        /// <summary>
+        /// Enumerates the possible states of the MESI state machine.
+        /// </summary>
         public enum MesiState
         {
             Modified,
@@ -13,6 +17,9 @@ namespace Proyecto1
             Invalid
         }
 
+        /// <summary>
+        /// Enumerates the possible triggers for the MESI state machine transitions.
+        /// </summary>
         public enum MesiTrigger
         {
             ReadHit,
@@ -24,7 +31,18 @@ namespace Proyecto1
             SnoopHitRead        
         }
 
-        public StateMachineMESI()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StateMachineMESI"/> class with an initial state.
+        /// </summary>
+        public StateMachineMESI() : base(MesiState.Invalid)
+        {
+            ConfigureTransitions();
+        }
+
+        /// <summary>
+        /// Configures the transitions for the MESI state machine.
+        /// </summary>
+        private void ConfigureTransitions()
         {
             stateMachine = new StateMachine<MesiState, MesiTrigger>(MesiState.Invalid);
 
@@ -55,39 +73,59 @@ namespace Proyecto1
                 .Permit(MesiTrigger.WriteHit, MesiState.Modified);
         }
 
+        /// <summary>
+        /// Fires the Read Hit trigger in the MESI state machine.
+        /// </summary>
         public void ReadHit()
         {
             stateMachine.Fire(MesiTrigger.ReadHit);
         }
+
+        /// <summary>
+        /// Fires the Write Hit trigger in the MESI state machine.
+        /// </summary>
         public void WriteHit()
         {
             stateMachine.Fire(MesiTrigger.WriteHit);
         }
+
+        /// <summary>
+        /// Fires the Read Miss Shared trigger in the MESI state machine.
+        /// </summary>
         public void ReadMissShared()
         {
             stateMachine.Fire(MesiTrigger.ReadMissShared);
         }
+
+        /// <summary>
+        /// Fires the Read Miss Exclusive trigger in the MESI state machine.
+        /// </summary>
         public void ReadMissExclusive()
         {
             stateMachine.Fire(MesiTrigger.ReadMissExclusive);
         }
+
+        /// <summary>
+        /// Fires the Write Miss trigger in the MESI state machine.
+        /// </summary>
         public void WriteMiss()
         {
             stateMachine.Fire(MesiTrigger.WriteMiss);
         }
+
+        /// <summary>
+        /// Fires the Snooping Hit Write trigger in the MESI state machine.
+        /// </summary>
         public void SnoopHitWrite()
         {
             stateMachine.Fire(MesiTrigger.SnoopHitWrite);
         }
+        /// <summary>
+        /// Fires the Snooping Hit Read trigger in the MESI state machine.
+        /// </summary>
         public void SnoopHitRead()
         {
             stateMachine.Fire(MesiTrigger.SnoopHitRead);
-        }
-
-
-        public MesiState GetCurrentState()
-        {
-            return stateMachine.State;
         }
     }
 }
