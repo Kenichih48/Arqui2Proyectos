@@ -29,27 +29,30 @@ namespace Proyecto1
             stateMachine = new StateMachine<MesiState, MesiTrigger>(MesiState.Invalid);
 
             stateMachine.Configure(MesiState.Modified)
-                .Permit(MesiTrigger.WriteHit, MesiState.Modified)
-                .Permit(MesiTrigger.ReadHit, MesiState.Modified)
+                .PermitReentry(MesiTrigger.WriteHit)
+                .PermitReentry(MesiTrigger.ReadHit)
                 .Permit(MesiTrigger.SnoopHitRead, MesiState.Shared)
                 .Permit(MesiTrigger.SnoopHitWrite, MesiState.Invalid);
 
             stateMachine.Configure(MesiState.Exclusive)
-                .Permit(MesiTrigger.ReadHit, MesiState.Exclusive)
+                .PermitReentry(MesiTrigger.ReadHit)
                 .Permit(MesiTrigger.WriteHit, MesiState.Modified)
                 .Permit(MesiTrigger.SnoopHitWrite, MesiState.Invalid)
                 .Permit(MesiTrigger.SnoopHitRead, MesiState.Shared);
 
             stateMachine.Configure(MesiState.Shared)
-                .Permit(MesiTrigger.ReadHit, MesiState.Shared)
+                .PermitReentry(MesiTrigger.ReadHit)
+                .PermitReentry(MesiTrigger.SnoopHitRead)
+
                 .Permit(MesiTrigger.WriteHit, MesiState.Modified)
-                .Permit(MesiTrigger.SnoopHitRead, MesiState.Shared)
+
                 .Permit(MesiTrigger.SnoopHitWrite, MesiState.Invalid);
 
             stateMachine.Configure(MesiState.Invalid)
                 .Permit(MesiTrigger.ReadMissShared, MesiState.Shared)
                 .Permit(MesiTrigger.ReadMissExclusive, MesiState.Exclusive)
-                .Permit(MesiTrigger.WriteMiss, MesiState.Modified);
+                .Permit(MesiTrigger.WriteMiss, MesiState.Modified)
+                .Permit(MesiTrigger.WriteHit, MesiState.Modified);
         }
 
         public void ReadHit()
@@ -84,7 +87,7 @@ namespace Proyecto1
 
         public MesiState GetCurrentState()
         {
-            return stateMachine.State.;
+            return stateMachine.State;
         }
     }
 }

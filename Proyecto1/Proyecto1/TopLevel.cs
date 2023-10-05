@@ -10,16 +10,16 @@ namespace Proyecto1
 {
     public class TopLevel
     {
-        ProcessingElement PE1 {  get; set; }
-        ProcessingElement PE2 {  get; set; }
-        ProcessingElement PE3 {  get; set; }
+        public ProcessingElement PE1 {  get; set; }
+        public ProcessingElement PE2 {  get; set; }
+        public ProcessingElement PE3 {  get; set; }
 
-        Cache Cache1 { get; set; }
-        Cache Cache2 { get; set; }
-        Cache Cache3 { get; set; }
+        public Cache Cache1 { get; set; }
+        public Cache Cache2 { get; set; }
+        public Cache Cache3 { get; set; }
 
-        BusInterconnect Bus {  get; set; }
-        Memory memory { get; set; }
+        public BusInterconnect Bus {  get; set; }
+        public Memory memory { get; set; }
         
 
         private int minInstr = 7;

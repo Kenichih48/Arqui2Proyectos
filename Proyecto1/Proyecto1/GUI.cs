@@ -21,6 +21,7 @@ namespace Proyecto1
         private ProcessingElement pe1;
         private ProcessingElement pe2;
         private ProcessingElement pe3;
+        private TopLevel Top;
         private int minInstr = 7;
         private int maxInstr = 9;
         /// <summary>
@@ -31,9 +32,11 @@ namespace Proyecto1
             instrList1 = new List<string>();
             instrList2 = new List<string>();
             instrList3 = new List<string>();
-            pe1 = new(1, minInstr, maxInstr);
-            pe2 = new(2, minInstr, maxInstr);
-            pe3 = new(3, minInstr, maxInstr);
+            Top = new TopLevel();
+            pe1 = Top.PE1;
+            pe2 = Top.PE2;
+            pe3 = Top.PE3;
+           
             InitializeComponent();
             step1.Enabled = false;
             step2.Enabled = false;
