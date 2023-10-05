@@ -17,7 +17,7 @@ namespace Proyecto1.Tests
 
             top.Cache1.WriteAddr(0, 1);
             Assert.AreEqual(1, top.Cache1.cacheLines[0].data[0]);
-            Assert.AreEqual(StateMachineMESI.MesiState.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
             
             top.Cache1.WriteAddr(1, 2);
             Assert.AreEqual(2, top.Cache1.cacheLines[0].data[1]);
@@ -53,23 +53,23 @@ namespace Proyecto1.Tests
 
 
             byte data = top.Cache2.ReadAddr(0);
-            Assert.AreEqual(StateMachineMESI.MesiState.Shared, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
-            Assert.AreEqual(StateMachineMESI.MesiState.Shared, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Shared, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Shared, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
             Assert.AreEqual(1, data);
 
             top.Cache2.WriteAddr(0, 2);
             Assert.AreEqual(2, top.Cache2.cacheLines[0].data[0]);
 
             byte data2 = top.Cache1.ReadAddr(0);
-            Assert.AreEqual(StateMachineMESI.MesiState.Shared, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
-            Assert.AreEqual(StateMachineMESI.MesiState.Shared, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Shared, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Shared, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
             Assert.AreEqual(2, data2);
 
             top.Cache1.WriteAddr(0, 3);
             Assert.AreEqual(3, top.Cache1.cacheLines[0].data[0]);
 
-            Assert.AreEqual(StateMachineMESI.MesiState.Invalid, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
-            Assert.AreEqual(StateMachineMESI.MesiState.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Invalid, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
             Assert.AreEqual(2, data2);
 
         }
@@ -83,14 +83,14 @@ namespace Proyecto1.Tests
             Assert.AreEqual(1, top.Cache1.cacheLines[0].data[0]);
 
             byte data = top.Cache2.ReadAddr(0);
-            Assert.AreEqual(StateMachineMESI.MesiState.Shared, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
-            Assert.AreEqual(StateMachineMESI.MesiState.Shared, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Shared, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Shared, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
             Assert.AreEqual(1, data);
 
             top.Cache3.WriteAddr(0, 2);
-            Assert.AreEqual(StateMachineMESI.MesiState.Invalid, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
-            Assert.AreEqual(StateMachineMESI.MesiState.Invalid, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
-            Assert.AreEqual(StateMachineMESI.MesiState.Modified, top.Cache3.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Invalid, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Invalid, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Modified, top.Cache3.cacheLines[0].StateMachine.GetCurrentState());
 
             byte data2 = top.Cache3.ReadAddr(0);
             Assert.AreEqual(2, data2);
@@ -98,13 +98,13 @@ namespace Proyecto1.Tests
             top.Cache1.WriteAddr(1, 8);
             byte data3 = top.Cache1.ReadAddr(1);
             Assert.AreEqual(8, data3);
-            Assert.AreEqual(StateMachineMESI.MesiState.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
 
             top.Cache3.WriteAddr(1, 10);
             byte data4 = top.Cache3.ReadAddr(1);
             Assert.AreEqual(10, data4);
-            Assert.AreEqual(StateMachineMESI.MesiState.Modified, top.Cache3.cacheLines[0].StateMachine.GetCurrentState());
-            Assert.AreEqual(StateMachineMESI.MesiState.Invalid, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Modified, top.Cache3.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Invalid, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
             
         }
 
@@ -116,13 +116,13 @@ namespace Proyecto1.Tests
 
             top.Cache1.WriteAddr(0, 1);
             Assert.AreEqual(1, top.Cache1.cacheLines[0].data[0]);
-            Assert.AreEqual(StateMachineMESI.MesiState.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
 
             top.Cache2.ReadAddr(0);
-            Assert.AreEqual(StateMachineMESI.MesiState.Shared, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
-            Assert.AreEqual(StateMachineMESI.MesiState.Shared, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Shared, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Shared, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
 
-            byte[] data = top.memory.ReadAddr(0);
+            byte[] data = top.Memory.ReadAddr(0);
             Assert.AreEqual(1, data[0]);
 
         }
@@ -135,13 +135,13 @@ namespace Proyecto1.Tests
 
             top.Cache1.WriteAddr(0, 1);
             Assert.AreEqual(1, top.Cache1.cacheLines[0].data[0]);
-            Assert.AreEqual(StateMachineMESI.MesiState.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
 
             top.Cache1.ReadAddr(16);
             Assert.AreEqual(0, top.Cache1.cacheLines[0].data[0]);
-            Assert.AreEqual(StateMachineMESI.MesiState.Exclusive, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Exclusive, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
 
-            byte[] data = top.memory.ReadAddr(0);
+            byte[] data = top.Memory.ReadAddr(0);
             Assert.AreEqual(1, data[0]);
 
 

@@ -250,9 +250,10 @@ namespace Proyecto1
             if (comboBox.SelectedItem != null)
             {
                 string selectedValue = comboBox.SelectedItem.ToString();
-                pe1.SetProtocol(selectedValue);
-                pe2.SetProtocol(selectedValue);
-                pe3.SetProtocol(selectedValue);
+                //TODO: fix
+                //pe1.SetProtocol(selectedValue);
+                //pe2.SetProtocol(selectedValue);
+                //pe3.SetProtocol(selectedValue);
                 step1.Enabled = true;
                 step2.Enabled = true;
                 step3.Enabled = true;

@@ -52,7 +52,7 @@
             CacheLine cacheline = cacheLines[line];
 
             // read hit
-            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
             {
                 Bus.ReadHit(tag, id, line);
                 cacheline.StateMachine.ReadHit();
@@ -92,7 +92,7 @@
             CacheLine cacheline = cacheLines[line];
 
             // write hit
-            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
             {
                 Bus.WriteHit(cacheline, id, tag, line);
                 found = true;
@@ -151,7 +151,7 @@
         {
             CacheLine cacheline = cacheLines[line];
       
-            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
             {
                 return cacheline;
             }
@@ -170,7 +170,7 @@
         public (byte[],bool) SearchAddrRM(int tag, int line)
         {
             CacheLine cacheline = cacheLines[line];
-            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
             { 
                 cacheline.StateMachine.SnoopHitRead();
                 
@@ -191,7 +191,7 @@
         public void SearchAddrWH(int tag, int line)
         {
             CacheLine cacheline = cacheLines[line];
-            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
             {
                 cacheline.StateMachine.SnoopHitWrite();
             }
@@ -205,7 +205,7 @@
         public (byte[], bool) SearchAddrWM(int tag, int line)
         {
             CacheLine cacheline = cacheLines[line];
-            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachineMESI.MesiState.Invalid)
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
             { 
                 cacheline.StateMachine.SnoopHitWrite();
                 return (cacheline.data, true);

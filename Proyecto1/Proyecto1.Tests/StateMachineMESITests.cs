@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 namespace Proyecto1.Tests
 {
     [TestClass]
-    public class StateMachineMESITests
+    public class StateMachineTests
     {
         [TestMethod]
         public void MESITest()
         {
-            StateMachineMESI MESI = new StateMachineMESI();
+            StateMachine MESI = new StateMachine("MESI");
 
             Assert.IsNotNull(MESI);
-            Assert.AreEqual(StateMachineMESI.MesiState.Invalid, MESI.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Invalid, MESI.GetCurrentState());
 
             MESI.WriteHit();
-            Assert.AreEqual(StateMachineMESI.MesiState.Modified, MESI.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Modified, MESI.GetCurrentState());
 
             MESI.SnoopHitRead();
-            Assert.AreEqual(StateMachineMESI.MesiState.Shared, MESI.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Shared, MESI.GetCurrentState());
 
             
 

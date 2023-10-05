@@ -42,7 +42,7 @@
                     CacheLine? cacheline = cache.SearchAddrRH(tag, line);
                     if (cacheline != null)
                     {
-                        if(cacheline.StateMachine.GetCurrentState() == StateMachineMESI.MesiState.Modified)
+                        if(cacheline.StateMachine.GetCurrentState() == StateMachine.State.Modified)
                         {
                             // write back
                             int memoryline = cache.GetMemoryLine(cacheline.Tag, cacheline.Line);
@@ -110,7 +110,7 @@
         public void WriteHit(CacheLine cacheline,int id,int tag, int line)
         {
             
-            if (cacheline.StateMachine.GetCurrentState() == StateMachineMESI.MesiState.Shared)
+            if (cacheline.StateMachine.GetCurrentState() == StateMachine.State.Shared)
             {
                 foreach (Cache cache in this.caches)
                 {

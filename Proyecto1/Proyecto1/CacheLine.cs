@@ -10,7 +10,7 @@
         public bool Dirty { get; set; }
         public int Tag { get; set; }
         public int Line {  get; set; }
-        public IStateMachine StateMachine;
+        public StateMachine StateMachine;
 
         public CacheLine(int line, string protocol)
         {
@@ -22,7 +22,7 @@
             
             if (protocol.Equals("MESI"))
             {
-                StateMachine = new StateMachineMESI();
+                StateMachine = new StateMachine(protocol);
             }
             else
             {
