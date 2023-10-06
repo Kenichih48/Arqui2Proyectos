@@ -36,7 +36,7 @@ namespace Proyecto1
             pe1 = Top.PE1;
             pe2 = Top.PE2;
             pe3 = Top.PE3;
-           
+
             InitializeComponent();
             step1.Enabled = false;
             step2.Enabled = false;

@@ -40,8 +40,10 @@ namespace Proyecto1
         {
             string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "results");
             DateTime now = DateTime.Now;
-            int lengthToKeep = dir.Length - 49;
-            string result = dir.Substring(0, lengthToKeep);
+            string[] partes = dir.Split(new string[] { "\\" }, StringSplitOptions.None);
+            int nuevaLongitud = partes.Length - 5;
+            Array.Resize(ref partes, nuevaLongitud);
+            string result = string.Join("\\", partes);
             filename = result + "\\Proyecto1\\results\\" + now.Hour.ToString() +"-"+ now.Minute.ToString() + "-" + now.Second.ToString() + ".log";
 
             using (FileStream fs = File.Create(filename))
