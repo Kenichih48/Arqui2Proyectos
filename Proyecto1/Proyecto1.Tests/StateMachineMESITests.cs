@@ -17,7 +17,7 @@ namespace Proyecto1.Tests
             Assert.IsNotNull(MESI);
             Assert.AreEqual(StateMachine.State.Invalid, MESI.GetCurrentState());
 
-            MESI.WriteHit();
+            MESI.WriteMiss();
             Assert.AreEqual(StateMachine.State.Modified, MESI.GetCurrentState());
 
             MESI.SnoopHitRead();

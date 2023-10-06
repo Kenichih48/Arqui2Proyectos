@@ -1,4 +1,6 @@
-﻿namespace Proyecto1
+﻿using System.Runtime.CompilerServices;
+
+namespace Proyecto1
 {
     /// <summary>
     /// Represents the bus interconnect used for communication between caches and memory.
@@ -45,8 +47,12 @@
                         if(cacheline.StateMachine.GetCurrentState() == StateMachine.State.Modified)
                         {
                             // write back
-                            int memoryline = cache.GetMemoryLine(cacheline.Tag, cacheline.Line);
-                            WriteBack(memoryline,cacheline.data);
+                            if (cacheline.Protocol.Equals("MESI"))
+                            {
+                                int memoryline = cache.GetMemoryLine(cacheline.Tag, cacheline.Line);
+                                WriteBack(memoryline, cacheline.data);
+                            }
+                            
                         }
                         cacheline.StateMachine.SnoopHitRead();
                         
@@ -66,17 +72,28 @@
         public (byte[],bool) ReadMiss(int addr, int tag, int id,int line) {
             bool shared = false;
             byte[] Finaldata = new byte[4];
+            
             foreach (Cache cache in this.caches)
             {
                 if (cache.id != id)
                 {
-                    (byte[] data, bool found) = cache.SearchAddrRM(tag, line);
-                    
+                    bool found = false;
+                    byte[] data = new byte[4];
+                    if (cache.cacheLines[0].Protocol.Equals("MESI"))
+                    {
+                        (data, found) = cache.SearchAddrRM(tag, line);
+                    }
+                    else
+                    {
+                        (data, found) = cache.SearchAddrRMMOESI(tag, line);
+                    }
+
                     if (found)
                     {
                         shared = true;
                         Finaldata = data;
                     }
+
                 }
             }
             if(shared)
@@ -109,19 +126,47 @@
         /// <param name="line">The line of the cache performing the write.</param>
         public void WriteHit(CacheLine cacheline,int id,int tag, int line)
         {
-            
             if (cacheline.StateMachine.GetCurrentState() == StateMachine.State.Shared)
             {
                 foreach (Cache cache in this.caches)
                 {
-                    if (cache.id != id) 
+                    if (cache.id != id)
                     {
-                        cache.SearchAddrWH(tag,line);
+                        cache.SearchAddrWH(tag, line);
                     }
                 }
             }
             cacheline.StateMachine.WriteHit();
+
         }
+
+        /// <summary>
+        /// Handles a Write Hit operation on the bus in MOESI.
+        /// </summary>
+        /// <param name="line">The cache line associated with the write operation.</param>
+        /// <param name="id">The ID of the cache performing the write.</param>
+        /// <param name="tag">The tag associated with the write operation.</param>
+        /// <param name="line">The line of the cache performing the write.</param>
+        public void WriteHitMOESI(CacheLine cacheline, int id, int tag, int line, byte data)
+        {
+            if (cacheline.StateMachine.GetCurrentState() == StateMachine.State.Owned &&
+                cacheline.StateMachine.GetCurrentState() == StateMachine.State.Shared)
+            {
+                
+                foreach (Cache cache in this.caches)
+                {
+                    if (cache.id != id)
+                    {
+                        cache.SearchAddrWH(tag, line);
+                    }
+                }
+            }
+            cacheline.StateMachine.WriteHit();
+
+        }
+
+
+
 
         /// <summary>
         /// Handles a Write Miss operation on the bus.
@@ -148,6 +193,22 @@
             }
             finaldata = memory.ReadAddr(addr);
             return finaldata;
+        }
+
+
+        public int GetMemoryLine(int num1, int num2)
+        {
+            // convert the integers to binary strings
+            string binaryStr1 = Convert.ToString(num1, 2);
+            string binaryStr2 = Convert.ToString(num2, 2);
+
+            // concatenate the binary strings
+            string concatenatedBinaryStr = binaryStr1 + binaryStr2;
+
+            // convert the concatenated binary string back to an integer
+            int result = Convert.ToInt32(concatenatedBinaryStr, 2);
+
+            return result;
         }
     }
 }

@@ -11,6 +11,7 @@
         public int Tag { get; set; }
         public int Line {  get; set; }
         public StateMachine StateMachine;
+        public string Protocol;
 
         public CacheLine(int line, string protocol)
         {
@@ -19,15 +20,11 @@
             Valid = false;
             Dirty = false;
             data = new byte[4];
+
+            Protocol = protocol;
+            StateMachine = new StateMachine(protocol);
             
-            if (protocol.Equals("MESI"))
-            {
-                StateMachine = new StateMachine(protocol);
-            }
-            else
-            {
-                //StateMachine = new StateMachineMOESI();
-            }
+           
         }
 
         /// <summary>

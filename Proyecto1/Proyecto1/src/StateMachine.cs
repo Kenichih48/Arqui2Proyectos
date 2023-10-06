@@ -81,8 +81,8 @@ namespace Proyecto1
             stateMachine.Configure(State.Invalid)
                 .Permit(Trigger.ReadMissShared, State.Shared)
                 .Permit(Trigger.ReadMissExclusive, State.Exclusive)
-                .Permit(Trigger.WriteMiss, State.Modified)
-                .Permit(Trigger.WriteHit, State.Modified);
+                .Permit(Trigger.WriteMiss, State.Modified);
+                
         }
 
         public void CreateMOESI()
@@ -90,7 +90,7 @@ namespace Proyecto1
             stateMachine.Configure(State.Modified)
                 .PermitReentry(Trigger.WriteHit)
                 .PermitReentry(Trigger.ReadHit)
-                .Permit(Trigger.SnoopHitRead, State.Shared)
+                .Permit(Trigger.SnoopHitRead, State.Owned)
                 .Permit(Trigger.SnoopHitWrite, State.Invalid)
                 .Permit(Trigger.ReadMissExclusive, State.Exclusive);
 
@@ -103,16 +103,21 @@ namespace Proyecto1
             stateMachine.Configure(State.Shared)
                 .PermitReentry(Trigger.ReadHit)
                 .PermitReentry(Trigger.SnoopHitRead)
-
-                .Permit(Trigger.WriteHit, State.Modified)
-
+                .Permit(Trigger.WriteHit,State.Modified)
                 .Permit(Trigger.SnoopHitWrite, State.Invalid);
 
             stateMachine.Configure(State.Invalid)
                 .Permit(Trigger.ReadMissShared, State.Shared)
                 .Permit(Trigger.ReadMissExclusive, State.Exclusive)
-                .Permit(Trigger.WriteMiss, State.Modified)
-                .Permit(Trigger.WriteHit, State.Modified);
+                .Permit(Trigger.WriteMiss, State.Modified);
+
+            stateMachine.Configure(State.Owned)
+                .PermitReentry(Trigger.ReadHit)
+                .PermitReentry(Trigger.SnoopHitWrite)
+                .Permit(Trigger.WriteHit, State.Modified)
+                .Permit(Trigger.SnoopHitWrite, State.Invalid);
+                
+                
         }
 
         /// <summary>

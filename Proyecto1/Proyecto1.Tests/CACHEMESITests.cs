@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net.Config;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,13 @@ namespace Proyecto1.Tests
     [TestClass]
     public class CACHEMESITests
     {
+        
 
         [TestMethod]
         public void OneCacheTest()
         {
+
+           
             TopLevel top = new TopLevel();
 
             top.Cache1.WriteAddr(0, 1);
@@ -46,6 +50,7 @@ namespace Proyecto1.Tests
         [TestMethod]
         public void TwoCacheTests()
         {
+            
             TopLevel top = new TopLevel();
 
             top.Cache1.WriteAddr(0, 1);
@@ -77,6 +82,7 @@ namespace Proyecto1.Tests
         [TestMethod]
         public void ThreeCachetest()
         {
+            LoggerT.Start();
             TopLevel top = new TopLevel();
 
             top.Cache1.WriteAddr(0, 1);
@@ -111,7 +117,7 @@ namespace Proyecto1.Tests
         [TestMethod]
         public void WriteBackTest()
         {
-
+            
             TopLevel top = new TopLevel();
 
             top.Cache1.WriteAddr(0, 10);
@@ -131,6 +137,7 @@ namespace Proyecto1.Tests
         [TestMethod] 
         public void ReplacementPolicyTest() 
         {
+            
             TopLevel top = new TopLevel();
 
             top.Cache1.WriteAddr(0, 1);
@@ -152,6 +159,7 @@ namespace Proyecto1.Tests
         [TestMethod]
         public void BinaryAddress()
         {
+            
             int addr = 0;
 
             string binaryAddr = Convert.ToString(addr, 2);

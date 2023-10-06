@@ -1,4 +1,6 @@
-﻿namespace Proyecto1
+﻿using log4net;
+
+namespace Proyecto1
 {
     /// <summary>
     /// Represents a cache used in a computer system.
@@ -8,6 +10,9 @@
         public int id {  get; set; }
         public List<CacheLine> cacheLines;
         private BusInterconnect Bus;
+        
+        
+        
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Cache"/> class.
@@ -46,6 +51,7 @@
         /// <returns>The data read from the cache.</returns>
         public byte ReadAddr(int addr)
         {
+            LoggerT.LogReadReq(id, addr);
             // get tag, line and offset from address
             (int tag, int line, int offset) = ParseAddr(addr);
 
@@ -94,7 +100,9 @@
             // write hit
             if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
             {
+                
                 Bus.WriteHit(cacheline, id, tag, line);
+                
                 found = true;
                 cacheline.Dirty = true;
                 cacheline.data[offset] = data;
@@ -175,6 +183,35 @@
                 cacheline.StateMachine.SnoopHitRead();
                 
                 return (cacheline.data, true);    
+            }
+            else
+            {
+                byte[] empty = new byte[4];
+                return (empty, false);
+            }
+        }
+        /// <summary>
+        /// Searches for a cache line with a given tag for a Read Miss operation in MOESI.
+        /// </summary>
+        /// <param name="tag">The tag to search for.</param>
+        /// <param name="line">The line to search for.</param>
+        /// <returns>A tuple containing the data (if found) and a boolean indicating if it was found.</returns>
+        public (byte[], bool) SearchAddrRMMOESI(int tag, int line)
+        {
+            CacheLine cacheline = cacheLines[line];
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
+            {
+                cacheline.StateMachine.SnoopHitRead();
+
+                if(cacheline.StateMachine.GetCurrentState() != StateMachine.State.Owned)
+                {
+                    return (cacheline.data, true);
+                }
+                else
+                {
+                    byte[] empty = new byte[4];
+                    return (empty, false);
+                }
             }
             else
             {
