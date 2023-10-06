@@ -102,6 +102,7 @@ namespace Proyecto1
             }
             else
             {
+               LoggerT.LogMemRReq(addr);
                Finaldata = memory.ReadAddr(addr);
                return (Finaldata, shared);
             }
@@ -114,6 +115,7 @@ namespace Proyecto1
         /// <param name="data">The data to write back.</param>
         public void WriteBack(int addr, byte[] data)
         {
+            LoggerT.LogMemReq(addr);
             memory.WriteByte(addr, data);
         }
 
@@ -165,6 +167,7 @@ namespace Proyecto1
                     }
                 }
             }
+            LoggerT.LogMemRReq(addr);
             finaldata = memory.ReadAddr(addr);
             return finaldata;
         }

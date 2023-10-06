@@ -108,5 +108,19 @@
                 thread.Join(); // Esperar a que todos los hilos terminen
             }
         }
+
+        public void Clean()
+        {
+            Cache1.Clean();
+            Cache2.Clean();
+            Cache3.Clean();
+            
+            PE1.Clean();
+            PE2.Clean();
+            PE3.Clean();
+
+            //Memory.Clean();
+        }
+
     }
 }

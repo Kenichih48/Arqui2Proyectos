@@ -24,6 +24,8 @@ namespace Proyecto1
         private static int ReadReq;
         private static int WriteReq;
         private static int InvReq;
+        private static int MemWReq;
+        private static int MemRReq;
 
         private static bool begin;
 
@@ -118,7 +120,7 @@ namespace Proyecto1
             if (begin)
             {
                 //Append message in file.
-                string message = "[" + req.ToString() + "] " + " Invalid Req in cache #" + idcache.ToString() + " to address " + addr.ToString();
+                string message = "[" + req.ToString() + "] " + " Invalidation in cache #" + idcache.ToString() + " to address " + addr.ToString();
                 req += 1;
                 InvReq += 1;
                 Write2File(message);
@@ -127,6 +129,32 @@ namespace Proyecto1
         }
 
 
+        public static void LogMemReq(int addr)
+        {
+            if (begin)
+            {
+                //Append message in file.
+                string message = "[" + req.ToString() + "] " + " Memory Write Req to address " + addr.ToString();
+                req += 1;
+                MemWReq += 1;
+                Write2File(message);
+            }
+
+        }
+
+        public static void LogMemRReq(int addr)
+        {
+            if (begin)
+            {
+                //Append message in file.
+                string message = "[" + req.ToString() + "] " + " Memory Read Req to address " + addr.ToString();
+                req += 1;
+                MemRReq += 1;
+                Write2File(message);
+            }
+
+        }
+
         public static void FinishLog()
         {
             if(begin)
@@ -134,10 +162,14 @@ namespace Proyecto1
                 string ReadReport = "# of Read Requests: " + ReadReq.ToString();
                 string WriteReport = "# of Write Requests: " + WriteReq.ToString();
                 string InvReport = "# of Invalid Requests: " + InvReq.ToString();
+                string MemWReport = "# of Memory Write Requests: " + MemWReq.ToString();
+                string MemRReport = "# of Memory Read Requests: " + MemRReq.ToString();
 
                 Write2File(ReadReport);
                 Write2File(WriteReport);
                 Write2File(InvReport);
+                Write2File(MemWReport);
+                Write2File(MemRReport);
                 begin = false;
             }
             
@@ -156,7 +188,9 @@ namespace Proyecto1
             Series series = new Series();
             series.Points.AddXY("Read Req.", ReadReq);
             series.Points.AddXY("Write Req.", WriteReq);
-            series.Points.AddXY("Inv Req.", InvReq);
+            series.Points.AddXY("Inv", InvReq);
+            series.Points.AddXY("Memory Write", MemWReq);
+            series.Points.AddXY("Memory Read", MemRReq);
             chart.Series.Add(series);
 
             // Guardar la gráfica como una imagen\
