@@ -80,5 +80,14 @@
                     $"Address must be inside the memory range.");
             }
         }
+
+        public void Clean()
+        {
+            memory = new List<byte[]>();
+            for (int i = 0; i < 16; i++)
+            {
+                memory.Add(new byte[4]);
+            }
+        }
     }
 }

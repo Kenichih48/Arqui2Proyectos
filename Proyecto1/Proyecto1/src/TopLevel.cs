@@ -119,7 +119,7 @@
             PE2.Clean();
             PE3.Clean();
 
-            //Memory.Clean();
+            Memory.Clean();
         }
 
     }

@@ -49,6 +49,7 @@
             Tag = -1;
             Valid = false;
             Dirty = false;
+            data = new byte[4];
         }
     }
 }
