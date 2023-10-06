@@ -122,5 +122,18 @@
             Memory.Clean();
         }
 
+        public void CleanData()
+        {
+            Cache1.Clean();
+            Cache2.Clean();
+            Cache3.Clean();
+
+            PE1.CleanRegs();
+            PE2.CleanRegs();
+            PE3.CleanRegs();
+
+            Memory.Clean();
+        }
+
     }
 }

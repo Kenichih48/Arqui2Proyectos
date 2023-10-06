@@ -129,5 +129,12 @@
             Array.Clear(regs, 0, regs.Length);
             instrList.Clear();
         }
+
+        public void CleanRegs()
+        {
+            pc = 0;
+            Array.Clear(regs, 0, regs.Length);
+            
+        }
     }
 }
