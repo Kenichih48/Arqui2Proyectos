@@ -8,7 +8,7 @@
         private int pc;
         public byte[] regs;
         private readonly Cache cache;
-        private List<string> instrList;
+        public List<string> instrList;
         private readonly InstructionGenerator instrGenerator;
 
         /// <summary>
@@ -57,7 +57,9 @@
         {
             foreach (string instr in instrList)
             {
+                Console.WriteLine(instr);
                 DecodeInstr(instr);
+                Thread.Sleep(100);
             }
         }
 

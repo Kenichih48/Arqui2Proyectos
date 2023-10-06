@@ -12,9 +12,6 @@ namespace Proyecto1
         public List<CacheLine> cacheLines;
         private BusInterconnect Bus;
         
-        
-        
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Cache"/> class.
         /// </summary>
@@ -58,31 +55,39 @@ namespace Proyecto1
 
             CacheLine cacheline = cacheLines[line];
 
-            // read hit
-            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
+            lock (Bus)
             {
-                Bus.ReadHit(tag, id, line);
-                cacheline.StateMachine.ReadHit();
-                return cacheline.data[offset]; // return read to PE
-            }
-             
-            // get line from other caches / memory
-            (byte[] data,bool shared) = Bus.ReadMiss(addr, tag, id, line);
-            
-             // execute the replacement policy
-            int linenum = ReplacementPolicy(data,addr,tag);
+                // read hit
+                if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
+                {
+
+                    Console.WriteLine("Cache #" + id + " read hit " + addr);
+                    Bus.ReadHit(tag, id, line);
+                    cacheline.StateMachine.ReadHit();
+                    return cacheline.data[offset]; // return read to PE
+
+                }
 
 
-            // change state depending if read miss was shared or exclusive
-            if (shared)
-            {
-                cacheLines[linenum].StateMachine.ReadMissShared();
+                Console.WriteLine("Cache #" + id + " read Miss " + addr);
+                // get line from other caches / memory
+                (byte[] data, bool shared) = Bus.ReadMiss(addr, tag, id, line);
+
+                // execute the replacement policy
+                int linenum = ReplacementPolicy(data, addr, tag);
+
+                // change state depending if read miss was shared or exclusive
+                if (shared)
+                {
+                    cacheLines[linenum].StateMachine.ReadMissShared();
+                }
+                else
+                {
+                    cacheLines[linenum].StateMachine.ReadMissExclusive();
+                }
+                return data[offset]; // return read to PE
+
             }
-            else
-            {
-                cacheLines[linenum].StateMachine.ReadMissExclusive();
-            }
-            return data[offset]; // return read to PE
         }
 
         /// <summary>
@@ -98,32 +103,37 @@ namespace Proyecto1
 
             bool found = false;
             CacheLine cacheline = cacheLines[line];
-
-            // write hit
-            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
+            lock (Bus)
             {
-                
-                Bus.WriteHit(cacheline, id, tag, line);
-                found = true;
-                cacheline.Dirty = true;
-                cacheline.data[offset] = data;
+                // write hit
+                if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
+                {
+
+                    Console.WriteLine("Cache #" + id + " write Hit " + addr);
+                    Bus.WriteHit(cacheline, id, tag, line);
+                    found = true;
+                    cacheline.Dirty = true;
+                    cacheline.data[offset] = data;
+                }
+
+                // write miss
+                if (!found)
+                {
+
+                    Console.WriteLine("Cache #" + id + " write miss " + addr);
+                    // get line from other caches / memory
+                    byte[] newdata = Bus.WriteMiss(addr, tag, id, line);
+
+                    // execute the replacement policy
+                    int linenum = ReplacementPolicy(newdata, addr, tag);
+
+                    cacheLines[linenum].StateMachine.WriteMiss();
+                    cacheLines[linenum].Dirty = true;
+                    cacheLines[linenum].data[offset] = data;
+                }
+
             }
-
-            // write miss
-            if (!found)
-            {
-                // get line from other caches / memory
-                byte[] newdata = Bus.WriteMiss(addr, tag, id, line);
-
-                // execute the replacement policy
-
                 
-                int linenum = ReplacementPolicy(newdata, addr, tag);
-
-                cacheLines[linenum].StateMachine.WriteMiss();
-                cacheLines[linenum].Dirty = true;
-                cacheLines[linenum].data[offset] = data;
-            }
         }
 
         /// <summary>
@@ -136,18 +146,16 @@ namespace Proyecto1
         private int ReplacementPolicy(byte[] data, int addr, int tag) {
 
             // get line from address
-
-            //Console.WriteLine("Addr " + Convert.ToString(addr, 2));
             int cachelinenum = ParseAddr(addr).line;
-            //Console.WriteLine("Cache linenum " + Convert.ToString(cachelinenum, 2));
+           
 
             // gets the memory line
             int memoryline = GetMemoryLine(tag, cachelinenum);
-            //Console.WriteLine("Mem line " + Convert.ToString(memoryline, 2));
+            
 
             // gets old cache line to update
             CacheLine oldline = cacheLines[cachelinenum];
-            Console.WriteLine(cacheLines[cachelinenum].StateMachine.GetCurrentState());
+            
             if (oldline.Protocol.Equals("MESI"))
             {
                 if (oldline.Dirty)
@@ -258,6 +266,9 @@ namespace Proyecto1
             CacheLine cacheline = cacheLines[line];
             if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
             {
+                int addr = GetMemoryLine(tag, line);
+                LoggerT.LogInvReq(id, addr);
+                Console.WriteLine("Invalidate> "  + addr);
                 cacheline.StateMachine.SnoopHitWrite();
             }
         }
@@ -271,7 +282,10 @@ namespace Proyecto1
         {
             CacheLine cacheline = cacheLines[line];
             if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() != StateMachine.State.Invalid)
-            { 
+            {
+                int addr = GetMemoryLine(tag, line);
+                LoggerT.LogInvReq(id, addr);
+   
                 cacheline.StateMachine.SnoopHitWrite();
                 return (cacheline.data, true);
             }
@@ -288,7 +302,8 @@ namespace Proyecto1
             
             if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() == StateMachine.State.Shared)
             {
-                
+                int addr = GetMemoryLine(tag, line);
+                LoggerT.LogInvReq(id, addr);
                 cacheline.StateMachine.SnoopHitWrite();
             }
 

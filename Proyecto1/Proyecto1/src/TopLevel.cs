@@ -18,6 +18,7 @@
         private int maxInstr = 9;
         private int cachelines = 4;
 
+        public List<Thread> threads = new List<Thread>();
 
         public TopLevel()
         {
@@ -84,6 +85,28 @@
 
             Bus.SetCaches(cacheList);
 
+        }
+
+
+        public void StartThreads()
+        {
+            Console.WriteLine("Begin Threads");
+            Thread thread1 = new Thread(PE1.ExecuteAll);
+            Thread thread2 = new Thread(PE2.ExecuteAll);
+            Thread thread3 = new Thread(PE3.ExecuteAll);
+
+            threads.Add(thread1); 
+            threads.Add(thread2); 
+            threads.Add(thread3);
+
+            thread1.Start();
+            thread2.Start();
+            thread3.Start();
+
+            foreach (Thread thread in threads)
+            {
+                thread.Join(); // Esperar a que todos los hilos terminen
+            }
         }
     }
 }

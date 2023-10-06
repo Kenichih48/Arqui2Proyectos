@@ -62,7 +62,8 @@ namespace Proyecto1
                 .PermitReentry(Trigger.ReadHit)
                 .Permit(Trigger.SnoopHitRead, State.Shared)
                 .Permit(Trigger.SnoopHitWrite, State.Invalid)
-                .Permit(Trigger.ReadMissExclusive, State.Exclusive);
+                .Permit(Trigger.ReadMissExclusive, State.Exclusive)
+                .Permit(Trigger.ReadMissShared,State.Shared);
 
             stateMachine.Configure(State.Exclusive)
                 .PermitReentry(Trigger.ReadHit)
@@ -90,6 +91,7 @@ namespace Proyecto1
                 .PermitReentry(Trigger.ReadHit)
                 .Permit(Trigger.SnoopHitRead, State.Owned)
                 .Permit(Trigger.SnoopHitWrite, State.Invalid)
+                .Permit(Trigger.ReadMissShared,State.Owned)
                 .Permit(Trigger.ReadMissExclusive, State.Exclusive);
 
             stateMachine.Configure(State.Exclusive)

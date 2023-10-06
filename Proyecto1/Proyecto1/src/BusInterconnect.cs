@@ -141,34 +141,7 @@ namespace Proyecto1
 
         }
 
-        /// <summary>
-        /// Handles a Write Hit operation on the bus in MOESI.
-        /// </summary>
-        /// <param name="line">The cache line associated with the write operation.</param>
-        /// <param name="id">The ID of the cache performing the write.</param>
-        /// <param name="tag">The tag associated with the write operation.</param>
-        /// <param name="line">The line of the cache performing the write.</param>
-        public void WriteHitMOESI(CacheLine cacheline, int id, int tag, int line, byte data)
-        {
-            if (cacheline.StateMachine.GetCurrentState() == StateMachine.State.Owned &&
-                cacheline.StateMachine.GetCurrentState() == StateMachine.State.Shared)
-            {
-                
-                foreach (Cache cache in this.caches)
-                {
-                    if (cache.id != id)
-                    {
-                        cache.SearchAddrWH(tag, line);
-                    }
-                }
-            }
-            cacheline.StateMachine.WriteHit();
-
-        }
-
-
-
-
+       
         /// <summary>
         /// Handles a Write Miss operation on the bus.
         /// </summary>
@@ -218,7 +191,8 @@ namespace Proyecto1
             {
                 if (cache.id != id)
                 {
-                
+                    
+                    
                     cache.Invalidate(tag, line);
                 }
             }

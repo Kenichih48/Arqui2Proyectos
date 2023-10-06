@@ -64,7 +64,7 @@ namespace Proyecto1
             using (FileStream fs = File.Create(filename))
 
 
-            Console.WriteLine(filename);
+            
             req = 0;
         }
 
@@ -79,7 +79,7 @@ namespace Proyecto1
                     writer.WriteLine(msg);
                 }
 
-                Console.WriteLine("Texto agregado exitosamente al archivo.");
+                
             }
             catch (Exception ex)
             {
@@ -163,12 +163,12 @@ namespace Proyecto1
             
 
             chart.SaveImage(directory + ".png", ChartImageFormat.Png);
-            Console.WriteLine(directory + ".png");
+            
 
             // Dispose del objeto Chart
             chart.Dispose();
 
-            Console.WriteLine("Gráfica de barras generada y guardada.");
+           
         }
 
         

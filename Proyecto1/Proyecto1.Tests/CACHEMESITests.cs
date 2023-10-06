@@ -85,7 +85,7 @@ namespace Proyecto1.Tests
         [TestMethod]
         public void ThreeCachetest()
         {
-           LoggerT.Start();
+            LoggerT.Start();
             TopLevel top = new TopLevel("MESI");
 
             top.Cache1.WriteAddr(0, 1);
@@ -136,6 +136,16 @@ namespace Proyecto1.Tests
 
             byte[] data = top.Memory.ReadAddr(0);
             Assert.AreEqual(10, data[0]);
+
+            top.Cache1.WriteAddr(0, 5);
+            Assert.AreEqual(StateMachine.State.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Invalid, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
+
+            top.Cache1.ReadAddr(16);
+            Assert.AreEqual(StateMachine.State.Exclusive, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
+            byte[] data2 = top.Memory.ReadAddr(0);
+            Assert.AreEqual(5, data2[0]);
+
 
         }
 
