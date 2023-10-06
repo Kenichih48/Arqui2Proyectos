@@ -38,7 +38,7 @@
             int id = 1;
             int minInstrs = 1;
             int maxInstrs = 1;
-            TopLevel top = new TopLevel(minInstrs,maxInstrs);
+            TopLevel top = new TopLevel(minInstrs,maxInstrs,"MESI");
             // Arrange
             
             ProcessingElement pe = top.PE1;

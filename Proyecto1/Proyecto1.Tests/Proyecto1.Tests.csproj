@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HIC.System.Windows.Forms.DataVisualization" Version="1.0.1" />
     <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
@@ -19,10 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Proyecto1\Proyecto1.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="results\" />
   </ItemGroup>
 
 </Project>

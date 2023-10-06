@@ -1,4 +1,5 @@
 ﻿using log4net;
+using System;
 
 namespace Proyecto1
 {
@@ -91,6 +92,7 @@ namespace Proyecto1
         /// <param name="data">The data to write.</param>
         public void WriteAddr(int addr, byte data)
         {
+            LoggerT.LogWriteReq(id, addr);
             // get tag, line and offset from address
             (int tag, int line, int offset) = ParseAddr(addr);
 
@@ -102,7 +104,6 @@ namespace Proyecto1
             {
                 
                 Bus.WriteHit(cacheline, id, tag, line);
-                
                 found = true;
                 cacheline.Dirty = true;
                 cacheline.data[offset] = data;
@@ -115,6 +116,8 @@ namespace Proyecto1
                 byte[] newdata = Bus.WriteMiss(addr, tag, id, line);
 
                 // execute the replacement policy
+
+                
                 int linenum = ReplacementPolicy(newdata, addr, tag);
 
                 cacheLines[linenum].StateMachine.WriteMiss();
@@ -133,21 +136,46 @@ namespace Proyecto1
         private int ReplacementPolicy(byte[] data, int addr, int tag) {
 
             // get line from address
+
+            //Console.WriteLine("Addr " + Convert.ToString(addr, 2));
             int cachelinenum = ParseAddr(addr).line;
+            //Console.WriteLine("Cache linenum " + Convert.ToString(cachelinenum, 2));
 
             // gets the memory line
             int memoryline = GetMemoryLine(tag, cachelinenum);
+            //Console.WriteLine("Mem line " + Convert.ToString(memoryline, 2));
 
             // gets old cache line to update
             CacheLine oldline = cacheLines[cachelinenum];
-
-            if (oldline.Dirty)
+            Console.WriteLine(cacheLines[cachelinenum].StateMachine.GetCurrentState());
+            if (oldline.Protocol.Equals("MESI"))
             {
-                Bus.WriteBack(memoryline, data);
-
+                if (oldline.Dirty)
+                {
+                    Bus.WriteBack(memoryline, data);
+                }
             }
-            cacheLines[cachelinenum].UpdateLine(data, tag, true, false);   
+
+            else
+            {
+               
+                if (oldline.StateMachine.GetCurrentState() == StateMachine.State.Owned)
+                {
+
+                    Bus.Invalidate(id, cacheLines[cachelinenum].Tag, cachelinenum);
+                   
+                }
+
+                if (oldline.StateMachine.GetCurrentState() == StateMachine.State.Owned
+                    || oldline.StateMachine.GetCurrentState() == StateMachine.State.Modified)
+                {
+                    
+                    Bus.WriteBack(memoryline, data);
+                }
+            }
+            cacheLines[cachelinenum].UpdateLine(data, tag, true, false);
             return cachelinenum;
+
         }
 
         /// <summary>
@@ -203,7 +231,7 @@ namespace Proyecto1
             {
                 cacheline.StateMachine.SnoopHitRead();
 
-                if(cacheline.StateMachine.GetCurrentState() != StateMachine.State.Owned)
+                if(cacheline.StateMachine.GetCurrentState() == StateMachine.State.Owned)
                 {
                     return (cacheline.data, true);
                 }
@@ -254,6 +282,18 @@ namespace Proyecto1
             }
         }
 
+        public void Invalidate(int tag, int line)
+        {
+            CacheLine cacheline = cacheLines[line];
+            
+            if (cacheline.Tag == tag && cacheline.StateMachine.GetCurrentState() == StateMachine.State.Shared)
+            {
+                
+                cacheline.StateMachine.SnoopHitWrite();
+            }
+
+        }
+
         /// <summary>
         /// Converts two integers to a memory line address.
         /// </summary>
@@ -265,6 +305,17 @@ namespace Proyecto1
             // convert the integers to binary strings
             string binaryStr1 = Convert.ToString(num1, 2);
             string binaryStr2 = Convert.ToString(num2, 2);
+
+            int desiredLength = 2;
+            if (binaryStr1.Length < desiredLength)
+            {
+                binaryStr1 = binaryStr1.PadLeft(desiredLength, '0');
+            }
+
+            if (binaryStr2.Length < desiredLength)
+            {
+                binaryStr2 = binaryStr2.PadLeft(desiredLength, '0');
+            }
 
             // concatenate the binary strings
             string concatenatedBinaryStr = binaryStr1 + binaryStr2;

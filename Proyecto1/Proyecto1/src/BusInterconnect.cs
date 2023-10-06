@@ -126,7 +126,8 @@ namespace Proyecto1
         /// <param name="line">The line of the cache performing the write.</param>
         public void WriteHit(CacheLine cacheline,int id,int tag, int line)
         {
-            if (cacheline.StateMachine.GetCurrentState() == StateMachine.State.Shared)
+            if (cacheline.StateMachine.GetCurrentState() == StateMachine.State.Shared
+                || cacheline.StateMachine.GetCurrentState() == StateMachine.State.Owned)
             {
                 foreach (Cache cache in this.caches)
                 {
@@ -210,5 +211,18 @@ namespace Proyecto1
 
             return result;
         }
+
+        public void Invalidate(int id,int tag, int line)
+        {
+            foreach (Cache cache in this.caches)
+            {
+                if (cache.id != id)
+                {
+                
+                    cache.Invalidate(tag, line);
+                }
+            }
+        }
+
     }
 }

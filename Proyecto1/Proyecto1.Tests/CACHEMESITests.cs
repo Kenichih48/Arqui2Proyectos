@@ -17,7 +17,7 @@ namespace Proyecto1.Tests
         {
 
            
-            TopLevel top = new TopLevel();
+            TopLevel top = new TopLevel("MESI");
 
             top.Cache1.WriteAddr(0, 1);
             Assert.AreEqual(1, top.Cache1.cacheLines[0].data[0]);
@@ -50,8 +50,8 @@ namespace Proyecto1.Tests
         [TestMethod]
         public void TwoCacheTests()
         {
-            
-            TopLevel top = new TopLevel();
+
+            TopLevel top = new TopLevel("MESI");
 
             top.Cache1.WriteAddr(0, 1);
             Assert.AreEqual(1, top.Cache1.cacheLines[0].data[0]);
@@ -65,9 +65,10 @@ namespace Proyecto1.Tests
             top.Cache2.WriteAddr(0, 2);
             Assert.AreEqual(2, top.Cache2.cacheLines[0].data[0]);
 
+            
+            Assert.AreEqual(StateMachine.State.Modified, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
+            Assert.AreEqual(StateMachine.State.Invalid, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
             byte data2 = top.Cache1.ReadAddr(0);
-            Assert.AreEqual(StateMachine.State.Shared, top.Cache2.cacheLines[0].StateMachine.GetCurrentState());
-            Assert.AreEqual(StateMachine.State.Shared, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
             Assert.AreEqual(2, data2);
 
             top.Cache1.WriteAddr(0, 3);
@@ -77,13 +78,15 @@ namespace Proyecto1.Tests
             Assert.AreEqual(StateMachine.State.Modified, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
             Assert.AreEqual(2, data2);
 
+
+
         }
 
         [TestMethod]
         public void ThreeCachetest()
         {
-            LoggerT.Start();
-            TopLevel top = new TopLevel();
+           LoggerT.Start();
+            TopLevel top = new TopLevel("MESI");
 
             top.Cache1.WriteAddr(0, 1);
             Assert.AreEqual(1, top.Cache1.cacheLines[0].data[0]);
@@ -112,13 +115,16 @@ namespace Proyecto1.Tests
             Assert.AreEqual(StateMachine.State.Modified, top.Cache3.cacheLines[0].StateMachine.GetCurrentState());
             Assert.AreEqual(StateMachine.State.Invalid, top.Cache1.cacheLines[0].StateMachine.GetCurrentState());
             
+
+            LoggerT.GenerateChart();
+            LoggerT.FinishLog();
         }
 
         [TestMethod]
         public void WriteBackTest()
         {
-            
-            TopLevel top = new TopLevel();
+
+            TopLevel top = new TopLevel("MESI");
 
             top.Cache1.WriteAddr(0, 10);
             Assert.AreEqual(10, top.Cache1.cacheLines[0].data[0]);
@@ -137,8 +143,8 @@ namespace Proyecto1.Tests
         [TestMethod] 
         public void ReplacementPolicyTest() 
         {
-            
-            TopLevel top = new TopLevel();
+
+            TopLevel top = new TopLevel("MESI");
 
             top.Cache1.WriteAddr(0, 1);
             Assert.AreEqual(1, top.Cache1.cacheLines[0].data[0]);

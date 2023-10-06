@@ -18,9 +18,16 @@
         private int maxInstr = 9;
         private int cachelines = 4;
 
-        public TopLevel() {
 
-            Protocol = "MESI";
+        public TopLevel()
+        {
+            Memory = new Memory();
+
+            Bus = new BusInterconnect(Memory);
+        }
+        public TopLevel(string protocol) {
+
+            Protocol = protocol;
 
             Memory = new Memory();
 
@@ -40,11 +47,10 @@
         }
 
 
-        public TopLevel(int minI, int maxI)
+        public TopLevel(int minI, int maxI, string protocol)
         {
-
-            Protocol = "MESI";
-
+            Protocol = protocol;
+            
             Memory = new Memory();
 
             Bus = new BusInterconnect(Memory);
@@ -60,6 +66,24 @@
             List<Cache> cacheList = new() { Cache1, Cache2, Cache3 };
 
             Bus.SetCaches(cacheList);
+        }
+
+        public void SetProtocol(string protocol)
+        {
+            Protocol = protocol;
+
+            Cache1 = new Cache(cachelines, 0, Bus, Protocol);
+            Cache2 = new Cache(cachelines, 1, Bus, Protocol);
+            Cache3 = new Cache(cachelines, 2, Bus, Protocol);
+
+            PE1 = new ProcessingElement(Cache1, minInstr, maxInstr);
+            PE2 = new ProcessingElement(Cache2, minInstr, maxInstr);
+            PE3 = new ProcessingElement(Cache3, minInstr, maxInstr);
+
+            List<Cache> cacheList = new() { Cache1, Cache2, Cache3 };
+
+            Bus.SetCaches(cacheList);
+
         }
     }
 }

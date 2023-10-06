@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using log4net;
-using log4net.Config;
+
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Drawing;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -16,13 +17,20 @@ namespace Proyecto1
         private static LoggerT? instance;
 
         public static string filename;
+        public static string directory;
 
         private static int req;
+
+        private static int ReadReq;
+        private static int WriteReq;
+        private static int InvReq;
+
+        private static bool begin;
 
         private LoggerT()
         {
             // Initialization code, if needed
-            
+            begin = false;
         }
 
         // Public static method to get the single instance of the class
@@ -38,13 +46,20 @@ namespace Proyecto1
         }
         public static void Start()
         {
+            begin = true;
+            ReadReq = 0;
+            WriteReq = 0;
+            InvReq = 0;
+            req = 0;
+
             string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "results");
             DateTime now = DateTime.Now;
             string[] partes = dir.Split(new string[] { "\\" }, StringSplitOptions.None);
             int nuevaLongitud = partes.Length - 5;
             Array.Resize(ref partes, nuevaLongitud);
             string result = string.Join("\\", partes);
-            filename = result + "\\Proyecto1\\results\\" + now.Hour.ToString() +"-"+ now.Minute.ToString() + "-" + now.Second.ToString() + ".log";
+            directory = result + "\\Proyecto1\\results\\" + now.Hour.ToString() + "-" + now.Minute.ToString() + "-" + now.Second.ToString();
+            filename = directory + ".log";
 
             using (FileStream fs = File.Create(filename))
 
@@ -74,10 +89,86 @@ namespace Proyecto1
 
         public static void LogReadReq(int idcache,int addr)
         {
-            //Append message in file.
-            string message = "["+req.ToString()+ "] " +" Read Req in cache #"+idcache.ToString()+" to address " + addr.ToString();
-            req += 1;
-            Write2File(message);
+            if (begin)
+            {
+                //Append message in file.
+                string message = "[" + req.ToString() + "] " + "  Read Req in cache #" + idcache.ToString() + " to address " + addr.ToString();
+                req += 1;
+                ReadReq += 1;
+                Write2File(message);
+            }
+            
+        }
+
+        public static void LogWriteReq(int idcache,int addr)
+        {
+            if (begin)
+            {
+                //Append message in file.
+                string message = "[" + req.ToString() + "] " + " Write Req in cache #" + idcache.ToString() + " to address " + addr.ToString();
+                req += 1;
+                WriteReq += 1;
+                Write2File(message);
+            }
+            
+        }
+
+        public static void LogInvReq(int idcache, int addr)
+        {
+            if (begin)
+            {
+                //Append message in file.
+                string message = "[" + req.ToString() + "] " + " Invalid Req in cache #" + idcache.ToString() + " to address " + addr.ToString();
+                req += 1;
+                InvReq += 1;
+                Write2File(message);
+            }
+            
+        }
+
+
+        public static void FinishLog()
+        {
+            if(begin)
+            {
+                string ReadReport = "# of Read Requests: " + ReadReq.ToString();
+                string WriteReport = "# of Write Requests: " + WriteReq.ToString();
+                string InvReport = "# of Invalid Requests: " + InvReq.ToString();
+
+                Write2File(ReadReport);
+                Write2File(WriteReport);
+                Write2File(InvReport);
+                begin = false;
+            }
+            
+        }
+
+        public static void GenerateChart()
+        {
+            Chart chart = new Chart();
+            chart.Size = new Size(400, 300); // Tamaño del gráfico
+
+            // Configurar el área del gráfico
+            ChartArea chartArea = new ChartArea();
+            chart.ChartAreas.Add(chartArea);
+
+            // Agregar datos a la serie de barras
+            Series series = new Series();
+            series.Points.AddXY("Read Req.", ReadReq);
+            series.Points.AddXY("Write Req.", WriteReq);
+            series.Points.AddXY("Inv Req.", InvReq);
+            chart.Series.Add(series);
+
+            // Guardar la gráfica como una imagen\
+            
+
+            chart.SaveImage(directory + ".png", ChartImageFormat.Png);
+            Console.WriteLine(directory + ".png");
+
+            // Dispose del objeto Chart
+            chart.Dispose();
+
+            Console.WriteLine("Gráfica de barras generada y guardada.");
         }
 
         
