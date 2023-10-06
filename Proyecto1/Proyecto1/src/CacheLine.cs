@@ -20,11 +20,12 @@
             Valid = false;
             Dirty = false;
             data = new byte[4];
-
             Protocol = protocol;
             StateMachine = new StateMachine(protocol);
-            
-           
+        }
+
+        public void SetProtocol(string protocol) { 
+            this.Protocol = protocol;
         }
 
         /// <summary>
@@ -45,11 +46,13 @@
         /// <summary>
         /// Cleans the cache line by resetting its attributes.
         /// </summary>
-        public void Clean() {
+        public void Clean() 
+        {
             Tag = -1;
             Valid = false;
             Dirty = false;
             data = new byte[4];
-        }
+            StateMachine = new StateMachine(this.Protocol);
+        }  
     }
 }

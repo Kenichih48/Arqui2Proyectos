@@ -57,7 +57,6 @@
         {
             foreach (string instr in instrList)
             {
-                Console.WriteLine(instr);
                 DecodeInstr(instr);
                 Thread.Sleep(100);
             }
@@ -69,7 +68,6 @@
         public void ExecuteInstr()
         {
             DecodeInstr(instrList[pc]);
-            pc++;
         }
 
         /// <summary>

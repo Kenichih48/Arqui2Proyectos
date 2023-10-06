@@ -21,9 +21,13 @@ namespace Proyecto1
         private ProcessingElement pe1;
         private ProcessingElement pe2;
         private ProcessingElement pe3;
-        private TopLevel Top;
-        private int minInstr = 7;
-        private int maxInstr = 9;
+        private Cache cache1;
+        private Cache cache2;
+        private Cache cache3;
+        private Memory memory;
+        private TopLevel TopLvl;
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GUI"/> class.
         /// </summary>
@@ -32,11 +36,14 @@ namespace Proyecto1
             instrList1 = new List<string>();
             instrList2 = new List<string>();
             instrList3 = new List<string>();
-            Top = new TopLevel();
-            pe1 = Top.PE1;
-            pe2 = Top.PE2;
-            pe3 = Top.PE3;
-
+            TopLvl = new TopLevel("MESI");
+            pe1 = TopLvl.PE1;
+            pe2 = TopLvl.PE2;
+            pe3 = TopLvl.PE3;
+            cache1 = TopLvl.Cache1;
+            cache2 = TopLvl.Cache2;
+            cache3 = TopLvl.Cache3;
+            memory = TopLvl.Memory;
             InitializeComponent();
             step1.Enabled = false;
             step2.Enabled = false;
@@ -44,7 +51,11 @@ namespace Proyecto1
             auto1.Enabled = false;
             auto2.Enabled = false;
             auto3.Enabled = false;
-
+            ExecuteAllBtn.Enabled = false;
+            protocol.SelectedIndex = 0;
+            Cache1DataView.DataSource = cache1.cacheLines;
+            Cache2DataView.DataSource = cache2.cacheLines;
+            Cache3DataView.DataSource = cache3.cacheLines;
         }
 
         /// <summary>
@@ -53,6 +64,7 @@ namespace Proyecto1
         /// </summary>
         private void generate_Click(object sender, EventArgs e)
         {
+            LoggerT.Start();
             pe1.GenerateInstructions();
             instrList1 = pe1.InstrList;
             pe2.GenerateInstructions();
@@ -78,6 +90,15 @@ namespace Proyecto1
             instrBox2.Text = textInstr2;
             instrBox3.Text = textInstr3;
             generate.Enabled = false;
+            step1.Enabled = true;
+            step2.Enabled = true;
+            step3.Enabled = true;
+            auto1.Enabled = true;
+            auto2.Enabled = true;
+            auto3.Enabled = true;
+            ExecuteAllBtn.Enabled = true;
+            
+
         }
 
         /// <summary>
@@ -85,15 +106,14 @@ namespace Proyecto1
         /// </summary>
         private void reset_Click(object sender, EventArgs e)
         {
-            pe1.Clean();
-            pe2.Clean();
-            pe3.Clean();
+            TopLvl.Clean();
             step1.Enabled = false;
             step2.Enabled = false;
             step3.Enabled = false;
             auto1.Enabled = false;
             auto2.Enabled = false;
             auto3.Enabled = false;
+            ExecuteAllBtn.Enabled = false;
             generate.Enabled = true;
             instrBox1.Text = "";
             instrBox2.Text = "";
@@ -106,6 +126,7 @@ namespace Proyecto1
             instrList3 = pe3.InstrList;
             protocol.SelectedIndex = -1;
             protocol.Enabled = true;
+
         }
 
         /// <summary>
@@ -178,6 +199,7 @@ namespace Proyecto1
                 }
             }
         }
+
         /// <summary>
         /// Validates if instructions have been generated for all processing elements.
         /// Displays an error message if instructions are missing.
@@ -250,10 +272,7 @@ namespace Proyecto1
             if (comboBox.SelectedItem != null)
             {
                 string selectedValue = comboBox.SelectedItem.ToString();
-                //TODO: fix
-                //pe1.SetProtocol(selectedValue);
-                //pe2.SetProtocol(selectedValue);
-                //pe3.SetProtocol(selectedValue);
+                TopLvl.SetProtocol(selectedValue);
                 step1.Enabled = true;
                 step2.Enabled = true;
                 step3.Enabled = true;
@@ -261,6 +280,42 @@ namespace Proyecto1
                 auto2.Enabled = true;
                 auto3.Enabled = true;
             }
+        }
+
+        private void CleanData_Click(object sender, EventArgs e)
+        {
+            TopLvl.CleanData();
+            generate.Enabled = false;
+            PC1.Text = "";
+            PC2.Text = "";
+            PC3.Text = "";
+            instrList1 = pe1.InstrList;
+            instrList2 = pe2.InstrList;
+            instrList3 = pe3.InstrList;
+            protocol.Enabled = true;
+            ExecuteAllBtn.Enabled = true;
+            step1.Enabled = true;
+            step2.Enabled = true;
+            step3.Enabled = true;
+            auto1.Enabled = true;
+            auto2.Enabled = true;
+            auto3.Enabled = true;
+
+        }
+
+        private void GUI_Load(object sender, EventArgs e)
+        {
+        }
+
+
+        private void ExecuteAllBtn_Click(object sender, EventArgs e)
+        {
+            LoggerT.Start();
+        }
+
+        private void ReportButton_Click(object sender, EventArgs e)
+        {
+            LoggerT.FinishLog();
         }
     }
 }

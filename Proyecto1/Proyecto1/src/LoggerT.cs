@@ -159,6 +159,7 @@ namespace Proyecto1
         {
             if(begin)
             {
+                GenerateChart();
                 string ReadReport = "# of Read Requests: " + ReadReq.ToString();
                 string WriteReport = "# of Write Requests: " + WriteReq.ToString();
                 string InvReport = "# of Invalid Requests: " + InvReq.ToString();

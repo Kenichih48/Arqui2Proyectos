@@ -31,6 +31,14 @@ namespace Proyecto1
             }
         }
 
+        public void SetProtocol(string protocol) 
+        { 
+            foreach (var line in cacheLines)
+            {
+                line.SetProtocol(protocol);
+            }
+        }
+
         /// <summary>
         /// Cleans and resets the cache.
         /// </summary>

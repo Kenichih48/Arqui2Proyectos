@@ -47,13 +47,38 @@
             auto2 = new Button();
             auto3 = new Button();
             protocol = new ComboBox();
+            CleanDataButton = new Button();
+            ExecuteAllBtn = new Button();
+            Cache1DataView = new DataGridView();
+            Cache2DataView = new DataGridView();
+            Cache3DataView = new DataGridView();
+            dataGridView1 = new DataGridView();
+            fontDialog1 = new FontDialog();
+            dataGridView2 = new DataGridView();
+            dataGridView3 = new DataGridView();
+            dataGridView4 = new DataGridView();
+            MemoryLbl = new Label();
+            label4 = new Label();
+            label6 = new Label();
+            label7 = new Label();
+            label8 = new Label();
+            label9 = new Label();
+            label10 = new Label();
+            ReportButton = new Button();
+            ((System.ComponentModel.ISupportInitialize)Cache1DataView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Cache2DataView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Cache3DataView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView4).BeginInit();
             SuspendLayout();
             // 
             // generate
             // 
             generate.BackColor = SystemColors.Control;
             generate.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            generate.Location = new Point(34, 12);
+            generate.Location = new Point(12, 12);
             generate.Name = "generate";
             generate.Size = new Size(126, 28);
             generate.TabIndex = 0;
@@ -89,11 +114,11 @@
             // 
             Reset.BackColor = SystemColors.Control;
             Reset.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            Reset.Location = new Point(48, 46);
+            Reset.Location = new Point(12, 48);
             Reset.Name = "Reset";
             Reset.Size = new Size(97, 27);
             Reset.TabIndex = 3;
-            Reset.Text = "Reset";
+            Reset.Text = "Clean All";
             Reset.UseVisualStyleBackColor = false;
             Reset.Click += reset_Click;
             // 
@@ -216,7 +241,7 @@
             label5.AutoSize = true;
             label5.Font = new Font("Yu Gothic UI", 48F, FontStyle.Bold, GraphicsUnit.Point);
             label5.ForeColor = Color.White;
-            label5.Location = new Point(399, 32);
+            label5.Location = new Point(416, -1);
             label5.Name = "label5";
             label5.Size = new Size(693, 86);
             label5.TabIndex = 21;
@@ -252,11 +277,180 @@
             protocol.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             protocol.FormattingEnabled = true;
             protocol.Items.AddRange(new object[] { "MESI", "MOESI" });
-            protocol.Location = new Point(34, 79);
+            protocol.Location = new Point(144, 13);
             protocol.Name = "protocol";
             protocol.Size = new Size(121, 29);
             protocol.TabIndex = 24;
             protocol.SelectedIndexChanged += protocol_SelectedIndexChanged;
+            // 
+            // CleanDataButton
+            // 
+            CleanDataButton.BackColor = SystemColors.Control;
+            CleanDataButton.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            CleanDataButton.Location = new Point(115, 48);
+            CleanDataButton.Name = "CleanDataButton";
+            CleanDataButton.Size = new Size(97, 27);
+            CleanDataButton.TabIndex = 25;
+            CleanDataButton.Text = "Clean Data";
+            CleanDataButton.UseVisualStyleBackColor = false;
+            CleanDataButton.Click += CleanData_Click;
+            // 
+            // ExecuteAllBtn
+            // 
+            ExecuteAllBtn.BackColor = SystemColors.Control;
+            ExecuteAllBtn.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            ExecuteAllBtn.Location = new Point(12, 86);
+            ExecuteAllBtn.Name = "ExecuteAllBtn";
+            ExecuteAllBtn.Size = new Size(158, 27);
+            ExecuteAllBtn.TabIndex = 26;
+            ExecuteAllBtn.Text = "Execute All PEs";
+            ExecuteAllBtn.UseVisualStyleBackColor = false;
+            ExecuteAllBtn.Click += ExecuteAllBtn_Click;
+            // 
+            // Cache1DataView
+            // 
+            Cache1DataView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Cache1DataView.Location = new Point(517, 166);
+            Cache1DataView.Name = "Cache1DataView";
+            Cache1DataView.RowTemplate.Height = 25;
+            Cache1DataView.Size = new Size(410, 158);
+            Cache1DataView.TabIndex = 27;
+            // 
+            // Cache2DataView
+            // 
+            Cache2DataView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Cache2DataView.Location = new Point(517, 440);
+            Cache2DataView.Name = "Cache2DataView";
+            Cache2DataView.RowTemplate.Height = 25;
+            Cache2DataView.Size = new Size(410, 158);
+            Cache2DataView.TabIndex = 28;
+            // 
+            // Cache3DataView
+            // 
+            Cache3DataView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            Cache3DataView.Location = new Point(517, 696);
+            Cache3DataView.Name = "Cache3DataView";
+            Cache3DataView.RowTemplate.Height = 25;
+            Cache3DataView.Size = new Size(410, 158);
+            Cache3DataView.TabIndex = 29;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(991, 201);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowTemplate.Height = 25;
+            dataGridView1.Size = new Size(410, 623);
+            dataGridView1.TabIndex = 30;
+            // 
+            // dataGridView2
+            // 
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.Location = new Point(517, 119);
+            dataGridView2.Name = "dataGridView2";
+            dataGridView2.RowTemplate.Height = 25;
+            dataGridView2.Size = new Size(410, 41);
+            dataGridView2.TabIndex = 31;
+            // 
+            // dataGridView3
+            // 
+            dataGridView3.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView3.Location = new Point(517, 393);
+            dataGridView3.Name = "dataGridView3";
+            dataGridView3.RowTemplate.Height = 25;
+            dataGridView3.Size = new Size(410, 41);
+            dataGridView3.TabIndex = 32;
+            // 
+            // dataGridView4
+            // 
+            dataGridView4.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView4.Location = new Point(517, 649);
+            dataGridView4.Name = "dataGridView4";
+            dataGridView4.RowTemplate.Height = 25;
+            dataGridView4.Size = new Size(410, 41);
+            dataGridView4.TabIndex = 33;
+            // 
+            // MemoryLbl
+            // 
+            MemoryLbl.AutoSize = true;
+            MemoryLbl.Font = new Font("Yu Gothic UI", 22F, FontStyle.Bold, GraphicsUnit.Point);
+            MemoryLbl.Location = new Point(1135, 154);
+            MemoryLbl.Name = "MemoryLbl";
+            MemoryLbl.Size = new Size(133, 41);
+            MemoryLbl.TabIndex = 34;
+            MemoryLbl.Text = "Memory";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Yu Gothic UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label4.Location = new Point(398, 119);
+            label4.Name = "label4";
+            label4.Size = new Size(113, 32);
+            label4.TabIndex = 35;
+            label4.Text = "Registers";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Yu Gothic UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label6.Location = new Point(398, 393);
+            label6.Name = "label6";
+            label6.Size = new Size(113, 32);
+            label6.TabIndex = 36;
+            label6.Text = "Registers";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Yu Gothic UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label7.Location = new Point(398, 649);
+            label7.Name = "label7";
+            label7.Size = new Size(113, 32);
+            label7.TabIndex = 37;
+            label7.Text = "Registers";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Yu Gothic UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label8.Location = new Point(431, 163);
+            label8.Name = "label8";
+            label8.Size = new Size(80, 32);
+            label8.TabIndex = 38;
+            label8.Text = "Cache";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Yu Gothic UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label9.Location = new Point(431, 440);
+            label9.Name = "label9";
+            label9.Size = new Size(80, 32);
+            label9.TabIndex = 39;
+            label9.Text = "Cache";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Yu Gothic UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            label10.Location = new Point(431, 696);
+            label10.Name = "label10";
+            label10.Size = new Size(80, 32);
+            label10.TabIndex = 40;
+            label10.Text = "Cache";
+            // 
+            // ReportButton
+            // 
+            ReportButton.BackColor = SystemColors.Control;
+            ReportButton.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            ReportButton.Location = new Point(1271, 12);
+            ReportButton.Name = "ReportButton";
+            ReportButton.Size = new Size(151, 27);
+            ReportButton.TabIndex = 41;
+            ReportButton.Text = "Generate Report";
+            ReportButton.UseVisualStyleBackColor = false;
+            ReportButton.Click += ReportButton_Click;
             // 
             // GUI
             // 
@@ -264,6 +458,23 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Teal;
             ClientSize = new Size(1434, 905);
+            Controls.Add(ReportButton);
+            Controls.Add(label10);
+            Controls.Add(label9);
+            Controls.Add(label8);
+            Controls.Add(label7);
+            Controls.Add(label6);
+            Controls.Add(label4);
+            Controls.Add(MemoryLbl);
+            Controls.Add(dataGridView4);
+            Controls.Add(dataGridView3);
+            Controls.Add(dataGridView2);
+            Controls.Add(dataGridView1);
+            Controls.Add(Cache3DataView);
+            Controls.Add(Cache2DataView);
+            Controls.Add(Cache1DataView);
+            Controls.Add(ExecuteAllBtn);
+            Controls.Add(CleanDataButton);
             Controls.Add(protocol);
             Controls.Add(auto3);
             Controls.Add(auto2);
@@ -285,6 +496,14 @@
             Controls.Add(generate);
             Name = "GUI";
             Text = "CE4302 P1";
+            Load += GUI_Load;
+            ((System.ComponentModel.ISupportInitialize)Cache1DataView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Cache2DataView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Cache3DataView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView4).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -310,5 +529,23 @@
         private Button auto2;
         private Button auto3;
         private ComboBox protocol;
+        private Button CleanDataButton;
+        private Button ExecuteAllBtn;
+        private DataGridView Cache1DataView;
+        private DataGridView Cache2DataView;
+        private DataGridView Cache3DataView;
+        private DataGridView dataGridView1;
+        private FontDialog fontDialog1;
+        private DataGridView dataGridView2;
+        private DataGridView dataGridView3;
+        private DataGridView dataGridView4;
+        private Label MemoryLbl;
+        private Label label4;
+        private Label label6;
+        private Label label7;
+        private Label label8;
+        private Label label9;
+        private Label label10;
+        private Button ReportButton;
     }
 }

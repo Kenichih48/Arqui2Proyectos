@@ -17,6 +17,7 @@
         private int minInstr = 7;
         private int maxInstr = 9;
         private int cachelines = 4;
+        private List<Cache> cacheList;
 
         public List<Thread> threads = new List<Thread>();
 
@@ -42,7 +43,7 @@
             PE2 = new ProcessingElement(Cache2, minInstr, maxInstr);
             PE3 = new ProcessingElement(Cache3, minInstr, maxInstr);
 
-            List<Cache> cacheList = new() { Cache1, Cache2, Cache3 };
+            cacheList = new() { Cache1, Cache2, Cache3 };
 
             Bus.SetCaches(cacheList);
         }
@@ -64,26 +65,17 @@
             PE2 = new ProcessingElement(Cache2, minI, maxI);
             PE3 = new ProcessingElement(Cache3, minI, maxI);
 
-            List<Cache> cacheList = new() { Cache1, Cache2, Cache3 };
+            cacheList = new() { Cache1, Cache2, Cache3 };
 
             Bus.SetCaches(cacheList);
         }
 
         public void SetProtocol(string protocol)
         {
-            Protocol = protocol;
-
-            Cache1 = new Cache(cachelines, 0, Bus, Protocol);
-            Cache2 = new Cache(cachelines, 1, Bus, Protocol);
-            Cache3 = new Cache(cachelines, 2, Bus, Protocol);
-
-            PE1 = new ProcessingElement(Cache1, minInstr, maxInstr);
-            PE2 = new ProcessingElement(Cache2, minInstr, maxInstr);
-            PE3 = new ProcessingElement(Cache3, minInstr, maxInstr);
-
-            List<Cache> cacheList = new() { Cache1, Cache2, Cache3 };
-
-            Bus.SetCaches(cacheList);
+            foreach (Cache cache in cacheList) 
+            { 
+                cache.SetProtocol(protocol);
+            }
 
         }
 
