@@ -1,4 +1,6 @@
-﻿namespace Proyecto1
+﻿using System;
+
+namespace Proyecto1
 {
     public class TopLevel
     {
@@ -98,6 +100,22 @@
             {
                 thread.Join(); // Esperar a que todos los hilos terminen
             }
+        }
+
+        public void GenerateInstructions() 
+        {
+            Random random = new Random();
+
+            int[] randomAddr = new int[3];
+    
+            for (int i = 0; i < randomAddr.Length; i++)
+            {
+                randomAddr[i] = random.Next(0,64); 
+            }
+
+            PE1.GenerateInstructions(randomAddr);
+            PE2.GenerateInstructions(randomAddr);
+            PE3.GenerateInstructions(randomAddr);
         }
 
         public void Clean()

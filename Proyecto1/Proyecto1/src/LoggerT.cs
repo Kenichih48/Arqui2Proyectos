@@ -53,8 +53,10 @@ namespace Proyecto1
             WriteReq = 0;
             InvReq = 0;
             req = 0;
+            MemWReq = 0;
+            MemRReq = 0;
 
-            string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "results");
+        string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "results");
             DateTime now = DateTime.Now;
             string[] partes = dir.Split(new string[] { "\\" }, StringSplitOptions.None);
             int nuevaLongitud = partes.Length - 5;

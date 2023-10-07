@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Data;
+using static Proyecto1.Memory;
 
 namespace Proyecto1
 {
@@ -421,11 +422,9 @@ namespace Proyecto1
         private void generate_Click(object sender, EventArgs e)
         {
             LoggerT.Start();
-            pe1.GenerateInstructions();
+            TopLvl.GenerateInstructions();
             instrList1 = pe1.InstrList;
-            pe2.GenerateInstructions();
             instrList2 = pe2.InstrList;
-            pe3.GenerateInstructions();
             instrList3 = pe3.InstrList;
             string textInstr1 = "";
             string textInstr2 = "";
@@ -467,6 +466,7 @@ namespace Proyecto1
             auto1.Enabled = false;
             auto2.Enabled = false;
             auto3.Enabled = false;
+            FillMemBtn.Enabled = true;
             ExecuteAllBtn.Enabled = false;
             generate.Enabled = true;
             instrBox1.Text = "";
@@ -482,13 +482,12 @@ namespace Proyecto1
             protocol.Enabled = true;
             Cache1DataView.DataSource = null;
             Cache2DataView.DataSource = null;
-            Cache2DataView.DataSource = null;
+            Cache3DataView.DataSource = null;
             Regs1.DataSource = null;
             Regs2.DataSource = null;
             Regs3.DataSource = null;
             MemDataView.DataSource = null;
             LoggerT.FinishLog();
-            LoggerT.Start();
         }
 
         /// <summary>
@@ -516,7 +515,7 @@ namespace Proyecto1
             auto3.Enabled = true;
             Cache1DataView.DataSource = null;
             Cache2DataView.DataSource = null;
-            Cache2DataView.DataSource = null;
+            Cache3DataView.DataSource = null;
             Regs1.DataSource = null;
             Regs2.DataSource = null;
             Regs3.DataSource = null;
@@ -565,6 +564,7 @@ namespace Proyecto1
                 {
                     protocol.Enabled = false;
                     auto1.Enabled = false;
+                    FillMemBtn.Enabled = false;
                     PC1.Text = "" + pe1.PC;
                     pe1.ExecuteInstr();
                 }
@@ -596,6 +596,7 @@ namespace Proyecto1
                 {
                     protocol.Enabled = false;
                     auto2.Enabled = false;
+                    FillMemBtn.Enabled = false;
                     PC2.Text = "" + pe2.PC;
                     pe2.ExecuteInstr();
                 }
@@ -627,6 +628,7 @@ namespace Proyecto1
                 {
                     protocol.Enabled = false;
                     auto3.Enabled = false;
+                    FillMemBtn.Enabled = false;
                     PC3.Text = "" + pe3.PC;
                     pe3.ExecuteInstr();
                 }
@@ -651,6 +653,7 @@ namespace Proyecto1
                 protocol.Enabled = false;
                 step1.Enabled = false;
                 auto1.Enabled = false;
+                FillMemBtn.Enabled = false;
                 pe1.ExecuteAll();
                 PC1.Text = "" + (pe1.PC - 1);
                 CacheRefresh();
@@ -673,6 +676,7 @@ namespace Proyecto1
                 protocol.Enabled = false;
                 step2.Enabled = false;
                 auto2.Enabled = false;
+                FillMemBtn.Enabled = false;
                 pe2.ExecuteAll();
                 PC2.Text = "" + (pe2.PC - 1);
                 CacheRefresh();
@@ -695,6 +699,7 @@ namespace Proyecto1
                 protocol.Enabled = false;
                 step3.Enabled = false;
                 auto3.Enabled = false;
+                FillMemBtn.Enabled = false;
                 pe3.ExecuteAll();
                 PC3.Text = "" + (pe3.PC - 1);
                 CacheRefresh();
@@ -721,7 +726,7 @@ namespace Proyecto1
             auto2.Enabled = false;
             auto3.Enabled = false;
             ExecuteAllBtn.Enabled = false;
-            LoggerT.Start();
+            FillMemBtn.Enabled = false;
             TopLvl.StartThreads();
             CacheRefresh();
             RegsRefresh();
@@ -762,6 +767,22 @@ namespace Proyecto1
 
         private void GUI_Load(object sender, EventArgs e)
         {
+        }
+
+        private void FillMemBtn_Click(object sender, EventArgs e)
+        {
+            Random random = new Random();
+
+            // Recorrer la lista y randomizar cada elemento
+            foreach (MemByteArray array in memory.memory)
+            {
+                for (int i = 0; i < array.Data.Length; i++)
+                {
+                    // Generar un valor aleatorio para cada elemento del array
+                    array.Data[i] = (byte)random.Next(256); // Suponemos que los valores están en el rango de 0 a 255
+                }
+            }
+            MemRefresh();
         }
     }
 }

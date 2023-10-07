@@ -46,9 +46,9 @@
         /// <summary>
         /// Generates a list of instructions for the processing element.
         /// </summary>
-        public void GenerateInstructions()
+        public void GenerateInstructions(int[] randomAddr)
         {
-            instrList = instrGenerator.MakeInstructions();
+            instrList = instrGenerator.MakeInstructions(randomAddr);
         }
 
         /// <summary>
