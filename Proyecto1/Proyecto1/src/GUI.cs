@@ -51,14 +51,16 @@ namespace Proyecto1
             ConfigDataView2();
             ConfigDataView3();
             ConfigRegs1();
-            //ConfigRegs2();
-            //ConfigRegs3();
+            ConfigRegs2();
+            ConfigRegs3();
+            ConfigMem();
             SetCacheLines();
             SetRegs();
+            SetMem();
         }
 
         /// <summary>
-        /// Configures the DataView 1.
+        /// Configures the Cache1DataView.
         /// </summary>
         private void ConfigDataView1()
         {
@@ -99,7 +101,7 @@ namespace Proyecto1
         }
 
         /// <summary>
-        /// Configures the DataView 2.
+        /// Configures the Cache2DataView.
         /// </summary>
         private void ConfigDataView2()
         {
@@ -140,7 +142,7 @@ namespace Proyecto1
         }
 
         /// <summary>
-        /// Configures the DataView 3.
+        /// Configures the Cache2DataView.
         /// </summary>
         private void ConfigDataView3()
         {
@@ -163,6 +165,7 @@ namespace Proyecto1
                 // Add the column to the DataGridView
                 Cache3DataView.Columns.Add(column);
             }
+
             // state
             DataGridViewColumn stateMachineColumn = new(new StateMachineCell())
             {
@@ -180,7 +183,9 @@ namespace Proyecto1
             Cache3DataView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
         }
 
-
+        /// <summary>
+        /// Configures the Regs1 DataView.
+        /// </summary>
         private void ConfigRegs1()
         {
             Regs1.AutoGenerateColumns = false;
@@ -196,7 +201,7 @@ namespace Proyecto1
                 DataGridViewTextBoxColumn column = new()
                 {
                     DataPropertyName = $"Reg{i}", // bind to data[i]
-                    HeaderText = $"R{i}", // Column header text
+                    HeaderText = $"r{i}", // Column header text
                     Resizable = DataGridViewTriState.False
                 };
                 // Add the column to the DataGridView
@@ -212,8 +217,121 @@ namespace Proyecto1
             Regs1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
         }
 
+        /// <summary>
+        /// Configures the Regs2 DataView.
+        /// </summary>
+        private void ConfigRegs2()
+        {
+            Regs2.AutoGenerateColumns = false;
 
+            Regs2.ColumnAdded += (sender, e) =>
+            {
+                e.Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            };
 
+            // data array
+            for (int i = 0; i < 9; i++)
+            {
+                DataGridViewTextBoxColumn column = new()
+                {
+                    DataPropertyName = $"Reg{i}", // bind to data[i]
+                    HeaderText = $"r{i}", // Column header text
+                    Resizable = DataGridViewTriState.False
+                };
+                // Add the column to the DataGridView
+                Regs2.Columns.Add(column);
+            }
+
+            // configuration
+            Regs2.ReadOnly = true;
+            Regs2.RowHeadersVisible = false;
+            Regs2.AllowUserToResizeRows = false;
+            Regs2.AllowUserToResizeColumns = false;
+            Regs2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            Regs2.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+        }
+
+        /// <summary>
+        /// Configures the Regs3 DataView.
+        /// </summary>
+        private void ConfigRegs3()
+        {
+            Regs3.AutoGenerateColumns = false;
+
+            Regs3.ColumnAdded += (sender, e) =>
+            {
+                e.Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            };
+
+            // data array
+            for (int i = 0; i < 9; i++)
+            {
+                DataGridViewTextBoxColumn column = new()
+                {
+                    DataPropertyName = $"Reg{i}", // bind to data[i]
+                    HeaderText = $"r{i}", // Column header text
+                    Resizable = DataGridViewTriState.False
+                };
+                // Add the column to the DataGridView
+                Regs3.Columns.Add(column);
+            }
+
+            // configuration
+            Regs3.ReadOnly = true;
+            Regs3.RowHeadersVisible = false;
+            Regs3.AllowUserToResizeRows = false;
+            Regs3.AllowUserToResizeColumns = false;
+            Regs3.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            Regs3.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+        }
+
+        /// <summary>
+        /// Configures the MemDataView DataView.
+        /// </summary>
+        private void ConfigMem()
+        {
+            MemDataView.AutoGenerateColumns = false;
+
+            MemDataView.ColumnAdded += (sender, e) =>
+            {
+                e.Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            };
+
+            // line number
+            DataGridViewTextBoxColumn columnLine = new()
+            {
+                DataPropertyName = $"LineNumber",
+                HeaderText = $"Line", // Column header text
+                Resizable = DataGridViewTriState.False
+            };
+            // Add the column to the DataGridView
+            MemDataView.Columns.Add(columnLine);
+
+            // data array
+            for (int i = 0; i < 4; i++)
+            {
+                DataGridViewTextBoxColumn column = new()
+                {
+                    DataPropertyName = $"Data{i}",
+                    HeaderText = $"Block {i}", // Column header text
+                    Resizable = DataGridViewTriState.False
+                };
+                // Add the column to the DataGridView
+                MemDataView.Columns.Add(column);
+            }
+
+            // configuration
+            MemDataView.ReadOnly = true;
+            MemDataView.RowHeadersVisible = false;
+            MemDataView.AllowUserToResizeRows = false;
+            MemDataView.AllowUserToResizeColumns = false;
+            MemDataView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            MemDataView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+        }
+
+        /// <summary>
+        /// Cell for the cache line State
+        /// </summary>
         public class StateMachineCell : DataGridViewTextBoxCell
         {
             protected override object GetFormattedValue(object value, int rowIndex, ref DataGridViewCellStyle cellStyle, TypeConverter valueTypeConverter, TypeConverter formattedValueTypeConverter, DataGridViewDataErrorContexts context)
@@ -226,6 +344,74 @@ namespace Proyecto1
                 }
                 return base.GetFormattedValue(value, rowIndex, ref cellStyle, valueTypeConverter, formattedValueTypeConverter, context);
             }
+        }
+
+        /// <summary>
+        /// Set data sources for cache DataViews
+        /// </summary>
+        private void SetCacheLines()
+        {
+            Cache1DataView.DataSource = cache1.cacheLines;
+            Cache2DataView.DataSource = cache2.cacheLines;
+            Cache3DataView.DataSource = cache3.cacheLines;
+        }
+
+        /// <summary>
+        /// Set data sources for memory DataView
+        /// </summary>
+        private void SetMem()
+        {
+            MemDataView.DataSource = memory.memory;
+        }
+
+        /// <summary>
+        /// Set data sources for register DataViews
+        /// </summary>
+        private void SetRegs()
+        {
+            List<ProcessingElement> list1 = new()
+            {
+                pe1
+            };
+            List<ProcessingElement> list2 = new()
+            {
+                pe2
+            };
+            List<ProcessingElement> list3 = new()
+            {
+                pe3
+            };
+            Regs1.DataSource = list1;
+            Regs2.DataSource = list2;
+            Regs3.DataSource = list3;
+        }
+
+        /// <summary>
+        /// Refreshes the cache DataViews.
+        /// </summary>
+        private void CacheRefresh()
+        {
+            Cache1DataView.Refresh();
+            Cache2DataView.Refresh();
+            Cache3DataView.Refresh();
+        }
+
+        /// <summary>
+        /// Refreshes the registers DataViews.
+        /// </summary>
+        private void RegsRefresh()
+        {
+            Regs1.Refresh();
+            Regs2.Refresh();
+            Regs3.Refresh();
+        }
+
+        /// <summary>
+        /// Refreshes the memory DataViews.
+        /// </summary>
+        private void MemRefresh()
+        {
+            MemDataView.Refresh();
         }
 
         /// <summary>
@@ -267,8 +453,6 @@ namespace Proyecto1
             auto2.Enabled = true;
             auto3.Enabled = true;
             ExecuteAllBtn.Enabled = true;
-
-
         }
 
         /// <summary>
@@ -297,6 +481,14 @@ namespace Proyecto1
             protocol.SelectedIndex = -1;
             protocol.Enabled = true;
             Cache1DataView.DataSource = null;
+            Cache2DataView.DataSource = null;
+            Cache2DataView.DataSource = null;
+            Regs1.DataSource = null;
+            Regs2.DataSource = null;
+            Regs3.DataSource = null;
+            MemDataView.DataSource = null;
+            LoggerT.FinishLog();
+            LoggerT.Start();
         }
 
         /// <summary>
@@ -324,7 +516,13 @@ namespace Proyecto1
             auto3.Enabled = true;
             Cache1DataView.DataSource = null;
             Cache2DataView.DataSource = null;
-            Cache3DataView.DataSource = null;
+            Cache2DataView.DataSource = null;
+            Regs1.DataSource = null;
+            Regs2.DataSource = null;
+            Regs3.DataSource = null;
+            MemDataView.DataSource = null;
+            LoggerT.FinishLog();
+            LoggerT.Start();
         }
 
         /// <summary>
@@ -345,25 +543,6 @@ namespace Proyecto1
             }
         }
 
-        private void SetCacheLines()
-        {
-            Cache1DataView.DataSource = cache1.cacheLines;
-            Cache2DataView.DataSource = cache2.cacheLines;
-            Cache3DataView.DataSource = cache3.cacheLines;
-        }
-
-        private void SetRegs()
-        {
-            Regs1.DataSource = pe1.regs;
-
-        }
-
-        private void CacheRefresh()
-        {
-            Cache1DataView.Refresh();
-            Cache2DataView.Refresh();
-            Cache3DataView.Refresh();
-        }
         /// <summary>
         /// Handles the click event for the "Step 1" button.
         /// Validates instructions and executes the next instruction for Processing Element 1.
@@ -373,6 +552,8 @@ namespace Proyecto1
             if (validateInstr())
             {
                 SetCacheLines();
+                SetRegs();
+                SetMem();
 
                 ExecuteAllBtn.Enabled = false;
                 if (pe1.PC == instrList1.Count - 1)
@@ -388,6 +569,8 @@ namespace Proyecto1
                     pe1.ExecuteInstr();
                 }
                 CacheRefresh();
+                RegsRefresh();
+                MemRefresh();
             }
         }
 
@@ -400,6 +583,8 @@ namespace Proyecto1
             if (validateInstr())
             {
                 SetCacheLines();
+                SetRegs();
+                SetMem();
 
                 ExecuteAllBtn.Enabled = false;
                 if (pe2.PC == instrList2.Count - 1)
@@ -415,6 +600,8 @@ namespace Proyecto1
                     pe2.ExecuteInstr();
                 }
                 CacheRefresh();
+                RegsRefresh();
+                MemRefresh();
             }
         }
 
@@ -427,6 +614,8 @@ namespace Proyecto1
             if (validateInstr())
             {
                 SetCacheLines();
+                SetRegs();
+                SetMem();
 
                 ExecuteAllBtn.Enabled = false;
                 if (pe3.PC == instrList3.Count - 1)
@@ -442,6 +631,8 @@ namespace Proyecto1
                     pe3.ExecuteInstr();
                 }
                 CacheRefresh();
+                RegsRefresh();
+                MemRefresh();
             }
         }
 
@@ -453,6 +644,8 @@ namespace Proyecto1
             if (validateInstr())
             {
                 SetCacheLines();
+                SetRegs();
+                SetMem();
 
                 ExecuteAllBtn.Enabled = false;
                 protocol.Enabled = false;
@@ -461,6 +654,8 @@ namespace Proyecto1
                 pe1.ExecuteAll();
                 PC1.Text = "" + (pe1.PC - 1);
                 CacheRefresh();
+                RegsRefresh();
+                MemRefresh();
             }
         }
         /// <summary>
@@ -471,6 +666,8 @@ namespace Proyecto1
             if (validateInstr())
             {
                 SetCacheLines();
+                SetRegs();
+                SetMem();
 
                 ExecuteAllBtn.Enabled = false;
                 protocol.Enabled = false;
@@ -479,6 +676,8 @@ namespace Proyecto1
                 pe2.ExecuteAll();
                 PC2.Text = "" + (pe2.PC - 1);
                 CacheRefresh();
+                RegsRefresh();
+                MemRefresh();
             }
         }
         /// <summary>
@@ -489,6 +688,8 @@ namespace Proyecto1
             if (validateInstr())
             {
                 SetCacheLines();
+                SetRegs();
+                SetMem();
 
                 ExecuteAllBtn.Enabled = false;
                 protocol.Enabled = false;
@@ -497,6 +698,8 @@ namespace Proyecto1
                 pe3.ExecuteAll();
                 PC3.Text = "" + (pe3.PC - 1);
                 CacheRefresh();
+                RegsRefresh();
+                MemRefresh();
             }
         }
 
@@ -508,6 +711,9 @@ namespace Proyecto1
         private void ExecuteAllBtn_Click(object sender, EventArgs e)
         {
             SetCacheLines();
+            SetRegs();
+            SetMem();
+
             step1.Enabled = false;
             step2.Enabled = false;
             step3.Enabled = false;
@@ -518,6 +724,8 @@ namespace Proyecto1
             LoggerT.Start();
             TopLvl.StartThreads();
             CacheRefresh();
+            RegsRefresh();
+            MemRefresh();
         }
 
         /// <summary>

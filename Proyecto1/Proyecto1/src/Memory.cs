@@ -5,7 +5,7 @@
     /// </summary>
     public class Memory
     {
-        public List<byte[]> memory;
+        public List<MemByteArray> memory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Memory"/> class.
@@ -15,10 +15,12 @@
         /// </param>
         public Memory(int rows = 16, int columns = 4)
         {
-            memory = new List<byte[]>();
+            int line = 0;
+            memory = new List<MemByteArray>();
             for(int i = 0; i < rows; i++)
             {
-                memory.Add(new byte[columns]);
+                memory.Add(new MemByteArray(columns, line));
+                line += 4;
             }
         }
 
@@ -47,7 +49,7 @@
 
             if (address >= 0 && address < 64)
             {
-                return memory[line];
+                return memory[line].Data;
             }
             else
             {
@@ -72,7 +74,7 @@
         {
             if (memoryline >= 0 && memoryline < 64)
             {
-                memory[memoryline] = newLine;
+                memory[memoryline].Data = newLine;
             }
             else
             {
@@ -81,13 +83,38 @@
             }
         }
 
+        /// <summary>
+        /// Clean the memory data.
+        /// </summary>
         public void Clean()
         {
-            memory = new List<byte[]>();
+            int line = 0;
+            memory = new List<MemByteArray>();
             for (int i = 0; i < 16; i++)
             {
-                memory.Add(new byte[4]);
+                memory.Add(new MemByteArray(4, line));
+                line += 4;
             }
         }
+
+        /// <summary>
+        /// Class that represents a byte array.
+        /// </summary>
+        public class MemByteArray
+        {
+            public byte[] Data { get; set; }
+            public int LineNumber { get; set; }
+
+            public MemByteArray(int columns, int lineNumber) { 
+                Data = new byte[columns];
+                LineNumber = lineNumber;  
+            }
+
+            public byte Data0 => Data.Length > 0 ? Data[0] : (byte)0;
+            public byte Data1 => Data.Length > 1 ? Data[1] : (byte)0;
+            public byte Data2 => Data.Length > 2 ? Data[2] : (byte)0;
+            public byte Data3 => Data.Length > 3 ? Data[3] : (byte)0;
+        }
+
     }
 }

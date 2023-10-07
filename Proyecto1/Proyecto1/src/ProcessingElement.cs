@@ -129,6 +129,9 @@
             instrList.Clear();
         }
 
+        /// <summary>
+        /// Resets the processor state by clearing the program counter and register array.
+        /// </summary>
         public void CleanRegs()
         {
             pc = 0;
@@ -243,9 +246,5 @@
                 return 0;
             }
         }
-
-
-
-
     }
 }
