@@ -506,7 +506,7 @@ namespace Proyecto1
             instrList2 = pe2.InstrList;
             instrList3 = pe3.InstrList;
             protocol.Enabled = true;
-            FillMemBtn.Enabled  = true;
+            FillMemBtn.Enabled = true;
             ExecuteAllBtn.Enabled = true;
             step1.Enabled = true;
             step2.Enabled = true;
