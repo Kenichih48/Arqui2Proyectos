@@ -11,7 +11,7 @@ namespace Proyecto1
         static void Main(string[] args)
         {
 
-           
+
             // Crea una instancia de tu formulario
             GUI miFormulario = new();
 
