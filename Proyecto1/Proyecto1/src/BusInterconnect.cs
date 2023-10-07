@@ -193,9 +193,7 @@ namespace Proyecto1
             foreach (Cache cache in this.caches)
             {
                 if (cache.id != id)
-                {
-                    
-                    
+                {   
                     cache.Invalidate(tag, line);
                 }
             }

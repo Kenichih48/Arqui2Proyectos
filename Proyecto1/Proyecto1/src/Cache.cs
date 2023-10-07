@@ -32,6 +32,18 @@ namespace Proyecto1
         }
 
         /// <summary>
+        /// Sets the cache coherence protocol for the <see cref="Cache"/> class.
+        /// </summary>
+        /// <param name="protocol">The protocol to be set.</param>
+        public void SetProtocol(string protocol) 
+        { 
+            foreach (var line in cacheLines)
+            {
+                line.SetProtocol(protocol);
+            }
+        }
+
+        /// <summary>
         /// Cleans and resets the cache.
         /// </summary>
         public void Clean()

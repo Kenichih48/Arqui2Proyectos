@@ -32,33 +32,33 @@
         /// Generates a list of random instructions.
         /// </summary>
         /// <returns>A list of randomly generated instructions.</returns>
-        public List<string> MakeInstructions()
+        public List<string> MakeInstructions(int[] randomAddr)
         {
             instrLen = random.Next(minInstrs, maxInstrs+1);
 
             while (instructions.Count < instrLen)
             {
-                (int type, int addr, int reg) = MakeRandomInstr();
+                int i = random.Next(0, 3);
+                (int type, int reg) = MakeRandomInstr();
 
+                
                 switch (type)
                 {
                     // incr
                     case 0:
                         MakeIncrInstr(reg);
-
-                        int addrRandom = random.Next(0, 64);
-                        MakeWriteInstr(reg, addrRandom);
-                        MakeReadInstr(reg, addrRandom);
+                        MakeWriteInstr(reg, randomAddr[i]);
+                        MakeReadInstr(reg, randomAddr[i]);
                         break;
                     // read
                     case 1:
-                        MakeReadInstr(reg, addr);
+                        MakeReadInstr(reg, randomAddr[i]);
                         MakeIncrInstr(reg);
-                        MakeWriteInstr(reg, addr);
+                        MakeWriteInstr(reg, randomAddr[i]);
                         break;
                     // write
                     case 2:
-                        MakeWriteInstr(reg, addr);
+                        MakeWriteInstr(reg, randomAddr[i]);
                         break;
                     default:
                         break;
@@ -71,15 +71,13 @@
         /// Generates a random 'assembly' instruction.
         /// </summary>
         /// <returns>
-        /// A tuple containing the instruction type, address, and register.
+        /// A tuple containing the instruction type and register.
         /// </returns>
-        private (int, int, int) MakeRandomInstr()
+        private (int, int) MakeRandomInstr()
         {
             int reg = random.Next(0, 9);
-            int addr = random.Next(0, 64);
             int instrType = random.Next(0, 3);
-
-            return (instrType, addr, reg);
+            return (instrType, reg);
         }
 
         /// <summary>

@@ -6,7 +6,7 @@
     public class ProcessingElement
     {
         private int pc;
-        public byte[] regs;
+        public byte[] regs { get; set; }
         private readonly Cache cache;
         public List<string> instrList;
         private readonly InstructionGenerator instrGenerator;
@@ -42,12 +42,13 @@
             instrGenerator = new InstructionGenerator(minInstrs, maxInstrs);
         }
 
+
         /// <summary>
         /// Generates a list of instructions for the processing element.
         /// </summary>
-        public void GenerateInstructions()
+        public void GenerateInstructions(int[] randomAddr)
         {
-            instrList = instrGenerator.MakeInstructions();
+            instrList = instrGenerator.MakeInstructions(randomAddr);
         }
 
         /// <summary>
@@ -57,7 +58,6 @@
         {
             foreach (string instr in instrList)
             {
-                Console.WriteLine(instr);
                 DecodeInstr(instr);
                 Thread.Sleep(100);
             }
@@ -69,7 +69,6 @@
         public void ExecuteInstr()
         {
             DecodeInstr(instrList[pc]);
-            pc++;
         }
 
         /// <summary>
@@ -130,11 +129,122 @@
             instrList.Clear();
         }
 
+        /// <summary>
+        /// Resets the processor state by clearing the program counter and register array.
+        /// </summary>
         public void CleanRegs()
         {
             pc = 0;
             Array.Clear(regs, 0, regs.Length);
             
+        }
+
+        public int Reg0
+        {
+            get
+            {
+                if (regs != null && regs.Length > 0)
+                {
+                    return regs[0];
+                }
+                return 0;
+            }
+        }
+
+        public int Reg1
+        {
+            get
+            {
+                if (regs != null && regs.Length > 0)
+                {
+                    return regs[1];
+                }
+                return 0;
+            }
+        }
+
+        public int Reg2
+        {
+            get
+            {
+                if (regs != null && regs.Length > 0)
+                {
+                    return regs[2];
+                }
+                return 0;
+            }
+        }
+
+        public int Reg3
+        {
+            get
+            {
+                if (regs != null && regs.Length > 0)
+                {
+                    return regs[3];
+                }
+                return 0;
+            }
+        }
+
+        public int Reg4
+        {
+            get
+            {
+                if (regs != null && regs.Length > 0)
+                {
+                    return regs[4];
+                }
+                return 0;
+            }
+        }
+
+        public int Reg5
+        {
+            get
+            {
+                if (regs != null && regs.Length > 0)
+                {
+                    return regs[5];
+                }
+                return 0;
+            }
+        }
+
+        public int Reg6
+        {
+            get
+            {
+                if (regs != null && regs.Length > 0)
+                {
+                    return regs[6];
+                }
+                return 0;
+            }
+        }
+
+        public int Reg7
+        {
+            get
+            {
+                if (regs != null && regs.Length > 0)
+                {
+                    return regs[7];
+                }
+                return 0;
+            }
+        }
+
+        public int Reg8
+        {
+            get
+            {
+                if (regs != null && regs.Length > 0)
+                {
+                    return regs[8];
+                }
+                return 0;
+            }
         }
     }
 }

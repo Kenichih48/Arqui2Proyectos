@@ -1,4 +1,6 @@
-﻿namespace Proyecto1
+﻿using System;
+
+namespace Proyecto1
 {
     public class TopLevel
     {
@@ -17,15 +19,10 @@
         private int minInstr = 7;
         private int maxInstr = 9;
         private int cachelines = 4;
+        private List<Cache> cacheList;
 
         public List<Thread> threads = new List<Thread>();
 
-        public TopLevel()
-        {
-            Memory = new Memory();
-
-            Bus = new BusInterconnect(Memory);
-        }
         public TopLevel(string protocol) {
 
             Protocol = protocol;
@@ -42,11 +39,10 @@
             PE2 = new ProcessingElement(Cache2, minInstr, maxInstr);
             PE3 = new ProcessingElement(Cache3, minInstr, maxInstr);
 
-            List<Cache> cacheList = new() { Cache1, Cache2, Cache3 };
+            cacheList = new() { Cache1, Cache2, Cache3 };
 
             Bus.SetCaches(cacheList);
         }
-
 
         public TopLevel(int minI, int maxI, string protocol)
         {
@@ -64,30 +60,29 @@
             PE2 = new ProcessingElement(Cache2, minI, maxI);
             PE3 = new ProcessingElement(Cache3, minI, maxI);
 
-            List<Cache> cacheList = new() { Cache1, Cache2, Cache3 };
+            cacheList = new() { Cache1, Cache2, Cache3 };
 
             Bus.SetCaches(cacheList);
         }
 
+        /// <summary>
+        /// Set the cache coherence protocol.
+        /// </summary>
+        /// <param name="protocol">The protocol to be set.</param>
         public void SetProtocol(string protocol)
         {
-            Protocol = protocol;
+            LoggerT.SetProtocol(protocol);
+            foreach (Cache cache in cacheList) 
+            { 
+                cache.SetProtocol(protocol);
+            }
 
-            Cache1 = new Cache(cachelines, 0, Bus, Protocol);
-            Cache2 = new Cache(cachelines, 1, Bus, Protocol);
-            Cache3 = new Cache(cachelines, 2, Bus, Protocol);
-
-            PE1 = new ProcessingElement(Cache1, minInstr, maxInstr);
-            PE2 = new ProcessingElement(Cache2, minInstr, maxInstr);
-            PE3 = new ProcessingElement(Cache3, minInstr, maxInstr);
-
-            List<Cache> cacheList = new() { Cache1, Cache2, Cache3 };
-
-            Bus.SetCaches(cacheList);
 
         }
 
-
+        /// <summary>
+        /// Executes the three PEs at the same time.
+        /// </summary>
         public void StartThreads()
         {
             Console.WriteLine("Begin Threads");
@@ -107,6 +102,22 @@
             {
                 thread.Join(); // Esperar a que todos los hilos terminen
             }
+        }
+
+        public void GenerateInstructions() 
+        {
+            Random random = new Random();
+
+            int[] randomAddr = new int[3];
+    
+            for (int i = 0; i < randomAddr.Length; i++)
+            {
+                randomAddr[i] = random.Next(0,64); 
+            }
+
+            PE1.GenerateInstructions(randomAddr);
+            PE2.GenerateInstructions(randomAddr);
+            PE3.GenerateInstructions(randomAddr);
         }
 
         public void Clean()
