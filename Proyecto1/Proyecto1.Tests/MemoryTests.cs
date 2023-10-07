@@ -55,7 +55,7 @@
             memory.WriteByte(address, expectedData);
 
 
-            byte actualData = memory.memory[1][0];
+            byte actualData = memory.memory[1].Data[0];
             Console.WriteLine(actualData);
 
             byte[] data = memory.ReadAddr(0);
