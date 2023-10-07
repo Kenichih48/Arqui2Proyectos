@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Proyecto1
 {
@@ -53,9 +46,66 @@ namespace Proyecto1
             auto3.Enabled = false;
             ExecuteAllBtn.Enabled = false;
             protocol.SelectedIndex = 0;
+
+            ConfigDataViews();
             Cache1DataView.DataSource = cache1.cacheLines;
-            Cache2DataView.DataSource = cache2.cacheLines;
-            Cache3DataView.DataSource = cache3.cacheLines;
+        }
+
+        /// <summary>
+        /// Configures the DataViews.
+        /// </summary>
+        private void ConfigDataViews()
+        {
+            Cache1DataView.AutoGenerateColumns = false;
+
+            Cache1DataView.ColumnAdded += (sender, e) =>
+            {
+                e.Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            };
+
+            // data array
+            for (int i = 0; i < 4; i++)
+            {
+                DataGridViewTextBoxColumn column = new()
+                {
+                    DataPropertyName = $"Data{i}", // bind to data[i]
+                    HeaderText = $"Block {i}", // Column header text
+                    Resizable = DataGridViewTriState.False
+                };
+
+                // Add the column to the DataGridView
+                Cache1DataView.Columns.Add(column);
+            }
+
+            // state
+            DataGridViewColumn stateMachineColumn = new(new StateMachineCell())
+            {
+                DataPropertyName = "StateMachine", // Bind to StateMachine property
+                HeaderText = "State" // Column header text
+            };
+            Cache1DataView.Columns.Add(stateMachineColumn);
+
+            // configuration
+            Cache1DataView.ReadOnly = true;
+            Cache1DataView.RowHeadersVisible = false;
+            Cache1DataView.AllowUserToResizeRows = false;
+            Cache1DataView.AllowUserToResizeColumns = false;
+            Cache1DataView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            Cache1DataView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+        }
+
+        public class StateMachineCell : DataGridViewTextBoxCell
+        {
+            protected override object GetFormattedValue(object value, int rowIndex, ref DataGridViewCellStyle cellStyle, TypeConverter valueTypeConverter, TypeConverter formattedValueTypeConverter, DataGridViewDataErrorContexts context)
+            {
+                // Check if the value is a StateMachine object
+                if (value is StateMachine stateMachine)
+                {
+                    // Format the state as a string
+                    return stateMachine.GetCurrentState().ToString();
+                }
+                return base.GetFormattedValue(value, rowIndex, ref cellStyle, valueTypeConverter, formattedValueTypeConverter, context);
+            }
         }
 
         /// <summary>
@@ -97,7 +147,7 @@ namespace Proyecto1
             auto2.Enabled = true;
             auto3.Enabled = true;
             ExecuteAllBtn.Enabled = true;
-            
+
 
         }
 
@@ -126,78 +176,33 @@ namespace Proyecto1
             instrList3 = pe3.InstrList;
             protocol.SelectedIndex = -1;
             protocol.Enabled = true;
-
+            Cache1DataView.DataSource = null;
         }
 
         /// <summary>
-        /// Handles the click event for the "Step 1" button.
-        /// Validates instructions and executes the next instruction for Processing Element 1.
+        /// Event handler for the Clean Data button.
         /// </summary>
-        private void step1_Click(object sender, EventArgs e)
+        /// <param name="sender">The sender of the event, which is a Button.</param>
+        /// <param name="e">The event arguments.</param>
+        private void CleanData_Click(object sender, EventArgs e)
         {
-            if (validateInstr())
-            {
-                if (pe1.PC == instrList1.Count - 1)
-                {
-                    step1.Enabled = false;
-                    PC1.Text = "" + pe1.PC;
-                }
-                else
-                {
-                    protocol.Enabled = false;
-                    auto1.Enabled = false;
-                    PC1.Text = "" + pe1.PC;
-                    pe1.ExecuteInstr();
-                }
-
-            }
-        }
-
-        /// <summary>
-        /// Handles the click event for the "Step 2" button.
-        /// Validates instructions and executes the next instruction for Processing Element 2.
-        /// </summary>
-        private void step2_Click(object sender, EventArgs e)
-        {
-            if (validateInstr())
-            {
-                if (pe2.PC == instrList2.Count - 1)
-                {
-                    step2.Enabled = false;
-                    PC2.Text = "" + pe2.PC;
-                }
-                else
-                {
-                    protocol.Enabled = false;
-                    auto2.Enabled = false;
-                    PC2.Text = "" + pe2.PC;
-                    pe2.ExecuteInstr();
-                }
-
-            }
-        }
-
-        /// <summary>
-        /// Handles the click event for the "Step 3" button.
-        /// Validates instructions and executes the next instruction for Processing Element 3.
-        /// </summary>
-        private void step3_Click(object sender, EventArgs e)
-        {
-            if (validateInstr())
-            {
-                if (pe3.PC == instrList3.Count - 1)
-                {
-                    step3.Enabled = false;
-                    PC3.Text = "" + pe3.PC;
-                }
-                else
-                {
-                    protocol.Enabled = false;
-                    auto3.Enabled = false;
-                    PC3.Text = "" + pe3.PC;
-                    pe3.ExecuteInstr();
-                }
-            }
+            TopLvl.CleanData();
+            generate.Enabled = false;
+            PC1.Text = "";
+            PC2.Text = "";
+            PC3.Text = "";
+            instrList1 = pe1.InstrList;
+            instrList2 = pe2.InstrList;
+            instrList3 = pe3.InstrList;
+            protocol.Enabled = true;
+            ExecuteAllBtn.Enabled = true;
+            step1.Enabled = true;
+            step2.Enabled = true;
+            step3.Enabled = true;
+            auto1.Enabled = true;
+            auto2.Enabled = true;
+            auto3.Enabled = true;
+            Cache1DataView.DataSource = null;
         }
 
         /// <summary>
@@ -219,17 +224,102 @@ namespace Proyecto1
         }
 
         /// <summary>
+        /// Handles the click event for the "Step 1" button.
+        /// Validates instructions and executes the next instruction for Processing Element 1.
+        /// </summary>
+        private void step1_Click(object sender, EventArgs e)
+        {
+            if (validateInstr())
+            {
+                Cache1DataView.DataSource = cache1.cacheLines;
+
+                ExecuteAllBtn.Enabled = false;
+                if (pe1.PC == instrList1.Count - 1)
+                {
+                    step1.Enabled = false;
+                    PC1.Text = "" + pe1.PC;
+                }
+                else
+                {
+                    protocol.Enabled = false;
+                    auto1.Enabled = false;
+                    PC1.Text = "" + pe1.PC;
+                    pe1.ExecuteInstr();
+                }
+                Cache1DataView.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// Handles the click event for the "Step 2" button.
+        /// Validates instructions and executes the next instruction for Processing Element 2.
+        /// </summary>
+        private void step2_Click(object sender, EventArgs e)
+        {
+            if (validateInstr())
+            {
+                Cache1DataView.DataSource = cache1.cacheLines;
+
+                ExecuteAllBtn.Enabled = false;
+                if (pe2.PC == instrList2.Count - 1)
+                {
+                    step2.Enabled = false;
+                    PC2.Text = "" + pe2.PC;
+                }
+                else
+                {
+                    protocol.Enabled = false;
+                    auto2.Enabled = false;
+                    PC2.Text = "" + pe2.PC;
+                    pe2.ExecuteInstr();
+                }
+                Cache1DataView.Refresh();
+            }
+        }
+
+        /// <summary>
+        /// Handles the click event for the "Step 3" button.
+        /// Validates instructions and executes the next instruction for Processing Element 3.
+        /// </summary>
+        private void step3_Click(object sender, EventArgs e)
+        {
+            if (validateInstr())
+            {
+                Cache1DataView.DataSource = cache1.cacheLines;
+
+                ExecuteAllBtn.Enabled = false;
+                if (pe3.PC == instrList3.Count - 1)
+                {
+                    step3.Enabled = false;
+                    PC3.Text = "" + pe3.PC;
+                }
+                else
+                {
+                    protocol.Enabled = false;
+                    auto3.Enabled = false;
+                    PC3.Text = "" + pe3.PC;
+                    pe3.ExecuteInstr();
+                }
+                Cache1DataView.Refresh();
+            }
+        }
+
+        /// <summary>
         /// Handles the click event for the "Auto1" button.
         /// </summary>
         private void auto1_Click(object sender, EventArgs e)
         {
             if (validateInstr())
             {
+                Cache1DataView.DataSource = cache1.cacheLines;
+
+                ExecuteAllBtn.Enabled = false;
                 protocol.Enabled = false;
                 step1.Enabled = false;
                 auto1.Enabled = false;
                 pe1.ExecuteAll();
                 PC1.Text = "" + (pe1.PC - 1);
+                Cache1DataView.Refresh();
             }
         }
         /// <summary>
@@ -239,11 +329,15 @@ namespace Proyecto1
         {
             if (validateInstr())
             {
+                Cache1DataView.DataSource = cache1.cacheLines;
+
+                ExecuteAllBtn.Enabled = false;
                 protocol.Enabled = false;
                 step2.Enabled = false;
                 auto2.Enabled = false;
                 pe2.ExecuteAll();
                 PC2.Text = "" + (pe2.PC - 1);
+                Cache1DataView.Refresh();
             }
         }
         /// <summary>
@@ -253,13 +347,38 @@ namespace Proyecto1
         {
             if (validateInstr())
             {
+                Cache1DataView.DataSource = cache1.cacheLines;
+
+                ExecuteAllBtn.Enabled = false;
                 protocol.Enabled = false;
                 step3.Enabled = false;
                 auto3.Enabled = false;
                 pe3.ExecuteAll();
                 PC3.Text = "" + (pe3.PC - 1);
+                Cache1DataView.Refresh();
             }
         }
+
+        /// <summary>
+        /// Event handler for the Execute All button.
+        /// </summary>
+        /// <param name="sender">The sender of the event, which is a Button.</param>
+        /// <param name="e">The event arguments.</param>
+        private void ExecuteAllBtn_Click(object sender, EventArgs e)
+        {
+            Cache1DataView.DataSource = cache1.cacheLines;
+            step1.Enabled = false;
+            step2.Enabled = false;
+            step3.Enabled = false;
+            auto1.Enabled = false;
+            auto2.Enabled = false;
+            auto3.Enabled = false;
+            ExecuteAllBtn.Enabled = false;
+            LoggerT.Start();
+            TopLvl.StartThreads();
+            Cache1DataView.Refresh();
+        }
+
         /// <summary>
         /// Event handler for the selected index change in the protocol ComboBox.
         /// </summary>
@@ -282,40 +401,18 @@ namespace Proyecto1
             }
         }
 
-        private void CleanData_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Event handler for the Report Button button.
+        /// </summary>
+        /// <param name="sender">The sender of the event, which is a Button.</param>
+        /// <param name="e">The event arguments.</param>
+        private void ReportButton_Click(object sender, EventArgs e)
         {
-            TopLvl.CleanData();
-            generate.Enabled = false;
-            PC1.Text = "";
-            PC2.Text = "";
-            PC3.Text = "";
-            instrList1 = pe1.InstrList;
-            instrList2 = pe2.InstrList;
-            instrList3 = pe3.InstrList;
-            protocol.Enabled = true;
-            ExecuteAllBtn.Enabled = true;
-            step1.Enabled = true;
-            step2.Enabled = true;
-            step3.Enabled = true;
-            auto1.Enabled = true;
-            auto2.Enabled = true;
-            auto3.Enabled = true;
-
+            LoggerT.FinishLog();
         }
 
         private void GUI_Load(object sender, EventArgs e)
         {
-        }
-
-
-        private void ExecuteAllBtn_Click(object sender, EventArgs e)
-        {
-            LoggerT.Start();
-        }
-
-        private void ReportButton_Click(object sender, EventArgs e)
-        {
-            LoggerT.FinishLog();
         }
     }
 }

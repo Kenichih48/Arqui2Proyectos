@@ -21,12 +21,6 @@
 
         public List<Thread> threads = new List<Thread>();
 
-        public TopLevel()
-        {
-            Memory = new Memory();
-
-            Bus = new BusInterconnect(Memory);
-        }
         public TopLevel(string protocol) {
 
             Protocol = protocol;
@@ -47,7 +41,6 @@
 
             Bus.SetCaches(cacheList);
         }
-
 
         public TopLevel(int minI, int maxI, string protocol)
         {
@@ -70,6 +63,10 @@
             Bus.SetCaches(cacheList);
         }
 
+        /// <summary>
+        /// Set the cache coherence protocol.
+        /// </summary>
+        /// <param name="protocol">The protocol to be set.</param>
         public void SetProtocol(string protocol)
         {
             foreach (Cache cache in cacheList) 
@@ -79,7 +76,9 @@
 
         }
 
-
+        /// <summary>
+        /// Executes the three PEs at the same time.
+        /// </summary>
         public void StartThreads()
         {
             Console.WriteLine("Begin Threads");
