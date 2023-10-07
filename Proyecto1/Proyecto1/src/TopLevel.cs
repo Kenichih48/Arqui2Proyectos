@@ -71,10 +71,12 @@ namespace Proyecto1
         /// <param name="protocol">The protocol to be set.</param>
         public void SetProtocol(string protocol)
         {
+            LoggerT.SetProtocol(protocol);
             foreach (Cache cache in cacheList) 
             { 
                 cache.SetProtocol(protocol);
             }
+
 
         }
 

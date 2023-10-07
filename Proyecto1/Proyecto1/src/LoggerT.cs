@@ -26,6 +26,7 @@ namespace Proyecto1
         private static int InvReq;
         private static int MemWReq;
         private static int MemRReq;
+        private static string Protocol;
 
         private static bool begin;
 
@@ -55,6 +56,7 @@ namespace Proyecto1
             req = 0;
             MemWReq = 0;
             MemRReq = 0;
+            
 
         string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "results");
             DateTime now = DateTime.Now;
@@ -173,9 +175,15 @@ namespace Proyecto1
                 Write2File(InvReport);
                 Write2File(MemWReport);
                 Write2File(MemRReport);
+                Write2File(Protocol);
                 begin = false;
             }
             
+        }
+
+        public static void SetProtocol(string protocol) 
+        {
+            Protocol = protocol;
         }
 
         public static void GenerateChart()
@@ -199,7 +207,7 @@ namespace Proyecto1
             // Guardar la gráfica como una imagen\
             
 
-            chart.SaveImage(directory + ".png", ChartImageFormat.Png);
+            chart.SaveImage(directory + Protocol +".png", ChartImageFormat.Png);
             
 
             // Dispose del objeto Chart
