@@ -26,16 +26,15 @@
 // ```
 ///////////////////////////////////////////////////////////////////////////////
 
-module mux2 #(
-  parameter WIDTH = 8 // Width parameter for input and output signals
-) (
-  input logic [WIDTH-1:0] d0, // Input data source 0
-  input logic [WIDTH-1:0] d1, // Input data source 1
-  input logic s, // Select signal
-  output logic [WIDTH-1:0] y // Output data routed from 'd0' or 'd1'
-);
+module mux2 #(parameter WIDTH = 8) // Width parameter for input and output signals
+	(
+		input logic [WIDTH-1:0] d0, // Input data source 0
+		input logic [WIDTH-1:0] d1, // Input data source 1
+		input logic s,              // Select signal
+		output logic [WIDTH-1:0] y  // Output data routed from 'd0' or 'd1'
+	);
 
-  // Routing logic based on the value of select signal 's'
-  assign y = s ? d1 : d0;
+	// Routing logic based on the value of select signal 's'
+	assign y = s ? d1 : d0;
 
 endmodule

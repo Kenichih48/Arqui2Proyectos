@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Module Name:  mux3
+// Module Name:   mux3
 // Description:   This module represents a 3:1 multiplexer (mux) with a parameterized width.
 //                It selects one of the three input data sources 'd0', 'd1', or 'd2' based on
 //                the two-bit select signal 's' and routes it to the output 'y'.
@@ -30,17 +30,16 @@
 // ```
 ///////////////////////////////////////////////////////////////////////////////
 
-module mux3 #(
-  parameter WIDTH = 8 // Width parameter for input and output signals
-) (
-  input logic [WIDTH-1:0] d0, // Input data source 0
-  input logic [WIDTH-1:0] d1, // Input data source 1
-  input logic [WIDTH-1:0] d2, // Input data source 2
-  input logic [1:0] s, // Two-bit select signal
-  output logic [WIDTH-1:0] y // Output data routed from 'd0', 'd1', or 'd2'
-);
+module mux3 #(parameter WIDTH = 8) // Width parameter for input and output signals
+	(
+		input logic [WIDTH-1:0] d0, // Input data source 0
+		input logic [WIDTH-1:0] d1, // Input data source 1
+		input logic [WIDTH-1:0] d2, // Input data source 2
+		input logic [1:0] s, // Two-bit select signal
+		output logic [WIDTH-1:0] y // Output data routed from 'd0', 'd1', or 'd2'
+	);
 
-  // Routing logic based on the value of two-bit select signal 's'
-  assign y = s[1] ? d2 : (s[0] ? d1 : d0);
+	// Routing logic based on the value of two-bit select signal 's'
+	assign y = s[1] ? d2 : (s[0] ? d1 : d0);
 
 endmodule

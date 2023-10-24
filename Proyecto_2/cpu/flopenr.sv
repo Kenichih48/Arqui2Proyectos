@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Module Name:  flopenr
+// Module Name:   flopenr
 // Description:   This module represents a resettable flip-flop with an enable signal.
 //                It stores the input data 'd' and updates the output 'q' on the
 //                positive edge of the clock signal 'clk'. It also allows for a
@@ -31,20 +31,19 @@
 // ```
 ///////////////////////////////////////////////////////////////////////////////
 
-module flopenr #(
-  parameter WIDTH = 8 // Bit width parameter for input and output signals
-) (
-  input logic clk, // Clock signal
-  input logic reset, // Reset signal
-  input logic enable, // Enable signal
-  input logic [WIDTH-1:0] d, // Input data
-  output logic [WIDTH-1:0] q // Output data representing the stored value
-);
+module flopenr #(parameter WIDTH = 8) // Bit width parameter for input and output signals
+    (
+        input logic clk, // Clock signal
+        input logic reset, // Reset signal
+        input logic enable, // Enable signal
+        input logic [WIDTH-1:0] d, // Input data
+        output logic [WIDTH-1:0] q // Output data representing the stored value
+    );
 
-  always_ff @(posedge clk, posedge reset)
-    if (reset)
-      q <= 0;
-    else if (enable)
-      q <= d;
+    always_ff @(posedge clk, posedge reset)
+        if (reset)
+        q <= 0;
+        else if (enable)
+        q <= d;
 
 endmodule

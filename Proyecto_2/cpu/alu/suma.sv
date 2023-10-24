@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Module Name:  suma
+// Module Name:   suma
 // Description:   This module performs addition of two input numbers 'a' and 'b'.
 //                It calculates the sum of 'a' and 'b' and sets flags to indicate
 //                various conditions.

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Module Name:  flopr
+// Module Name:   flopr
 // Description:   This module represents a simple positive-edge triggered flip-flop
 //                with a reset feature. It stores the input data 'd' and updates
 //                the output 'q' on the positive edge of the clock signal 'clk'. When
@@ -28,19 +28,18 @@
 // ```
 ///////////////////////////////////////////////////////////////////////////////
 
-module flopr #(
-  parameter WIDTH = 8 // Bit width parameter for input and output signals
-) (
-  input logic clk, // Clock signal
-  input logic reset, // Reset signal
-  input logic [WIDTH-1:0] d, // Input data
-  output logic [WIDTH-1:0] q // Output data representing the stored value
-);
+module flopr #(parameter WIDTH = 8) // Bit width parameter for input and output signals
+	(
+		input logic clk, // Clock signal
+		input logic reset, // Reset signal
+		input logic [WIDTH-1:0] d, // Input data
+		output logic [WIDTH-1:0] q // Output data representing the stored value
+	);
 
-  always_ff @(posedge clk, posedge reset)
-    if (reset)
-      q <= 0;
-    else
-      q <= d;
+	always_ff @(posedge clk, posedge reset)
+		if (reset)
+		q <= 0;
+		else
+		q <= d;
 
 endmodule

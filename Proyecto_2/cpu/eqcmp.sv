@@ -25,15 +25,14 @@
 // ```
 ///////////////////////////////////////////////////////////////////////////////
 
-module eqcmp #(
-  parameter WIDTH = 8 // Bit width parameter for input signals
-) (
-  input logic [WIDTH-1:0] a, // Input signal 'a'
-  input logic [WIDTH-1:0] b, // Input signal 'b'
-  output logic y // Output signal 'y' indicating equality comparison result
-);
+module eqcmp #(parameter WIDTH = 8) // Bit width parameter for input signals
+	(
+	input logic [WIDTH-1:0] a, // Input signal 'a'
+	input logic [WIDTH-1:0] b, // Input signal 'b'
+	output logic y // Output signal 'y' indicating equality comparison result
+	);
 
-  // Perform equality comparison and set the output 'y'
-  assign y = (a == b);
+	// Perform equality comparison and set the output 'y'
+	assign y = (a == b);
 
 endmodule

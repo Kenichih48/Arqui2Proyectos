@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Module Name:  adder
+// Module Name:   adder
 // Description:   This module represents a simple adder with a parameterized width.
 //
 // Parameters:    WIDTH - Determines the width of the adder inputs and output.
@@ -22,15 +22,14 @@
 // ```
 ///////////////////////////////////////////////////////////////////////////////
 
-module adder #(
-  parameter WIDTH = 8 // Width parameter for input and output signals
-) (
-  input logic [WIDTH-1:0] a, // Input signal 'a'
-  input logic [WIDTH-1:0] b, // Input signal 'b'
-  output logic [WIDTH-1:0] y // Output signal 'y' representing 'a + b'
-);
+module adder #(parameter WIDTH = 8) // Width parameter for input and output signals
+	(
+	input logic [WIDTH-1:0] a, // Input signal 'a'
+	input logic [WIDTH-1:0] b, // Input signal 'b'
+	output logic [WIDTH-1:0] y // Output signal 'y' representing 'a + b'
+	);
 
-  // Logic for addition operation
-  assign y = a + b;
+	// Logic for addition operation
+	assign y = a + b;
 
 endmodule
