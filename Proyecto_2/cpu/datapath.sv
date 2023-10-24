@@ -23,38 +23,6 @@
 // Usage:         Instantiate this module in your processor design to represent
 //                the processor's datapath with various pipeline stages.
 //
-// Example Usage:
-// ```
-//   datapath myDatapath (
-//     .clk(clock),
-//     .reset(reset_signal),
-//     .RegSrcD(register_source_control),
-//     .ImmSrcD(immediate_source_control),
-//     .ALUSrcE(ALU_source_control),
-//     .BranchTakenE(branch_taken_control),
-//     .ALUControlE(ALU_control_signals),
-//     .MemtoRegW(memory_to_register_control),
-//     .PCSrcW(PC_source_control),
-//     .RegWriteW(register_write_control),
-//     .PCF(program_counter_fetch),
-//     .InstrF(instruction_fetch),
-//     .InstrD(instruction_decode),
-//     .ALUOutM(ALU_output_memory),
-//     .WriteDataM(data_to_write_memory),
-//     .ReadDataM(data_read_memory),
-//     .ALUFlagsE(ALU_flags_execute),
-//     .Match_1E_M(hazard_match_1E_M),
-//     .Match_1E_W(hazard_match_1E_W),
-//     .Match_2E_M(hazard_match_2E_M),
-//     .Match_2E_W(hazard_match_2E_W),
-//     .Match_12D_E(hazard_match_12D_E),
-//     .ForwardAE(forwarding_signal_A),
-//     .ForwardBE(forwarding_signal_B),
-//     .StallF(stall_signal_fetch),
-//     .StallD(stall_signal_decode),
-//     .FlushD(flush_signal_decode)
-//   );
-// ```
 ///////////////////////////////////////////////////////////////////////////////
 
 module datapath (

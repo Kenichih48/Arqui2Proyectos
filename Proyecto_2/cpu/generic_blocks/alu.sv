@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// Module Name:   ALU
+// Module Name:   alu
 // Description:   This module represents an Arithmetic Logic Unit (ALU) with
 //                support for various arithmetic operations and flag generation.
 //
@@ -31,16 +31,18 @@
 // ```
 ///////////////////////////////////////////////////////////////////////////////
 
-module ALU #(parameter WIDTH = 32) 
+module alu #(parameter WIDTH = 32) 
 	(
 		input logic [WIDTH-1:0] a, b,
 		input logic [2:0] ALUControl,
 		output logic [WIDTH-1:0] result,
-		output logic [3:0] ALUFlags, 
+		output logic [3:0] ALUFlags 
 	);
 
+    logic N, Z, C, V;
+
     always_comb begin
-        case (opcode)
+        case (ALUControl)
             3'b000: // SUM
                 result = a + b;
             3'b001: // RES - EQV
@@ -60,11 +62,11 @@ module ALU #(parameter WIDTH = 32)
         // Flags generation
         N = result[WIDTH-1];
         Z = (result == 0);
-		C = (opcode == 3'b000) ? ((result > a) || (result == a && b != 0)) : 0; // Carry for ADD
-		V = (opcode == 3'b000) ? ((a[WIDTH-1] && b[WIDTH-1] && !result[WIDTH-1]) ||
+		C = (ALUControl == 3'b000) ? ((result > a) || (result == a && b != 0)) : 0; // Carry for ADD
+		V = (ALUControl == 3'b000) ? ((a[WIDTH-1] && b[WIDTH-1] && !result[WIDTH-1]) ||
                          (!a[WIDTH-1] && !b[WIDTH-1] && result[WIDTH-1])) : 0; // Overflow for ADD
 
-		assign ALUFlags = {N, Z, C, V};
+		ALUFlags = {N, Z, C, V};
     end
 
 endmodule
