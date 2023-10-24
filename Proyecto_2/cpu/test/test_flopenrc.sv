@@ -79,6 +79,8 @@ module test_flopenrc;
         // Wait for one clock cycle
         #5;
         clk = 0;
+        #5;
+        
         // Verify that the output updates with the new input value when the enable signal is active
         if (q_actual !== d) begin
             $display("Test Failed: q_actual != d after input update");
@@ -92,6 +94,8 @@ module test_flopenrc;
         // Wait for one clock cycle
         #5;
         clk = 0;
+        #5;
+        en = 0;
         // Verify that the output resets to 0 after the clear is asserted
         if (q_actual !== 8'h00) begin
             $display("Test Failed: q_actual != 0 after clear, q_actual = %h", q_actual);
@@ -105,6 +109,7 @@ module test_flopenrc;
         // Wait for one clock cycle
         #5;
         clk = 0;
+        #5;
         // Verify that the output remains 0 after clear deassertion
         if (q_actual !== 8'h00) begin
             $display("Test Failed: q_actual != 0 after clear deassertion, q_actual = %h", q_actual);
@@ -112,28 +117,33 @@ module test_flopenrc;
         else
             $display("Test Passed: q_actual == 0 after clear deassertion");
         
-        // Set the clock value to 1 (rising edge)
-        clk = 1;
-        
+       
         // Wait for one clock cycle
         #5;
-        
+        clk = 1;
+        en = 1;
+        #5;
+        clk = 0;
+        en = 0;
+        #5;
         // Verify that the output doesn't change on the rising clock edge
         if (q_actual !== d) begin
-            $display("Test Failed: q_actual != d on rising clock edge");
+            $display("Test Failed: q_actual != d on rising clock edge, q_actual = %h", q_actual);
         end
         else
             $display("Test Passed: q_actual == d on rising clock edge");
         
-        // Set the clock value to 0 (falling edge)
-        clk = 0;
-        
         // Wait for one clock cycle
         #5;
-        
+        clk = 1;
+        en = 1;
+        #5;
+        clk = 0;
+        en = 0;
+        #5;
         // Verify that the output still doesn't change on the falling clock edge
         if (q_actual !== d) begin
-            $display("Test Failed: q_actual != d on falling clock edge");
+            $display("Test Failed: q_actual != d on falling clock edge, q_actual = %h", q_actual);
         end
         else
             $display("Test Passed: q_actual == d on falling clock edge");

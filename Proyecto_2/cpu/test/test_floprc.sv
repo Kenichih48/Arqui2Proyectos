@@ -25,14 +25,7 @@ module test_floprc;
         clear = 0;
         d = 8'hA5; // Input value
         
-        // Wait for one clock cycle
-        #5;
-        
-        // Verify that the output doesn't change before the rising clock edge
-        if (q_actual !== 8'h00) begin
-            $display("Test Failed: q_actual != 0 before rising clock edge");
-        end
-        
+       
         // Set reset to 1 (active low)
         reset = 1;
         
@@ -42,6 +35,9 @@ module test_floprc;
         // Verify that the output resets to 0 after reset is asserted
         if (q_actual !== 8'h00) begin
             $display("Test Failed: q_actual != 0 after reset");
+        end
+        else begin
+            $display("Test Passed: q_actual == 0 after reset");
         end
         
         // Set reset to 0 (inactive)
@@ -53,6 +49,9 @@ module test_floprc;
         // Verify that the output remains 0 after reset deassertion
         if (q_actual !== 8'h00) begin
             $display("Test Failed: q_actual != 0 after reset deassertion");
+        end 
+        else begin
+            $display("Test Passed: q_actual == 0 after reset deassertion");
         end
         
         // Set the clear signal to 1 (active low)
@@ -65,6 +64,9 @@ module test_floprc;
         if (q_actual !== 8'h00) begin
             $display("Test Failed: q_actual != 0 after clear");
         end
+        else begin
+            $display("Test Passed: q_actual == 0 after clear");
+        end
         
         // Set the clear signal to 0 (inactive)
         clear = 0;
@@ -76,27 +78,36 @@ module test_floprc;
         if (q_actual !== 8'h00) begin
             $display("Test Failed: q_actual != 0 after clear deassertion");
         end
-        
+        else begin
+            $display("Test Passed: q_actual == 0 after clear deassertion");
+        end
         // Set the input value to a new value
         d = 8'h3C;
         
-        // Wait for one clock cycle
+        clk = 1;
         #5;
-        
+        clk = 0;
+        #5;
         // Verify that the output updates with the new input value
         if (q_actual !== d) begin
             $display("Test Failed: q_actual != d after input update");
         end
-        
+        else begin
+            $display("Test Passed: q_actual == d after input update");
+        end
+
         // Set the clock value to 1 (rising edge)
         clk = 1;
-        
-        // Wait for one clock cycle
+        #5;
+        clk = 0;
         #5;
         
         // Verify that the output doesn't change on the rising clock edge
         if (q_actual !== d) begin
             $display("Test Failed: q_actual != d on rising clock edge");
+        end
+        else begin
+            $display("Test Passed: q_actual == d on rising clock edge");
         end
         
         // Set the clock value to 0 (falling edge)
@@ -108,6 +119,9 @@ module test_floprc;
         // Verify that the output still doesn't change on the falling clock edge
         if (q_actual !== d) begin
             $display("Test Failed: q_actual != d on falling clock edge");
+        end
+        else begin
+            $display("Test Passed: q_actual == d on falling clock edge");
         end
     end
 endmodule

@@ -42,12 +42,12 @@ set_global_assignment -name DEVICE 5CSEBA6U23I7
 set_global_assignment -name TOP_LEVEL_ENTITY top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 22.1STD.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "21:39:47  OCTOBER 23, 2023"
-set_global_assignment -name LAST_QUARTUS_VERSION "22.1std.1 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "20.1.1 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP "-40"
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 100
 set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
-set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim (SystemVerilog)"
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (SystemVerilog)"
 set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "SYSTEMVERILOG HDL" -section_id eda_simulation
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_timing
@@ -59,7 +59,6 @@ set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
 set_global_assignment -name SYSTEMVERILOG_FILE test/test_regfile.sv
 set_global_assignment -name SYSTEMVERILOG_FILE test/test_mux3.sv
 set_global_assignment -name SYSTEMVERILOG_FILE test/test_mux2.sv
@@ -92,48 +91,49 @@ set_global_assignment -name SYSTEMVERILOG_FILE datapath.sv
 set_global_assignment -name SYSTEMVERILOG_FILE controller.sv
 set_global_assignment -name SYSTEMVERILOG_FILE conditional.sv
 set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
-set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH test_regfile -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH test_flopenrc -section_id eda_simulation
 set_global_assignment -name EDA_TEST_BENCH_NAME test_regfile -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_regfile
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_regfile -section_id test_regfile
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_regfile.sv -section_id test_regfile
 set_global_assignment -name EDA_TEST_BENCH_NAME test_mux3 -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_mux3
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_mux3 -section_id test_mux3
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux3.sv -section_id test_mux3
 set_global_assignment -name EDA_TEST_BENCH_NAME test_mux2 -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_mux2
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_mux2 -section_id test_mux2
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux2.sv -section_id test_mux2
 set_global_assignment -name EDA_TEST_BENCH_NAME test_floprc -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_floprc
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_floprc -section_id test_floprc
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_floprc.sv -section_id test_floprc
 set_global_assignment -name EDA_TEST_BENCH_NAME test_flopr -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_flopr
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_flopr -section_id test_flopr
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopr.sv -section_id test_flopr
 set_global_assignment -name EDA_TEST_BENCH_NAME test_flopenrc -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_flopenrc
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_flopenrc -section_id test_flopenrc
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopenrc.sv -section_id test_flopenrc
 set_global_assignment -name EDA_TEST_BENCH_NAME test_flopenr -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_flopenr
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_flopenr -section_id test_flopenr
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopenr.sv -section_id test_flopenr
 set_global_assignment -name EDA_TEST_BENCH_NAME test_extend -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_extend
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_extend -section_id test_extend
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_extend.sv -section_id test_extend
 set_global_assignment -name EDA_TEST_BENCH_NAME test_eqcmp -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_eqcmp
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_eqcmp -section_id test_eqcmp
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_eqcmp.sv -section_id test_eqcmp
 set_global_assignment -name EDA_TEST_BENCH_NAME test_alu -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_alu
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_alu -section_id test_alu
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_alu.sv -section_id test_alu
 set_global_assignment -name EDA_TEST_BENCH_NAME test_adder -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_adder
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_adder -section_id test_adder
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_regfile.sv -section_id test_regfile
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux3.sv -section_id test_mux3
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux2.sv -section_id test_mux2
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_floprc.sv -section_id test_floprc
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopr.sv -section_id test_flopr
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopenrc.sv -section_id test_flopenrc
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopenr.sv -section_id test_flopenr
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_extend.sv -section_id test_extend
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_eqcmp.sv -section_id test_eqcmp
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_alu.sv -section_id test_alu
 set_global_assignment -name EDA_TEST_BENCH_FILE test/test_adder.sv -section_id test_adder
