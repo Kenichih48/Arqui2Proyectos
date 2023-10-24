@@ -48,9 +48,6 @@ module flopenrc #(parameter WIDTH = 8) // Bit width parameter for input and outp
 		if (reset)
 		q <= 0;
 		else if (en)
-		if (clear)
-			q <= 0;
-		else
-			q <= d;
-
+			if (clear) q <= 0;
+			else q <= d;
 endmodule
