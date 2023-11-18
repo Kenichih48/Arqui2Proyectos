@@ -95,6 +95,7 @@ module controller (
                 (ALUControlD == 3'b000 | ALUControlD == 3'b001 |
                 ALUControlD == 3'b010 | ALUControlD == 3'b011 | ALUControlD == 3'b100);
 
+            // EQV instruction does not write to destination register
             NoWrite = (InstrD[21:19] == 3'b110);
 
         end else begin  // not Data-processing
@@ -116,7 +117,7 @@ module controller (
     // Write and Branch controls are conditional 
     conditional Cond(CondE, FlagsE, ALUFlagsE, FlagWriteE, CondExE, FlagsNextE); 
     assign BranchTakenE = BranchE & CondExE; 
-    assign RegWriteGatedE = RegWriteE & ~NoWrite & CondExE;
+    assign RegWriteGatedE = RegWriteE & CondExE;
     assign MemWriteGatedE = MemWriteE & CondExE; 
     assign PCSrcGatedE = PCSrcE & CondExE; 
 
