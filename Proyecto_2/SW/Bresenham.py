@@ -59,6 +59,16 @@ def plot_cube(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, x8, y8):
     plot_line(x7, y7, x8, y8, plane, white)
     plot_line(x8, y8, x5, y5, plane, white)
 
+#plot triangle
+def plot_triangle(x1,y1,x2,y2,x3,y3):
+
+    white = [255, 255, 255]
+
+    plot_line(x1, y1, x2, y2, plane, white)
+    plot_line(x2, y2, x3, y3, plane, white)
+    plot_line(x3, y3, x1, y1, plane, white)
+
+
 
 if __name__ == "__main__":
     # Configuración de la matriz de píxeles y las coordenadas de los vértices
@@ -77,7 +87,7 @@ if __name__ == "__main__":
    
     # Trazar el cubo en la matriz de píxeles
     plot_cube(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, x7, y7, x8, y8)
-
+    #plot_triangle(100,100,200,100,150,200)
     # Mostrar la imagen resultante
     plt.imshow(plane, origin='lower')
     plt.show()
