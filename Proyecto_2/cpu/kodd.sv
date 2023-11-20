@@ -38,7 +38,7 @@ module kodd (
     output logic        MemWriteM,  // Control signal for memory write
     output logic        MemWriteVecM, //TODO: nueva salida vectorial
     output logic [31:0] ALUOutM, WriteDataM,  // Result of the ALU operation and data to be written to memory
-    output logic [31:0] ALUOutMVec[0:3], WriteDataMVec[0:3], //TODO: nuevas salidas vectoriales
+    output logic [31:0] WriteDataMVec[0:3], VectorAddressM[0:3], //TODO: nuevas salidas vectoriales
     input logic  [31:0] ReadDataM,  // Data read from memory
     input logic  [31:0] ReadDataVecM[0:3] //TODO: nueva entrada vectorial
 );
@@ -60,7 +60,7 @@ module kodd (
 
     datapath dp(clk, reset, RegSrcD, ImmSrcD, ALUSrcE, BranchTakenE, ALUControlE, 
                 MemtoRegW, PCSrcW, RegWriteW, RegWriteVecW, PCF, InstrF, InstrD, ALUOutM, WriteDataM, 
-                ALUOutMVec, WriteDataMVec, ReadDataM, ReadDataVecM, ALUFlagsE, Match_1E_M, 
+                WriteDataMVec, VectorAddressM, ReadDataM, ReadDataVecM, ALUFlagsE, Match_1E_M, 
                 Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, ForwardAE, ForwardBE, StallF, StallD, FlushD); 
 
     hazard h(clk, reset, Match_1E_M, Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, 

@@ -36,7 +36,7 @@ module datapath (
     input logic  [31:0] InstrF,
     output logic [31:0] InstrD,
     output logic [31:0] ALUOutM, WriteDataM,
-    output logic [31:0] ALUOutMVec[0:3], WriteDataMVec[0:3], //TODO: nuevos outputs vectoriales
+    output logic [31:0] WriteDataMVec[0:3], VectorAddressM[0:3], //TODO: nuevos outputs vectoriales
     input logic  [31:0] ReadDataM,
     input logic  [31:0] ReadDataVecM[0:3], //TODO: nuevos inputs vectoriales
     output logic [3:0]  ALUFlagsE,
@@ -52,7 +52,7 @@ module datapath (
     logic [31:0] rd1EVec[0:3], rd2EVec[0:3], ALUResultVecE[0:3];
     logic [31:0] ALUResultVecEE[0:3], addressVector[0:3];
     logic [31:0] ReadDataW, ALUOutW, ResultW; 
-    logic [31:0] ResultVecW[0:3], ReadDataVecW[0:3], ALUOutWVec[0:3];
+    logic [31:0] ResultVecW[0:3], ReadDataVecW[0:3], ALUOutMVec[0:3], ALUOutWVec[0:3];
     logic [3:0] RA1D, RA2D, RA1E, RA2E, WA3E, WA3M, WA3W; 
     logic Match_1D_E, Match_2D_E; 
 
@@ -104,6 +104,7 @@ module datapath (
     //TODO: flopr vectorial
     floprvec #(32, 4) aluresregvec(clk, reset, ALUResultVecEE, ALUOutMVec); 
     floprvec #(32, 4) wdregvec(clk, reset, rd2EVec, WriteDataMVec); 
+    floprvec #(32, 4) rdregvec(clk, reset, addressVector, VectorAddressM); 
 
     // Writeback Stage 
     flopr #(32) aluoutreg(clk, reset, ALUOutM, ALUOutW); 

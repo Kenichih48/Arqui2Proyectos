@@ -36,7 +36,7 @@ module top (
 
     // Instantiate the processor core and memory modules
     kodd processor(clk, reset, PCF, InstrF, MemWriteM, MemWriteVecM, 
-    DataAdrM, WriteDataM, DataAdrVecM, WriteDataMVec, ReadDataM, ReadDataVecM);
+    DataAdrM, WriteDataM, WriteDataMVec, DataAdrVecM, ReadDataM, ReadDataVecM);
     imem instmem(PCF, InstrF);  // Instruction memory
     dmem datmem(clk, MemWriteM, MemWriteVecM, DataAdrM, WriteDataM, 
     DataAdrVecM, WriteDataMVec, ReadDataM, ReadDataVecM);  // Data memory
