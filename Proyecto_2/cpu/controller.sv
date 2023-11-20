@@ -32,16 +32,17 @@ module controller (
     output logic            MemWriteM, MemtoRegW, PCSrcW, RegWriteW,
     //hazard interface
     output logic            RegWriteM, MemtoRegE, 
+    output logic            MemWriteVecM, RegWriteVecW, //TODO: outputs vectoriales
     output logic            PCWrPendingF, 
     input logic             FlushE);
 
-    logic [9:0] controlsD; 
+    logic [11:0] controlsD; 
     logic CondExE, ALUOpD; 
     logic [2:0] ALUControlD; 
     logic ALUSrcD; 
     logic MemtoRegD, MemtoRegM; 
-    logic RegWriteD, RegWriteE, RegWriteGatedE;
-    logic MemWriteD, MemWriteE, MemWriteGatedE;
+    logic RegWriteD, RegWriteVecD, RegWriteE, RegWriteVecE, RegWriteGatedE, RegWriteGatedVecE;
+    logic MemWriteD, MemWriteVecD, MemWriteE, MemWriteVecE, MemWriteGatedE, MemWriteGatedVecE;
     logic BranchD, BranchE; 
     logic [1:0] FlagWriteD, FlagWriteE; 
     logic PCSrcD, PCSrcE, PCSrcM; 
@@ -55,24 +56,33 @@ module controller (
         casex(InstrD[25:23]) 
                     // data-processing escalar
                     // immediate
-            3'b000: if (InstrD[22]) controlsD = 10'b0000101001; 
+            3'b000: if (InstrD[22]) controlsD = 12'b000000101001; 
                     // register
-                    else            controlsD = 10'b0000001001;
+                    else            controlsD = 12'b000000001001;
 
                     // branch    
-            3'b001:                 controlsD = 10'b0110100010;
+            3'b001:                 controlsD = 12'b000110100010;
 
                     // memory escalar
                     // GET
-            3'b010: if (InstrD[18]) controlsD = 10'b0001111000; 
+            3'b010: if (InstrD[18]) controlsD = 12'b000001111000; 
                     // PUT
-                    else            controlsD = 10'b1001110100; 
-                    
+                    else            controlsD = 12'b001001110100; 
+                    // TODO: instrucciones vectoriales
+                    // data-processing vectorial
+            3'b011:                 controlsD = 12'b010000000001;
+            
+                    // memory vectorial
+                    // GET
+            3'b100: if (InstrD[18]) controlsD = 12'b010001110000; 
+                    // PUT
+                    else            controlsD = 12'b101001100000;              
+
                     // unimplemented
-            default:                controlsD = 10'bx; 
+            default:                controlsD = 12'bx; 
        endcase 
 
-    assign {RegSrcD, ImmSrcD, ALUSrcD, MemtoRegD, RegWriteD, 
+    assign {MemWriteVecD, RegWriteVecD, RegSrcD, ImmSrcD, ALUSrcD, MemtoRegD, RegWriteD, 
     MemWriteD, BranchD, ALUOpD} = controlsD; 
 
     // ALU Decoder
@@ -107,8 +117,10 @@ module controller (
     assign PCSrcD = (((InstrD[17:14] == 4'b1001) & RegWriteD) | BranchD); 
 
     // Execute stage 
-    floprc #(7) flushedregsE(clk, reset, FlushE, {FlagWriteD, BranchD, MemWriteD, RegWriteD, 
-    PCSrcD, MemtoRegD}, {FlagWriteE, BranchE, MemWriteE, RegWriteE, PCSrcE, MemtoRegE}); 
+    // TODO: nuevas senales vectoriales
+    floprc #(9) flushedregsE(clk, reset, FlushE, {MemWriteVecD, RegWriteVecD, FlagWriteD, BranchD, 
+    MemWriteD, RegWriteD, PCSrcD, MemtoRegD}, {MemWriteVecE, RegWriteVecE, FlagWriteE, BranchE, 
+    MemWriteE, RegWriteE, PCSrcE, MemtoRegE}); 
     
     flopr #(4) regsE(clk, reset, {ALUSrcD, ALUControlD}, {ALUSrcE, ALUControlE});
     flopr #(1) condregE(clk, reset, InstrD[25], CondE); 
@@ -117,16 +129,22 @@ module controller (
     // Write and Branch controls are conditional 
     conditional Cond(CondE, FlagsE, ALUFlagsE, FlagWriteE, CondExE, FlagsNextE); 
     assign BranchTakenE = BranchE & CondExE; 
-    assign RegWriteGatedE = RegWriteE & CondExE;
+    assign RegWriteGatedE = RegWriteE & CondExE; 
     assign MemWriteGatedE = MemWriteE & CondExE; 
+    assign RegWriteGatedVecE = RegWriteVecE & CondExE;   // TODO: nuevas senales vectoriales
+    assign MemWriteGatedVecE = MemWriteVecE & CondExE;  // TODO: nuevas senales vectoriales
+
     assign PCSrcGatedE = PCSrcE & CondExE; 
 
     // Memory stage 
-    flopr #(4) regsM(clk, reset, {MemWriteGatedE, MemtoRegE, RegWriteGatedE, PCSrcGatedE}, 
-    {MemWriteM, MemtoRegM, RegWriteM, PCSrcM}); 
+    // TODO: nuevas senales vectoriales
+    flopr #(6) regsM(clk, reset, {RegWriteGatedVecE, MemWriteGatedVecE, MemWriteGatedE, MemtoRegE, 
+    RegWriteGatedE, PCSrcGatedE}, {RegWriteVecM, MemWriteVecM, MemWriteM, MemtoRegM, RegWriteM, PCSrcM}); 
 
-    // Writeback stage 
-    flopr #(3) regsW(clk, reset, {MemtoRegM, RegWriteM, PCSrcM}, {MemtoRegW, RegWriteW, PCSrcW});
+    // Writeback stage
+    // TODO: nuevas senales vectoriales 
+    flopr #(4) regsW(clk, reset, {RegWriteVecM, MemtoRegM, RegWriteM, PCSrcM}, 
+    {RegWriteVecW, MemtoRegW, RegWriteW, PCSrcW});
 
     // Hazard Prediction 
     assign PCWrPendingF = PCSrcD | PCSrcE | PCSrcM;

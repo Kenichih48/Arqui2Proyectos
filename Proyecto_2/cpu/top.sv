@@ -27,14 +27,18 @@
 module top (
     input logic  clk, reset,  // Clock and Reset signals
     output logic [31:0] WriteDataM, DataAdrM,  // Data to be written to memory and memory address
-    output logic MemWriteM  // Control signal for memory write
+    output logic [31:0] DataAdrVecM[0:3], WriteDataMVec[0:3], //TODO: nuevas salidas vectoriales
+    output logic MemWriteM , MemWriteVecM // Control signal for memory write
 );
 
     logic [31:0] PCF, InstrF, ReadDataM;  // Internal signals for PC, instruction, and data read
+    logic [31:0] ReadDataVecM[0:3];
 
     // Instantiate the processor core and memory modules
-    kodd processor(clk, reset, PCF, InstrF, MemWriteM, DataAdrM, WriteDataM, ReadDataM);
+    kodd processor(clk, reset, PCF, InstrF, MemWriteM, MemWriteVecM, 
+    DataAdrM, WriteDataM, DataAdrVecM, WriteDataMVec, ReadDataM, ReadDataVecM);
     imem instmem(PCF, InstrF);  // Instruction memory
-    dmem datmem(clk, MemWriteM, DataAdrM, WriteDataM, ReadDataM);  // Data memory
+    dmem datmem(clk, MemWriteM, MemWriteVecM, DataAdrM, WriteDataM, 
+    DataAdrVecM, WriteDataMVec, ReadDataM, ReadDataVecM);  // Data memory
 
 endmodule

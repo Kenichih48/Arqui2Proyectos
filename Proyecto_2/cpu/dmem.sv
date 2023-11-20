@@ -31,9 +31,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 module dmem ( 
-    input logic clk, we,
+    input logic clk, we, wev,
     input logic [31:0] a, wd,
-    output logic [31:0] rd
+    input logic [31:0] va[0:3], wdv[0:3],
+    output logic [31:0] rd,
+    output logic [31:0] rdv[0:3]
 );
 
     logic [31:0] RAM[1000:0];       // Array to store data
@@ -43,7 +45,18 @@ module dmem (
     end
 
     assign rd = RAM[a[31:0]];         // Read data from RAM (word-aligned)
+    assign rdv[0] = RAM[va[0][31:0]]; //TODO: nuevos assigns vectoriales
+    assign rdv[1] = RAM[va[1][31:0]];
+    assign rdv[2] = RAM[va[2][31:0]];
+    assign rdv[3] = RAM[va[3][31:0]];
 
-    always_ff @(posedge clk)              // On positive edge of the clock
+    always_ff @(posedge clk) begin         // On positive edge of the clock
         if (we) RAM[a[31:0]] <= wd;       // Write data to RAM if write enable is active
+        if (wev) begin
+            RAM[va[0][31:0]] <= wdv[0]; //TODO: nuevos always vectoriales
+            RAM[va[1][31:0]] <= wdv[1];
+            RAM[va[2][31:0]] <= wdv[2];
+            RAM[va[3][31:0]] <= wdv[3]; 
+        end
+    end
 endmodule

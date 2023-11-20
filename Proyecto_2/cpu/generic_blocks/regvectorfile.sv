@@ -32,9 +32,8 @@
 
 module regvectorfile (
     input logic clk, wren,
-    input logic [3:0] wraddr,
+    input logic [3:0] readAddr1, readAddr2, wraddr,
     input logic [31:0] wrdata [3:0],
-    input logic [3:0] readAddr1, readAddr2,
     output logic [31:0] r1v [0:3],
     output logic [31:0] r2v [0:3]
 );

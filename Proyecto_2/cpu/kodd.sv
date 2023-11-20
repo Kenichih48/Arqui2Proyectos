@@ -36,13 +36,16 @@ module kodd (
     output logic [31:0] PCF,  // Program Counter value for the next cycle
     input logic  [31:0] InstrF,  // Instruction fetched from memory
     output logic        MemWriteM,  // Control signal for memory write
+    output logic        MemWriteVecM, //TODO: nueva salida vectorial
     output logic [31:0] ALUOutM, WriteDataM,  // Result of the ALU operation and data to be written to memory
-    input logic  [31:0] ReadDataM  // Data read from memory
+    output logic [31:0] ALUOutMVec[0:3], WriteDataMVec[0:3], //TODO: nuevas salidas vectoriales
+    input logic  [31:0] ReadDataM,  // Data read from memory
+    input logic  [31:0] ReadDataVecM[0:3] //TODO: nueva entrada vectorial
 );
 
     logic [1:0] RegSrcD, ImmSrcD;
     logic [2:0] ALUControlE; 
-    logic ALUSrcE, BranchTakenE, MemtoRegW, PCSrcW, RegWriteW; 
+    logic ALUSrcE, BranchTakenE, MemtoRegW, PCSrcW, RegWriteW, RegWriteVecW;
     logic [3:0] ALUFlagsE; 
     logic [31:0] InstrD; 
     logic RegWriteM, MemtoRegE, PCWrPendingF; 
@@ -53,12 +56,12 @@ module kodd (
     // Instantiate the controller, datapath, and hazard modules
     controller c(clk, reset, InstrD[26:10], ALUFlagsE, RegSrcD, ImmSrcD, ALUSrcE, 
                 BranchTakenE, ALUControlE, MemWriteM, MemtoRegW, PCSrcW, RegWriteW, 
-                RegWriteM, MemtoRegE, PCWrPendingF, FlushE); 
+                RegWriteM, MemtoRegE, MemWriteVecM, RegWriteVecW, PCWrPendingF, FlushE); 
 
     datapath dp(clk, reset, RegSrcD, ImmSrcD, ALUSrcE, BranchTakenE, ALUControlE, 
-                MemtoRegW, PCSrcW, RegWriteW, PCF, InstrF, InstrD, ALUOutM, WriteDataM, 
-                ReadDataM, ALUFlagsE, Match_1E_M, Match_1E_W, Match_2E_M, Match_2E_W, 
-                Match_12D_E, ForwardAE, ForwardBE, StallF, StallD, FlushD); 
+                MemtoRegW, PCSrcW, RegWriteW, RegWriteVecW, PCF, InstrF, InstrD, ALUOutM, WriteDataM, 
+                ALUOutMVec, WriteDataMVec, ReadDataM, ReadDataVecM, ALUFlagsE, Match_1E_M, 
+                Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, ForwardAE, ForwardBE, StallF, StallD, FlushD); 
 
     hazard h(clk, reset, Match_1E_M, Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, 
                 RegWriteM, RegWriteW, BranchTakenE, MemtoRegE, PCWrPendingF, PCSrcW, 
