@@ -13,8 +13,8 @@ dp_scalar = {
 
 mem_escalar = {
    'cond+op': '0010',   # Cond + Op
-   'PUT': '00000',      # I + Tipo + L
-   'GET': '00011',      # I + Tipo + L
+   'PUT': '00000',      # Tipo + L
+   'GET': '00011',      # Tipo + L
 }
 
 control = {
@@ -33,6 +33,31 @@ registers = {
     'R7': '0111',
     'R8': '1000',
     'R9': '1001'
+}
+
+dp_vectorial = {
+    'cond+op+i': '00110', # Cond + Op + I
+    'SUMV': '0000',       # Tipo + S
+    'MULV': '0100',       # Tipo + S
+}
+
+mem_vectorial = {
+   'cond+op': '0100',   # Cond + Op
+   'PUTV': '00000',      # Tipo + L
+   'GETV': '00011',      # Tipo + L
+}
+
+registers_vectorial = {
+    'R0V': '0000',
+    'R1V': '0001',
+    'R2V': '0010',
+    'R3V': '0011',
+    'R4V': '0100',
+    'R5V': '0101',
+    'R6V': '0110',
+    'R7V': '0111',
+    'R8V': '1000',
+    'R9V': '1001'
 }
 
 Rd = ''
@@ -61,7 +86,8 @@ def compiler():
         if (lista[0] == ''):
             # linea vacia
             eliminar.append(instr)
-        elif(lista[0] not in dp_scalar) and (lista[0] not in mem_escalar) and (lista[0] not in control):
+        elif((lista[0] not in dp_scalar) and (lista[0] not in mem_escalar) and (lista[0] not in control) 
+             and (lista[0] not in dp_vectorial) and (lista[0] not in mem_vectorial)):
             # etiqueta
             etiquetas.append((lista[0], contador))
             eliminar.append(instr)
@@ -144,12 +170,37 @@ def compiler():
                 binary_instr += Rd
                 binary_instr += Rn
                 binary_instr += Src2
+
+        elif lista[0] in dp_vectorial:
+            # data-processing scalar instruction
+            binary_instr = dp_vectorial['cond+op+i'] # Cond + Op + I
+            binary_instr += dp_vectorial[lista[0]] # Tipo + S
+
+            Rd = registers_vectorial[lista[1]]
+            Rn = registers_vectorial[lista[2]]
+            Src2 =  '000000'+ registers_vectorial[lista[3]]  # - + Rm
+
+            binary_instr += Rd
+            binary_instr += Rn
+            binary_instr += Src2
         
         elif lista[0] in mem_escalar: 
             # memory escalar instruction
             binary_instr += mem_escalar['cond+op'] # Cond + Op
-            binary_instr += mem_escalar[lista[0]]  # I + Tipo + L
+            binary_instr += mem_escalar[lista[0]]  # Tipo + L
             Rd = registers[lista[1]]
+            Rn = registers[lista[2]]
+            Src2 = '0000000000'
+
+            binary_instr += Rd
+            binary_instr += Rn
+            binary_instr += Src2
+
+        elif lista[0] in mem_vectorial:
+            # memory vectorial instruction
+            binary_instr += mem_vectorial['cond+op'] # Cond + Op
+            binary_instr += mem_vectorial[lista[0]]  # Tipo + L
+            Rd = registers_vectorial[lista[1]]
             Rn = registers[lista[2]]
             Src2 = '0000000000'
 
