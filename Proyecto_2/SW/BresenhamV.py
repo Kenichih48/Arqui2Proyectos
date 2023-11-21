@@ -44,27 +44,25 @@ def plot_triangle(matrix,x1,y1,x2,y2,x3,y3,color):
 
     plot_line_vectorized(x1, y1, x2, y2, matrix, color)
     plot_line_vectorized(x2, y2, x3, y3, matrix, color)
-    plot_line_vectorized(x3, y3, x1, y1, matrix, color)
+    plot_line_vectorized(x1, y1, x3, y3,  matrix, color)
 
 
 
 def main():
     # Create a matrix to represent the image
     white = np.array([255, 255, 255], dtype=np.uint8)  # White color
-    image_matrix = np.full((480, 640, 3), white, dtype=np.uint8)
+    image_matrix = np.full((150, 150, 3), white, dtype=np.uint8)
 
-    # Set the endpoints of the line
-    x1, y1 = 0, 0
-    x2, y2 = 640, 480
 
     # Set the color (RGB values)
     black = np.array([0, 0, 0], dtype=np.uint8)  # Red color
 
-    plot_line_vectorized(100, 100, 200, 200, image_matrix, black)
-    plot_line_vectorized(200,100, 300, 200, image_matrix, black)
-    plot_line_vectorized(100,100,200,100,image_matrix,black)
-    plot_line_vectorized(200,200,300,200,image_matrix,black)
-
+    plot_line_vectorized(10, 10, 80, 80, image_matrix, black)
+    plot_line_vectorized(80, 10, 150, 80, image_matrix, black)
+    plot_line_vectorized(80, 80, 150, 80, image_matrix, black)
+    plot_line_vectorized(10, 10, 80, 10, image_matrix, black)
+   
+   
     # Display the image
     plt.imshow(image_matrix)
     plt.show()
