@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-import numpy as np
+from PIL import Image
 
 def plot_line_vectorized(x1, y1, x2, y2, matrix, color):
     # Calcular las diferencias en las coordenadas x e y
@@ -65,6 +65,12 @@ def main():
    
     # Display the image
     plt.imshow(image_matrix)
+
+    # Convert the NumPy array to an image
+    image = Image.fromarray(image_matrix.astype('uint8'))
+
+    # Save the image as a PNG file
+    image.save('SW/output.png')
     plt.show()
 
 
