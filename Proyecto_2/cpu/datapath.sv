@@ -97,8 +97,8 @@ module datapath (
     alu #(32) alu(SrcAE, SrcBE, ALUControlE, ALUResultE, ALUFlagsE);
 
     //TODO: alu vectorial
-    mux3vec #(32, 4) byp1muxvec(rd1EVec, ResultVecW, ALUOutMVec, ForwardAEVec, SrcAEVec); 
-    mux3vec #(32, 4) byp1muxvec(rd2EVec, ResultVecW, ALUOutMVec, ForwardBEVec, SrcBEVec); 
+    mux3vec #(32, 4) byp1muxvec(rd1EVec, ALUOutMVec, ResultVecW, ForwardAEVec, SrcAEVec); 
+    mux3vec #(32, 4) byp2muxvec(rd2EVec, ALUOutMVec, ResultVecW, ForwardBEVec, SrcBEVec); 
     vectorfu vecalu(SrcAEVec, SrcBEVec, ALUControlE, ALUResultVecE);
 
     //TODO: vector load/store
@@ -137,12 +137,12 @@ module datapath (
     assign Match_12D_E = Match_1D_E | Match_2D_E; 
 
     // hazard comparison vectorial
-    eqcmp #(4) m0(WA3M, RA1EVec, Match_1E_M_Vec); 
-    eqcmp #(4) m1(WA3W, RA1EVec, Match_1E_W_Vec); 
-    eqcmp #(4) m2(WA3M, RA2E, Match_2E_M_Vec); 
-    eqcmp #(4) m3(WA3W, RA2E, Match_2E_W_Vec); 
+    eqcmp #(4) m0vec(WA3M, RA1EVec, Match_1E_M_Vec); 
+    eqcmp #(4) m1vec(WA3W, RA1EVec, Match_1E_W_Vec); 
+    eqcmp #(4) m2vec(WA3M, RA2E, Match_2E_M_Vec); 
+    eqcmp #(4) m3vec(WA3W, RA2E, Match_2E_W_Vec); 
 
-    eqcmp #(4) m4a(WA3E, RA1DVec, Match_1D_E_Vec); 
-    eqcmp #(4) m4b(WA3E, RA1DVec, Match_2D_E_Vec); 
+    eqcmp #(4) m4avec(WA3E, RA1DVec, Match_1D_E_Vec); 
+    eqcmp #(4) m4bvec(WA3E, RA1DVec, Match_2D_E_Vec); 
     assign Match_12D_E_Vec = Match_1D_E_Vec | Match_2D_E_Vec; 
 endmodule

@@ -138,7 +138,7 @@ module controller (
 
     // Memory stage 
     // TODO: nuevas senales vectoriales
-    flopr #(6) regsM(clk, reset, {RegWriteVecE, MemWriteGatedVecE, MemWriteGatedE, MemtoRegE, 
+    flopr #(6) regsM(clk, reset, {RegWriteVecE, MemWriteVecE, MemWriteGatedE, MemtoRegE, 
     RegWriteGatedE, PCSrcGatedE}, {RegWriteVecM, MemWriteVecM, MemWriteM, MemtoRegM, RegWriteM, PCSrcM}); 
 
     // Writeback stage
