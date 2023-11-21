@@ -38,6 +38,7 @@ registers = {
 dp_vectorial = {
     'cond+op+i': '00110', # Cond + Op + I
     'SUMV': '0000',       # Tipo + S
+    'RESV': '0010',       # Tipo + S
     'MULV': '0100',       # Tipo + S
 }
 

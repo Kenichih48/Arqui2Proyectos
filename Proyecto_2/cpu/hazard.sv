@@ -46,26 +46,38 @@
 
 module hazard ( 
     input logic        clk, reset, 
-    input logic        Match_1E_M, Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, 
-    input logic        RegWriteM, RegWriteW, 
+    input logic        Match_1E_M, Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, Match_12D_E_Vec, 
+    input logic        Match_1E_M_Vec, Match_1E_W_Vec, Match_2E_M_Vec, Match_2E_W_Vec, //TODO: hazard vectorial
+    input logic        RegWriteM, RegWriteVecM, RegWriteW, RegWriteVecW,
     input logic        BranchTakenE, MemtoRegE, 
     input logic        PCWrPendingF, PCSrcW, 
     output logic [1:0] ForwardAE, ForwardBE, 
-    output logic       StallF, StallD, 
+    output logic [1:0] ForwardAEVec, ForwardBEVec, 
+    output logic       StallF, StallD,
     output logic       FlushD, FlushE
 );
 
-    logic ldrStallD; 
+    logic ldrStallD, ldrStallDVec; 
+    logic StallDVec, StallFVec, FlushEVec;
+    logic StallDScalar, StallFScalar, FlushEScalar;
 
     // Forwarding logic 
     always_comb begin 
-        if (Match_1E_M & RegWriteM) ForwardAE = 2'b10; 
-        else if (Match_1E_W & RegWriteW) ForwardAE = 2'b01; 
-        else ForwardAE = 2'b00; 
+        if (Match_1E_M & RegWriteM) ForwardAE = 2'b10; // SrcAE = ALUOutM
+        else if (Match_1E_W & RegWriteW) ForwardAE = 2'b01;  // SrcAE = ResultW
+        else ForwardAE = 2'b00; // SrcAE from regfile
     
-        if (Match_2E_M & RegWriteM) ForwardBE = 2'b10; 
-        else if (Match_2E_W & RegWriteW) ForwardBE = 2'b01;
-        else ForwardBE = 2'b00; 
+        if (Match_2E_M & RegWriteM) ForwardBE = 2'b10; // SrcAE = ALUOutM
+        else if (Match_2E_W & RegWriteW) ForwardBE = 2'b01; // SrcAE = ResultW
+        else ForwardBE = 2'b00;  // SrcAE from regfile
+
+        if (Match_1E_M_Vec & RegWriteVecM) ForwardAEVec = 2'b10; // SrcAE = ALUOutM
+        else if (Match_1E_W_Vec & RegWriteVecW) ForwardAEVec = 2'b01;  // SrcAE = ResultW
+        else ForwardAEVec = 2'b00; // SrcAE from regfile
+    
+        if (Match_2E_M_Vec & RegWriteVecM) ForwardBEVec = 2'b10; // SrcAE = ALUOutM
+        else if (Match_2E_W_Vec & RegWriteVecW) ForwardBEVec = 2'b01; // SrcAE = ResultW
+        else ForwardBEVec = 2'b00;  // SrcAE from regfile
     end
 
     // Stalls and flushes 
@@ -82,9 +94,20 @@ module hazard (
  
     assign ldrStallD = Match_12D_E & MemtoRegE; 
     
-    assign StallD = ldrStallD; 
-    assign StallF = ldrStallD | PCWrPendingF; 
-    assign FlushE = ldrStallD | BranchTakenE; 
+    assign StallDScalar = ldrStallD; 
+    assign StallFScalar = ldrStallD | PCWrPendingF; 
+    assign FlushEScalar = ldrStallD | BranchTakenE; 
     assign FlushD = PCWrPendingF | PCSrcW | BranchTakenE;
+
+    // stalls vectoriales
+    assign ldrStallDVec = Match_12D_E_Vec & MemtoRegE; 
+    
+    assign StallDVec = ldrStallDVec; 
+    assign StallFVec = ldrStallDVec | PCWrPendingF; 
+    assign FlushEVec = ldrStallDVec | BranchTakenE; 
+
+    assign StallD = StallDScalar | StallDVec;
+    assign StallF = StallFScalar | StallFVec;
+    assign FlushE = FlushEScalar | FlushEVec;
 
 endmodule

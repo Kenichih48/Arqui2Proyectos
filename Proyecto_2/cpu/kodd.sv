@@ -48,22 +48,26 @@ module kodd (
     logic ALUSrcE, BranchTakenE, MemtoRegW, PCSrcW, RegWriteW, RegWriteVecW;
     logic [3:0] ALUFlagsE; 
     logic [31:0] InstrD; 
-    logic RegWriteM, MemtoRegE, PCWrPendingF; 
-    logic [1:0] ForwardAE, ForwardBE; 
+    logic RegWriteM, RegWriteVecM, MemtoRegE, PCWrPendingF; 
+    logic [1:0] ForwardAE, ForwardBE, ForwardAEVec, ForwardBEVec; //TODO: nuevos outputs vectoriales
     logic StallF, StallD, FlushD, FlushE; 
-    logic Match_1E_M, Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E; 
+    logic Match_1E_M, Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, Match_12D_E_Vec; 
+    logic Match_1E_M_Vec, Match_1E_W_Vec, Match_2E_M_Vec, Match_2E_W_Vec; //TODO: hazard vectorial
 
     // Instantiate the controller, datapath, and hazard modules
     controller c(clk, reset, InstrD[26:10], ALUFlagsE, RegSrcD, ImmSrcD, ALUSrcE, 
                 BranchTakenE, ALUControlE, MemWriteM, MemtoRegW, PCSrcW, RegWriteW, 
-                RegWriteM, MemtoRegE, MemWriteVecM, RegWriteVecW, PCWrPendingF, FlushE); 
+                RegWriteM, RegWriteVecM, MemtoRegE, MemWriteVecM, RegWriteVecW, PCWrPendingF, FlushE); 
 
     datapath dp(clk, reset, RegSrcD, ImmSrcD, ALUSrcE, BranchTakenE, ALUControlE, 
                 MemtoRegW, PCSrcW, RegWriteW, RegWriteVecW, PCF, InstrF, InstrD, ALUOutM, WriteDataM, 
                 WriteDataMVec, VectorAddressM, ReadDataM, ReadDataVecM, ALUFlagsE, Match_1E_M, 
-                Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, ForwardAE, ForwardBE, StallF, StallD, FlushD); 
+                Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, Match_12D_E_Vec, Match_1E_M_Vec, 
+                Match_1E_W_Vec, Match_2E_M_Vec, Match_2E_W_Vec, ForwardAE, ForwardBE, ForwardAEVec, 
+                ForwardBEVec, StallF, StallD, FlushD); 
 
-    hazard h(clk, reset, Match_1E_M, Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, 
-                RegWriteM, RegWriteW, BranchTakenE, MemtoRegE, PCWrPendingF, PCSrcW, 
-                ForwardAE, ForwardBE, StallF, StallD, FlushD, FlushE);
+    hazard h(clk, reset, Match_1E_M, Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, Match_12D_E_Vec,
+                Match_1E_M_Vec, Match_1E_W_Vec, Match_2E_M_Vec, Match_2E_W_Vec, RegWriteM, RegWriteVecM, 
+                RegWriteW, RegWriteVecW, BranchTakenE, MemtoRegE, PCWrPendingF, PCSrcW, ForwardAE, 
+                ForwardBE, ForwardAEVec, ForwardBEVec, StallF, StallD, FlushD, FlushE);
 endmodule

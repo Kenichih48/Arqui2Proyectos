@@ -31,7 +31,7 @@ module controller (
     output logic [2:0]      ALUControlE,
     output logic            MemWriteM, MemtoRegW, PCSrcW, RegWriteW,
     //hazard interface
-    output logic            RegWriteM, MemtoRegE, 
+    output logic            RegWriteM, RegWriteVecM, MemtoRegE, 
     output logic            MemWriteVecM, RegWriteVecW, //TODO: outputs vectoriales
     output logic            PCWrPendingF, 
     input logic             FlushE);
@@ -138,7 +138,7 @@ module controller (
 
     // Memory stage 
     // TODO: nuevas senales vectoriales
-    flopr #(6) regsM(clk, reset, {RegWriteGatedVecE, MemWriteGatedVecE, MemWriteGatedE, MemtoRegE, 
+    flopr #(6) regsM(clk, reset, {RegWriteVecE, MemWriteGatedVecE, MemWriteGatedE, MemtoRegE, 
     RegWriteGatedE, PCSrcGatedE}, {RegWriteVecM, MemWriteVecM, MemWriteM, MemtoRegM, RegWriteM, PCSrcM}); 
 
     // Writeback stage
