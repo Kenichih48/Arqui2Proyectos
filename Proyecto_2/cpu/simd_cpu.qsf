@@ -37,15 +37,15 @@
 # -------------------------------------------------------------------------- #
 
 
-set_global_assignment -name FAMILY "Cyclone V"
-set_global_assignment -name DEVICE 5CSEBA6U23I7
+set_global_assignment -name FAMILY "Cyclone IV GX"
+set_global_assignment -name DEVICE EP4CGX150DF31C7
 set_global_assignment -name TOP_LEVEL_ENTITY top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 22.1STD.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "21:39:47  OCTOBER 23, 2023"
 set_global_assignment -name LAST_QUARTUS_VERSION "20.1.1 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
-set_global_assignment -name MIN_CORE_JUNCTION_TEMP "-40"
-set_global_assignment -name MAX_CORE_JUNCTION_TEMP 100
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
 set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
@@ -118,6 +118,10 @@ set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_vector_load_store -s
 set_global_assignment -name EDA_TEST_BENCH_NAME test_regvecfile -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_regvecfile
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_regvecfile -section_id test_regvecfile
+set_global_assignment -name EDA_TEST_BENCH_NAME test_mux3vec -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_mux3vec
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_mux3vec -section_id test_mux3vec
+set_global_assignment -name SYSTEMVERILOG_FILE test/test_dmem.sv
 set_global_assignment -name SYSTEMVERILOG_FILE generic_blocks/mux3vec.sv
 set_global_assignment -name SYSTEMVERILOG_FILE test/test_mux2vec.sv
 set_global_assignment -name SYSTEMVERILOG_FILE test/test_floprvec.sv
@@ -166,9 +170,9 @@ set_global_assignment -name SYSTEMVERILOG_FILE datapath.sv
 set_global_assignment -name SYSTEMVERILOG_FILE controller.sv
 set_global_assignment -name SYSTEMVERILOG_FILE conditional.sv
 set_global_assignment -name SYSTEMVERILOG_FILE test/test_mux3vec.sv
-set_global_assignment -name EDA_TEST_BENCH_NAME test_mux3vec -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_mux3vec
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_mux3vec -section_id test_mux3vec
+set_global_assignment -name EDA_TEST_BENCH_NAME test_dmem -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_dmem
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_dmem -section_id test_dmem
 set_global_assignment -name EDA_TEST_BENCH_FILE test/test_regfile.sv -section_id test_regfile
 set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux3.sv -section_id test_mux3
 set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux2.sv -section_id test_mux2
@@ -189,4 +193,5 @@ set_global_assignment -name EDA_TEST_BENCH_FILE test/test_vectorfu.sv -section_i
 set_global_assignment -name EDA_TEST_BENCH_FILE test/test_vector_load_store.sv -section_id test_vector_load_store
 set_global_assignment -name EDA_TEST_BENCH_FILE test/test_regvecfile.sv -section_id test_regvecfile
 set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux3vec.sv -section_id test_mux3vec
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_dmem.sv -section_id test_dmem
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

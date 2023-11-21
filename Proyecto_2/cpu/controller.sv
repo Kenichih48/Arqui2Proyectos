@@ -31,7 +31,7 @@ module controller (
     output logic [2:0]      ALUControlE,
     output logic            MemWriteM, MemtoRegW, PCSrcW, RegWriteW,
     //hazard interface
-    output logic            RegWriteM, RegWriteVecM, MemtoRegE, 
+    output logic            RegWriteM, MemtoRegE, 
     output logic            MemWriteVecM, RegWriteVecW, //TODO: outputs vectoriales
     output logic            PCWrPendingF, 
     input logic             FlushE);

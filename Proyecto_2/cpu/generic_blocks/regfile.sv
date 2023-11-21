@@ -38,7 +38,7 @@ module regfile (
     output logic [31:0] readData1, readData2
 	);
 
-	logic [31:0] registers [8:0] = '{default: 32'h0};
+	logic [31:0] registers [10:0] = '{default: 32'h0};
 		
 	// three ported register file
 	// read two ports combinationally

@@ -41,9 +41,8 @@ module datapath (
     input logic  [31:0] ReadDataVecM[0:3], //TODO: nuevos inputs vectoriales
     output logic [3:0]  ALUFlagsE,
     // hazard logic
-    output logic        Match_1E_M, Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, Match_12D_E_Vec,
-    output logic        Match_1E_M_Vec, Match_1E_W_Vec, Match_2E_M_Vec, Match_2E_W_Vec,//TODO: hazard vectorial
-    input logic  [1:0]  ForwardAE, ForwardBE, ForwardAEVec, ForwardBEVec, //TODO: nuevos inputs vectoriales 
+    output logic        Match_1E_M, Match_1E_W, Match_2E_M, Match_2E_W, Match_12D_E, 
+    input logic  [1:0]  ForwardAE, ForwardBE, 
     input logic         StallF, StallD, FlushD);
 
     logic [31:0] PCPlus4F, PCnext1F, PCnextF; 
@@ -55,9 +54,7 @@ module datapath (
     logic [31:0] ReadDataW, ALUOutW, ResultW; 
     logic [31:0] ResultVecW[0:3], ReadDataVecW[0:3], ALUOutMVec[0:3], ALUOutWVec[0:3];
     logic [3:0] RA1D, RA2D, RA1E, RA2E, WA3E, WA3M, WA3W; 
-    logic Match_1D_E, Match_2D_E, Match_1D_E_Vec, Match_2D_E_Vec; 
-    logic [3:0] RA1DVec, RA1EVec; //TODO: hazard vectorial
-    logic [31:0] SrcAEVec[0:3], SrcBEVec[0:3]; //TODO: nuevos hazards vectoriales
+    logic Match_1D_E, Match_2D_E; 
 
     // Fetch stage 
     mux2 #(32) pcnextmux(PCPlus4F, ResultW, PCSrcW, PCnext1F); 
@@ -67,14 +64,13 @@ module datapath (
 
      // Decode Stage 
     assign PCPlus8D = PCPlus4F; // skip register 
-    assign RA1DVec = InstrD[13:10];
     flopenrc #(32) instrreg(clk, reset, ~StallD, FlushD, InstrF, InstrD); 
     mux2 #(4) ra1mux(InstrD[13:10], 4'b1001, RegSrcD[0], RA1D); 
     mux2 #(4) ra2mux(InstrD[3:0], InstrD[17:14], RegSrcD[1], RA2D); 
 
     regfile rf(clk, RegWriteW, RA1D, RA2D, WA3W, ResultW, PCPlus8D, rd1D, rd2D); 
     //TODO: registro vectorial
-    regvectorfile rfv(clk, RegWriteVecW, RA1DVec, RA2D, WA3W, ResultVecW, rd1DVec, rd2DVec); 
+    regvectorfile rfv(clk, RegWriteVecW, InstrD[13:10], RA2D, WA3W, ResultVecW, rd1DVec, rd2DVec); 
     //TODO: extend para GET/PUT vectorial no necesario?
     extend ext(InstrD[21:0], ImmSrcD, ExtImmD); 
 
@@ -88,18 +84,14 @@ module datapath (
 
     flopr #(32) immreg(clk, reset, ExtImmD, ExtImmE);
     flopr #(4) wa3ereg(clk, reset, InstrD[17:14], WA3E); 
-    flopr #(4) ra1reg(clk, reset, RA1D, RA1E);
-    flopr #(4) ra2reg(clk, reset, RA2D, RA2E); 
-    flopr #(4) ra1regvec(clk, reset, RA1DVec, RA1EVec); //TODO: hazard vectorial
+    flopr #(4) ra1reg(clk, reset, RA1D, RA1E); //TODO: hazards vectoriales
+    flopr #(4) ra2reg(clk, reset, RA2D, RA2E);  //TODO: hazards vectoriales
     mux3 #(32) byp1mux(rd1E, ResultW, ALUOutM, ForwardAE, SrcAE); 
     mux3 #(32) byp2mux(rd2E, ResultW, ALUOutM, ForwardBE, WriteDataE); 
     mux2 #(32) srcbmux(WriteDataE, ExtImmE, ALUSrcE, SrcBE); 
     alu #(32) alu(SrcAE, SrcBE, ALUControlE, ALUResultE, ALUFlagsE);
-
     //TODO: alu vectorial
-    mux3vec #(32, 4) byp1muxvec(rd1EVec, ALUOutMVec, ResultVecW, ForwardAEVec, SrcAEVec); 
-    mux3vec #(32, 4) byp2muxvec(rd2EVec, ALUOutMVec, ResultVecW, ForwardBEVec, SrcBEVec); 
-    vectorfu vecalu(SrcAEVec, SrcBEVec, ALUControlE, ALUResultVecE);
+    vectorfu vecalu(rd1EVec, rd2EVec, ALUControlE, ALUResultVecE);
 
     //TODO: vector load/store
     vector_load_store vectorls(ALUResultVecE, ALUResultE, ALUResultVecEE, addressVector);
@@ -124,7 +116,7 @@ module datapath (
     floprvec #(32, 4) rdregvec(clk, reset, ReadDataVecM, ReadDataVecW); 
 
     mux2 #(32) resmux(ALUOutW, ReadDataW, MemtoRegW, ResultW); 
-    //TODO: mux vectorial
+    //TODO: ALUOutW, ReadDatW pendiente
     mux2vec #(32, 4) resmuxvec(ALUOutWVec, ReadDataVecW, MemtoRegW, ResultVecW); 
     
     // hazard comparison 
@@ -135,14 +127,4 @@ module datapath (
     eqcmp #(4) m4a(WA3E, RA1D, Match_1D_E); 
     eqcmp #(4) m4b(WA3E, RA2D, Match_2D_E); 
     assign Match_12D_E = Match_1D_E | Match_2D_E; 
-
-    // hazard comparison vectorial
-    eqcmp #(4) m0vec(WA3M, RA1EVec, Match_1E_M_Vec); 
-    eqcmp #(4) m1vec(WA3W, RA1EVec, Match_1E_W_Vec); 
-    eqcmp #(4) m2vec(WA3M, RA2E, Match_2E_M_Vec); 
-    eqcmp #(4) m3vec(WA3W, RA2E, Match_2E_W_Vec); 
-
-    eqcmp #(4) m4avec(WA3E, RA1DVec, Match_1D_E_Vec); 
-    eqcmp #(4) m4bvec(WA3E, RA1DVec, Match_2D_E_Vec); 
-    assign Match_12D_E_Vec = Match_1D_E_Vec | Match_2D_E_Vec; 
 endmodule

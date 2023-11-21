@@ -38,7 +38,7 @@ module regvectorfile (
     output logic [31:0] r2v [0:3]
 );
 
-    logic [31:0] regs [0:8][0:3] = '{default: 32'h0};
+    logic [31:0] regs [0:3][0:3] = '{default: 32'h0};
 
     // This register file supports vectorized write and dual read ports.
     // Data is written on the rising edge of the clock when the write enable is high.

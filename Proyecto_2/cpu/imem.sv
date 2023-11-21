@@ -25,7 +25,7 @@ module imem (
     output logic [31:0] rd        // Read data (instruction)
 );
 
-    logic [31:0] ROM[63:0];       // Array to store instructions
+    logic [31:0] ROM[300:0];       // Array to store instructions
 
     initial
         $readmemh("machine_code.dat", ROM);  // Initialize ROM by reading from a file
