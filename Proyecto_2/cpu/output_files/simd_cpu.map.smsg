@@ -1,0 +1,4 @@
+Warning (10273): Verilog HDL warning at test_extend.sv(66): extended using "x" or "z" File: C:/Users/david/OneDrive/Documents/TEC/Arqui 2/Arqui2Proyectos/Proyecto_2/cpu/test/test_extend.sv Line: 66
+Warning (10273): Verilog HDL warning at extend.sv(42): extended using "x" or "z" File: C:/Users/david/OneDrive/Documents/TEC/Arqui 2/Arqui2Proyectos/Proyecto_2/cpu/generic_blocks/extend.sv Line: 42
+Warning (10273): Verilog HDL warning at controller.sv(82): extended using "x" or "z" File: C:/Users/david/OneDrive/Documents/TEC/Arqui 2/Arqui2Proyectos/Proyecto_2/cpu/controller.sv Line: 82
+Warning (10273): Verilog HDL warning at controller.sv(99): extended using "x" or "z" File: C:/Users/david/OneDrive/Documents/TEC/Arqui 2/Arqui2Proyectos/Proyecto_2/cpu/controller.sv Line: 99

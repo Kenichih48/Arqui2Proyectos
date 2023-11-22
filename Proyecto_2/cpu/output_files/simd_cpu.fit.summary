@@ -1,0 +1,20 @@
+Fitter Status : Successful - Wed Nov 22 01:24:50 2023
+Quartus Prime Version : 20.1.1 Build 720 11/11/2020 SJ Lite Edition
+Revision Name : simd_cpu
+Top-level Entity Name : top
+Family : Cyclone IV GX
+Device : EP4CGX150DF31C7
+Timing Models : Final
+Total logic elements : 46,998 / 149,760 ( 31 % )
+    Total combinational functions : 46,616 / 149,760 ( 31 % )
+    Dedicated logic registers : 7,170 / 149,760 ( 5 % )
+Total registers : 7170
+Total pins : 353 / 508 ( 69 % )
+Total virtual pins : 0
+Total memory bits : 0 / 6,635,520 ( 0 % )
+Embedded Multiplier 9-bit elements : 30 / 720 ( 4 % )
+Total GXB Receiver Channel PCS : 0 / 8 ( 0 % )
+Total GXB Receiver Channel PMA : 0 / 8 ( 0 % )
+Total GXB Transmitter Channel PCS : 0 / 8 ( 0 % )
+Total GXB Transmitter Channel PMA : 0 / 8 ( 0 % )
+Total PLLs : 0 / 8 ( 0 % )
