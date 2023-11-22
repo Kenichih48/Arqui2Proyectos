@@ -47,7 +47,7 @@ module dmem (
     assign rdv[1] = {24'b0,RAM[va[1][31:0]]};
     assign rdv[2] = {24'b0,RAM[va[2][31:0]]};
     assign rdv[3] = {24'b0,RAM[va[3][31:0]]};
-    assign rdvga = RAM[avga[31:0]]; // word aligned
+    assign rdvga = {24'b0,RAM[avga[31:0]]}; // word aligned
 
     always_ff @(posedge clk) begin         // On positive edge of the clock
         if (we) RAM[a[31:0]] <= wd[7:0];       // Write data to RAM if write enable is active

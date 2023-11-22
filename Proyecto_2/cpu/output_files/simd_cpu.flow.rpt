@@ -1,0 +1,226 @@
+Flow report for simd_cpu
+Wed Nov 22 01:25:50 2023
+Quartus Prime Version 20.1.1 Build 720 11/11/2020 SJ Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Flow Summary
+  3. Flow Settings
+  4. Flow Non-Default Global Settings
+  5. Flow Elapsed Time
+  6. Flow OS Summary
+  7. Flow Log
+  8. Flow Messages
+  9. Flow Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2020  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+
+
+
++----------------------------------------------------------------------------------+
+; Flow Summary                                                                     ;
++------------------------------------+---------------------------------------------+
+; Flow Status                        ; Successful - Wed Nov 22 01:25:50 2023       ;
+; Quartus Prime Version              ; 20.1.1 Build 720 11/11/2020 SJ Lite Edition ;
+; Revision Name                      ; simd_cpu                                    ;
+; Top-level Entity Name              ; top                                         ;
+; Family                             ; Cyclone IV GX                               ;
+; Device                             ; EP4CGX150DF31C7                             ;
+; Timing Models                      ; Final                                       ;
+; Total logic elements               ; 46,998 / 149,760 ( 31 % )                   ;
+;     Total combinational functions  ; 46,616 / 149,760 ( 31 % )                   ;
+;     Dedicated logic registers      ; 7,170 / 149,760 ( 5 % )                     ;
+; Total registers                    ; 7170                                        ;
+; Total pins                         ; 353 / 508 ( 69 % )                          ;
+; Total virtual pins                 ; 0                                           ;
+; Total memory bits                  ; 0 / 6,635,520 ( 0 % )                       ;
+; Embedded Multiplier 9-bit elements ; 30 / 720 ( 4 % )                            ;
+; Total GXB Receiver Channel PCS     ; 0 / 8 ( 0 % )                               ;
+; Total GXB Receiver Channel PMA     ; 0 / 8 ( 0 % )                               ;
+; Total GXB Transmitter Channel PCS  ; 0 / 8 ( 0 % )                               ;
+; Total GXB Transmitter Channel PMA  ; 0 / 8 ( 0 % )                               ;
+; Total PLLs                         ; 0 / 8 ( 0 % )                               ;
++------------------------------------+---------------------------------------------+
+
+
++-----------------------------------------+
+; Flow Settings                           ;
++-------------------+---------------------+
+; Option            ; Setting             ;
++-------------------+---------------------+
+; Start date & time ; 11/22/2023 01:12:25 ;
+; Main task         ; Compilation         ;
+; Revision Name     ; simd_cpu            ;
++-------------------+---------------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------+
+; Flow Non-Default Global Settings                                                                                                                ;
++--------------------------------------+----------------------------------------+---------------+-------------+-----------------------------------+
+; Assignment Name                      ; Value                                  ; Default Value ; Entity Name ; Section Id                        ;
++--------------------------------------+----------------------------------------+---------------+-------------+-----------------------------------+
+; COMPILER_SIGNATURE_ID                ; 96830609157041.170063714525292         ; --            ; --          ; --                                ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_floprc                       ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_alu                          ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_controller                   ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_imem                         ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_vector_load_store            ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_flopr                        ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_regvecfile                   ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_top                          ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_adder                        ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_eqcmp                        ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_conditional                  ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_flopenr                      ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_hazard                       ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_mux3                         ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_mux2                         ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_vectorfu                     ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_flopenrc                     ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_mux3vec                      ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_dmem                         ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_extend                       ;
+; EDA_DESIGN_INSTANCE_NAME             ; NA                                     ; --            ; --          ; test_regfile                      ;
+; EDA_GENERATE_FUNCTIONAL_NETLIST      ; Off                                    ; --            ; --          ; eda_board_design_timing           ;
+; EDA_GENERATE_FUNCTIONAL_NETLIST      ; Off                                    ; --            ; --          ; eda_board_design_boundary_scan    ;
+; EDA_GENERATE_FUNCTIONAL_NETLIST      ; Off                                    ; --            ; --          ; eda_board_design_signal_integrity ;
+; EDA_GENERATE_FUNCTIONAL_NETLIST      ; Off                                    ; --            ; --          ; eda_board_design_symbol           ;
+; EDA_NATIVELINK_SIMULATION_TEST_BENCH ; test_top                               ; --            ; --          ; eda_simulation                    ;
+; EDA_OUTPUT_DATA_FORMAT               ; Verilog Hdl                            ; --            ; --          ; eda_simulation                    ;
+; EDA_SIMULATION_TOOL                  ; ModelSim-Altera (Verilog)              ; <None>        ; --          ; --                                ;
+; EDA_TEST_BENCH_ENABLE_STATUS         ; TEST_BENCH_MODE                        ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_FILE                  ; test/test_floprc.sv                    ; --            ; --          ; test_floprc                       ;
+; EDA_TEST_BENCH_FILE                  ; test/test_alu.sv                       ; --            ; --          ; test_alu                          ;
+; EDA_TEST_BENCH_FILE                  ; test/test_controller.sv                ; --            ; --          ; test_controller                   ;
+; EDA_TEST_BENCH_FILE                  ; test/test_imem.sv                      ; --            ; --          ; test_imem                         ;
+; EDA_TEST_BENCH_FILE                  ; test/test_vector_load_store.sv         ; --            ; --          ; test_vector_load_store            ;
+; EDA_TEST_BENCH_FILE                  ; test/test_flopr.sv                     ; --            ; --          ; test_flopr                        ;
+; EDA_TEST_BENCH_FILE                  ; test/test_regvecfile.sv                ; --            ; --          ; test_regvecfile                   ;
+; EDA_TEST_BENCH_FILE                  ; test/test_top.sv                       ; --            ; --          ; test_top                          ;
+; EDA_TEST_BENCH_FILE                  ; test/test_adder.sv                     ; --            ; --          ; test_adder                        ;
+; EDA_TEST_BENCH_FILE                  ; test/test_eqcmp.sv                     ; --            ; --          ; test_eqcmp                        ;
+; EDA_TEST_BENCH_FILE                  ; test/test_conditional.sv               ; --            ; --          ; test_conditional                  ;
+; EDA_TEST_BENCH_FILE                  ; test/test_flopenr.sv                   ; --            ; --          ; test_flopenr                      ;
+; EDA_TEST_BENCH_FILE                  ; test/test_hazard.sv                    ; --            ; --          ; test_hazard                       ;
+; EDA_TEST_BENCH_FILE                  ; test/test_mux3.sv                      ; --            ; --          ; test_mux3                         ;
+; EDA_TEST_BENCH_FILE                  ; test/test_mux2.sv                      ; --            ; --          ; test_mux2                         ;
+; EDA_TEST_BENCH_FILE                  ; test/test_vectorfu.sv                  ; --            ; --          ; test_vectorfu                     ;
+; EDA_TEST_BENCH_FILE                  ; test/test_flopenrc.sv                  ; --            ; --          ; test_flopenrc                     ;
+; EDA_TEST_BENCH_FILE                  ; test/test_mux3vec.sv                   ; --            ; --          ; test_mux3vec                      ;
+; EDA_TEST_BENCH_FILE                  ; test/test_dmem.sv                      ; --            ; --          ; test_dmem                         ;
+; EDA_TEST_BENCH_FILE                  ; test/test_extend.sv                    ; --            ; --          ; test_extend                       ;
+; EDA_TEST_BENCH_FILE                  ; test/test_regfile.sv                   ; --            ; --          ; test_regfile                      ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_floprc                            ; --            ; --          ; test_floprc                       ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_alu                               ; --            ; --          ; test_alu                          ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_controller                        ; --            ; --          ; test_controller                   ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_imem                              ; --            ; --          ; test_imem                         ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_vector_load_store                 ; --            ; --          ; test_vector_load_store            ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_flopr                             ; --            ; --          ; test_flopr                        ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_regvecfile                        ; --            ; --          ; test_regvecfile                   ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_top                               ; --            ; --          ; test_top                          ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_adder                             ; --            ; --          ; test_adder                        ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_eqcmp                             ; --            ; --          ; test_eqcmp                        ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_conditional                       ; --            ; --          ; test_conditional                  ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_flopenr                           ; --            ; --          ; test_flopenr                      ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_hazard                            ; --            ; --          ; test_hazard                       ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_mux3                              ; --            ; --          ; test_mux3                         ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_mux2                              ; --            ; --          ; test_mux2                         ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_vectorfu                          ; --            ; --          ; test_vectorfu                     ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_flopenrc                          ; --            ; --          ; test_flopenrc                     ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_mux3vec                           ; --            ; --          ; test_mux3vec                      ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_dmem                              ; --            ; --          ; test_dmem                         ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_extend                            ; --            ; --          ; test_extend                       ;
+; EDA_TEST_BENCH_MODULE_NAME           ; test_regfile                           ; --            ; --          ; test_regfile                      ;
+; EDA_TEST_BENCH_NAME                  ; test_regfile                           ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_mux3                              ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_mux2                              ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_floprc                            ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_flopr                             ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_flopenrc                          ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_flopenr                           ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_extend                            ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_eqcmp                             ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_alu                               ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_adder                             ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_imem                              ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_conditional                       ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_controller                        ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_hazard                            ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_top                               ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_vectorfu                          ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_vector_load_store                 ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_regvecfile                        ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_mux3vec                           ; --            ; --          ; eda_simulation                    ;
+; EDA_TEST_BENCH_NAME                  ; test_dmem                              ; --            ; --          ; eda_simulation                    ;
+; EDA_TIME_SCALE                       ; 1 ps                                   ; --            ; --          ; eda_simulation                    ;
+; MAX_CORE_JUNCTION_TEMP               ; 85                                     ; --            ; --          ; --                                ;
+; MIN_CORE_JUNCTION_TEMP               ; 0                                      ; --            ; --          ; --                                ;
+; PARTITION_COLOR                      ; -- (Not supported for targeted family) ; --            ; top         ; Top                               ;
+; PARTITION_FITTER_PRESERVATION_LEVEL  ; -- (Not supported for targeted family) ; --            ; top         ; Top                               ;
+; PARTITION_NETLIST_TYPE               ; -- (Not supported for targeted family) ; --            ; top         ; Top                               ;
+; POWER_BOARD_THERMAL_MODEL            ; None (CONSERVATIVE)                    ; --            ; --          ; --                                ;
+; POWER_PRESET_COOLING_SOLUTION        ; 23 MM HEAT SINK WITH 200 LFPM AIRFLOW  ; --            ; --          ; --                                ;
+; PROJECT_OUTPUT_DIRECTORY             ; output_files                           ; --            ; --          ; --                                ;
+; TOP_LEVEL_ENTITY                     ; top                                    ; simd_cpu      ; --          ; --                                ;
++--------------------------------------+----------------------------------------+---------------+-------------+-----------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------+
+; Flow Elapsed Time                                                                                                        ;
++----------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
++----------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Analysis & Synthesis ; 00:01:34     ; 1.0                     ; 5199 MB             ; 00:01:42                           ;
+; Fitter               ; 00:10:47     ; 1.2                     ; 7043 MB             ; 00:38:56                           ;
+; Assembler            ; 00:00:08     ; 1.0                     ; 4896 MB             ; 00:00:08                           ;
+; Timing Analyzer      ; 00:00:36     ; 2.7                     ; 5609 MB             ; 00:00:43                           ;
+; EDA Netlist Writer   ; 00:00:08     ; 1.0                     ; 4875 MB             ; 00:00:07                           ;
+; Total                ; 00:13:13     ; --                      ; --                  ; 00:41:36                           ;
++----------------------+--------------+-------------------------+---------------------+------------------------------------+
+
+
++------------------------------------------------------------------------------------+
+; Flow OS Summary                                                                    ;
++----------------------+------------------+------------+------------+----------------+
+; Module Name          ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
++----------------------+------------------+------------+------------+----------------+
+; Analysis & Synthesis ; DESKTOP-RGR7EM8  ; Windows 10 ; 10.0       ; x86_64         ;
+; Fitter               ; DESKTOP-RGR7EM8  ; Windows 10 ; 10.0       ; x86_64         ;
+; Assembler            ; DESKTOP-RGR7EM8  ; Windows 10 ; 10.0       ; x86_64         ;
+; Timing Analyzer      ; DESKTOP-RGR7EM8  ; Windows 10 ; 10.0       ; x86_64         ;
+; EDA Netlist Writer   ; DESKTOP-RGR7EM8  ; Windows 10 ; 10.0       ; x86_64         ;
++----------------------+------------------+------------+------------+----------------+
+
+
+------------
+; Flow Log ;
+------------
+quartus_map --read_settings_files=on --write_settings_files=off simd_cpu -c simd_cpu
+quartus_fit --read_settings_files=off --write_settings_files=off simd_cpu -c simd_cpu
+quartus_asm --read_settings_files=off --write_settings_files=off simd_cpu -c simd_cpu
+quartus_sta simd_cpu -c simd_cpu
+quartus_eda --read_settings_files=off --write_settings_files=off simd_cpu -c simd_cpu
+
+
+
