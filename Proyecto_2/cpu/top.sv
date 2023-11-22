@@ -43,7 +43,7 @@ module top (
     clockDivider clkdiv(clk, clk_25); // Divide the clock frequency by 25
     controladorVGA cntVGA (clk_25,H_SYNC,V_SYNC,SYNC_B,SYNC_BLANK, cuentaX,cuentaY);
     AddrCalc addrcalc(cuentaX,cuentaY,addrvga);
-    ImageReader imreader(cuentaX,cuentaY, 7'd0, 7'd0, datavga[7:0], r, g, b);
+    ImageReader imreader(cuentaX,cuentaY, datavga[7:0], datavga[7:0], datavga[7:0], r, g, b);
     // Instantiate the processor core and memory modules
     kodd processor(clk, reset, PCF, InstrF, MemWriteM, MemWriteVecM, 
     DataAdrM, WriteDataM, WriteDataMVec, DataAdrVecM, ReadDataM, ReadDataVecM);
