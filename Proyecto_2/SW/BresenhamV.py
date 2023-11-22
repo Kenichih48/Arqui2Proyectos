@@ -11,13 +11,14 @@ def plot_line_vectorized(x1, y1, x2, y2, matrix, color):
     # Determinar la dirección de incremento en x (sx) e y (sy)
     sx = np.sign(x2 - x1)
     sy = np.sign(y2 - y1)
-
+    print("dx: ",dx,"dy: ",dy,"sx: ",sx,"sy: ",sy)
     if dx != dy:
-        
+        print("entro al if")
         # Si la diferencia en x es mayor que en y, se utiliza el algoritmo de Bresenham para trazar la línea
         num_iterations = (x2 - x1) // 4
         ydif = (y2 - y1)
         ydiv = ydif // dx
+        print("num_iterations: ",num_iterations,"ydif: ",ydif,"ydiv: ",ydiv)
         for i in range(num_iterations):
             x1temp = x1 + i * 4
             x2temp = x1temp + 4
@@ -28,6 +29,7 @@ def plot_line_vectorized(x1, y1, x2, y2, matrix, color):
             
     else:
         # Si la diferencia en y es mayor que en x, se utiliza un enfoque similar
+        print("entro al else")
         num_iterations = (y2 - y1) // 4
         xdiv =  (x2 - x1) / dy
         for i in range(num_iterations):
@@ -53,12 +55,12 @@ def main():
     # Set the color (RGB values)
     black = np.array([0, 0, 0], dtype=np.uint8)  # Red color
     white = np.array([255, 255, 255], dtype=np.uint8)  # White color
-    image_matrix = np.full((150, 150, 3), black, dtype=np.uint8)
+    image_matrix = np.full((150, 150, 3), white, dtype=np.uint8)
 
-    plot_line_vectorized(10, 10, 80, 80, image_matrix, white)
-    plot_line_vectorized(80, 10, 150, 80, image_matrix, white)
-    plot_line_vectorized(80, 80, 150, 80, image_matrix, white)
-    plot_line_vectorized(10, 10, 80, 10, image_matrix, white)
+    #plot_line_vectorized(10, 10, 80, 80, image_matrix, black)
+    #plot_line_vectorized(80, 10, 149, 80, image_matrix, black)
+    plot_line_vectorized(80, 80, 149, 80, image_matrix, black)
+    #plot_line_vectorized(10, 10, 80, 10, image_matrix, black)
    
    
     # Display the image

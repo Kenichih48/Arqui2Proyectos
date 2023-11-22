@@ -1,16 +1,16 @@
 MOV R7 307212 # iterador de lineas
-MOV R0 0
-PUT R0 R7 # inicializar iterador en 0
+MOV R9 0
+PUT R9 R7 # inicializar iterador en 0
 
 #Cargar valores de coordenadas
-MOV R0 100 # x1 
+MOV R9 100 # x1 
 MOV R1 100 # y1
 MOV R2 200 # x2 
 MOV R3 200 # y2 
 
 Start
 #calcular dx
-RES R4 R2 R0
+RES R4 R2 R10
 
 #calcular dy
 RES R5 R3 R1
@@ -26,10 +26,10 @@ DIV R6 R6 R4 #(y2-y1)/dx
 MOV R7 307209 #espacio de memoria para ydif
 PUT R6 R7 
 
-RES R5 R2 R0 #numero de iteraciones
+RES R5 R2 R9 #numero de iteraciones
 DIV R5 R5 4 # (x2-x1)//4
 MOV R6 0 #inicializar i
-MOV R8 R0 #xtemp
+MOV R8 R9 #xtemp
 
 
 
@@ -39,7 +39,7 @@ MOV R8 R0 #xtemp
 #libres R7 R4 
 
 XFOR
-EQV R8 R5
+EQV R6 R5
 SEQ Finish
 
 MOV R7 307200 #espacio de memoria de vector x_values
@@ -62,7 +62,7 @@ MOV R7 307200
 GETV R0V R7 #cargar el vector x_values
 -----------------------------------------------------------------------------------
 MOV R7 307200 #guardar x1 en memoria para cargar a vector
-MOV R4 R0 # x1
+MOV R4 R9 # x1
 PUT R4 R7
 
 SUM R7 R7 1 # Memoria + 1
@@ -144,7 +144,7 @@ MOV R7 307200
 MOV R7 307200
 PUTV R0V R7 # Guardar el resultado
 ---------------------------------------------------------------------------------
-MOV R7 307210 #espacio de memoria de xtemp
+MOV R7 307210 #espacio de memoria de xtemp!!!
 PUT R8 R7
 
 MOV R7 307211 # espacio de y2
@@ -188,11 +188,12 @@ GET R3 R7 # cargarar Y2 otra vez
 MOV R7 307210 #Espacio de memoriua de xtemp
 GET R8 R7
 SUM R8 R8 4 # xtemp += 4
+SUM R6 R6 1
 S XFOR
 
 Else
 #calcular xdiv
-RES R6 R2 R0
+RES R6 R2 R9
 DIV R6 R6 R5 #(x2-x1)/dy
 MOV R7 307209 #espacio de memoria para xdif
 PUT R6 R7 
@@ -200,10 +201,10 @@ PUT R6 R7
 RES R5 R3 R1 #numero de iteraciones
 DIV R5 R5 4 # (y2-y1)//4
 MOV R6 0 #inicializar i
-MOV R8 R0 #ytemp
+MOV R8 R9 #ytemp
 
 YFOR
-EQV R8 R5
+EQV R6 R5
 SEQ Finish
 
 MOV R7 307200 #espacio de memoria de vector y_values
@@ -254,7 +255,7 @@ MOV R7 307209 #Espacio de memoria
 GET R4 R7 # cargar xdif
 PUT R4 R7
 
-MOV R7 307209
+MOV R7 307200
 
 SUM R7 R7 1 # Memoria + 1
 SUM R4 R4 1 #sumarle 1 a ytemp temporal
@@ -278,7 +279,7 @@ MOV R7 307200
 MULV R0V R0V R1V # (y_values - y1)*xdif
 -----------------------------------------------------------------------------------
 MOV R7 307200 #Espacio de memoria 
-MOV R4 R0 # cargar x1
+MOV R4 R9 # cargar x1
 PUT R4 R7
 
 SUM R7 R7 1 # Memoria + 1
@@ -306,7 +307,7 @@ SUMV R0V R0V R1V # x1 + (y_values - y1)*xdif
 MOV R7 307200
 MOV R7 307200
 MOV R7 307200
-PUTV R0V R7 # Guardar el resultado
+PUTV R9V R7 # Guardar el resultado
 ---------------------------------------------------------------------------------
 MOV R7 307210 #espacio de memoria de ytemp
 PUT R8 R7
@@ -353,38 +354,39 @@ MOV R7 307210 #Espacio de memoriua de ytemp
 
 GET R8 R7
 SUM R8 R8 4 # ytemp += 4
+SUM R6 R6 1
 S YFOR
 
 Finish
 MOV R7 307212 # iterador de lineas
-GET R0 R7 # 
-SUM R0 R0 1 # j += 1
-PUT R0 R7 # guardar iterador j
-EQV R0 1
+GET R9 R7 # 
+SUM R9 R9 1 # j += 1
+PUT R9 R7 # guardar iterador j
+EQV R9 1
 SEQ Startline2
 
-EQV R0 2
+EQV R9 2
 SEQ Startline3
 
-EQV R0 3
+EQV R9 3
 SEQ Startline4
 
 Startline2
-MOV R0 200
+MOV R9 200
 MOV R1 100
 MOV R2 300
 MOV R3 200
 S Start
 
 Startline3
-MOV R0 100
+MOV R9 100
 MOV R1 100
 MOV R2 200
 MOV R3 100
 S Start
 
 Startline4
-MOV R0 200
+MOV R9 200
 MOV R1 200
 MOV R2 300
 MOV R3 200
