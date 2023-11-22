@@ -34,17 +34,20 @@ module dmem (
     input logic clk, we, wev,
     input logic [31:0] a, wd,
     input logic [31:0] va[0:3], wdv[0:3],
+    input logic [31:0] avga,
     output logic [31:0] rd,
-    output logic [31:0] rdv[0:3]
+    output logic [31:0] rdv[0:3],
+    output logic [31:0] rdvga
 );
 
-    logic [7:0] RAM[22532:0];       // Array to store data
+    logic [7:0] RAM[650:0] = '{default:0}; // Array to store data, initialized to 0       // Array to store data
 
     assign rd = {24'b0,RAM[a[31:0]]};         // Read data from RAM (word-aligned)
     assign rdv[0] = {24'b0,RAM[va[0][31:0]]}; //TODO: nuevos assigns vectoriales
     assign rdv[1] = {24'b0,RAM[va[1][31:0]]};
     assign rdv[2] = {24'b0,RAM[va[2][31:0]]};
     assign rdv[3] = {24'b0,RAM[va[3][31:0]]};
+    assign rdvga = RAM[avga[31:0]]; // word aligned
 
     always_ff @(posedge clk) begin         // On positive edge of the clock
         if (we) RAM[a[31:0]] <= wd[7:0];       // Write data to RAM if write enable is active

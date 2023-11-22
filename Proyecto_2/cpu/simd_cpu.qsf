@@ -121,6 +121,35 @@ set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_regvecfile -section_
 set_global_assignment -name EDA_TEST_BENCH_NAME test_mux3vec -section_id eda_simulation
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_mux3vec
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_mux3vec -section_id test_mux3vec
+set_global_assignment -name EDA_TEST_BENCH_NAME test_dmem -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_dmem
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_dmem -section_id test_dmem
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_regfile.sv -section_id test_regfile
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux3.sv -section_id test_mux3
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux2.sv -section_id test_mux2
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_floprc.sv -section_id test_floprc
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopr.sv -section_id test_flopr
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopenrc.sv -section_id test_flopenrc
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopenr.sv -section_id test_flopenr
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_extend.sv -section_id test_extend
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_eqcmp.sv -section_id test_eqcmp
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_alu.sv -section_id test_alu
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_adder.sv -section_id test_adder
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_imem.sv -section_id test_imem
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_conditional.sv -section_id test_conditional
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_controller.sv -section_id test_controller
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_hazard.sv -section_id test_hazard
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_top.sv -section_id test_top
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_vectorfu.sv -section_id test_vectorfu
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_vector_load_store.sv -section_id test_vector_load_store
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_regvecfile.sv -section_id test_regvecfile
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux3vec.sv -section_id test_mux3vec
+set_global_assignment -name EDA_TEST_BENCH_FILE test/test_dmem.sv -section_id test_dmem
+set_global_assignment -name SYSTEMVERILOG_FILE vga/contadorXY.sv
+set_global_assignment -name SYSTEMVERILOG_FILE vga/ImageReader.sv
+set_global_assignment -name SYSTEMVERILOG_FILE vga/controladorVGA.sv
+set_global_assignment -name SYSTEMVERILOG_FILE vga/clockDivider.sv
+set_global_assignment -name SYSTEMVERILOG_FILE vga/AddrCalc.sv
 set_global_assignment -name SYSTEMVERILOG_FILE test/test_dmem.sv
 set_global_assignment -name SYSTEMVERILOG_FILE generic_blocks/mux3vec.sv
 set_global_assignment -name SYSTEMVERILOG_FILE test/test_mux2vec.sv
@@ -170,28 +199,35 @@ set_global_assignment -name SYSTEMVERILOG_FILE datapath.sv
 set_global_assignment -name SYSTEMVERILOG_FILE controller.sv
 set_global_assignment -name SYSTEMVERILOG_FILE conditional.sv
 set_global_assignment -name SYSTEMVERILOG_FILE test/test_mux3vec.sv
-set_global_assignment -name EDA_TEST_BENCH_NAME test_dmem -section_id eda_simulation
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id test_dmem
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME test_dmem -section_id test_dmem
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_regfile.sv -section_id test_regfile
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux3.sv -section_id test_mux3
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux2.sv -section_id test_mux2
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_floprc.sv -section_id test_floprc
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopr.sv -section_id test_flopr
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopenrc.sv -section_id test_flopenrc
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_flopenr.sv -section_id test_flopenr
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_extend.sv -section_id test_extend
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_eqcmp.sv -section_id test_eqcmp
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_alu.sv -section_id test_alu
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_adder.sv -section_id test_adder
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_imem.sv -section_id test_imem
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_conditional.sv -section_id test_conditional
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_controller.sv -section_id test_controller
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_hazard.sv -section_id test_hazard
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_top.sv -section_id test_top
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_vectorfu.sv -section_id test_vectorfu
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_vector_load_store.sv -section_id test_vector_load_store
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_regvecfile.sv -section_id test_regvecfile
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_mux3vec.sv -section_id test_mux3vec
-set_global_assignment -name EDA_TEST_BENCH_FILE test/test_dmem.sv -section_id test_dmem
+set_location_assignment PIN_B24 -to H_SYNC
+set_location_assignment PIN_AH20 -to SYNC_B
+set_location_assignment PIN_F25 -to SYNC_BLANK
+set_location_assignment PIN_A24 -to V_SYNC
+set_location_assignment PIN_AJ16 -to clk
+set_location_assignment PIN_D27 -to clk_25
+set_location_assignment PIN_E24 -to b[0]
+set_location_assignment PIN_C24 -to b[1]
+set_location_assignment PIN_B25 -to b[2]
+set_location_assignment PIN_C23 -to b[3]
+set_location_assignment PIN_F24 -to b[4]
+set_location_assignment PIN_A23 -to b[5]
+set_location_assignment PIN_G25 -to b[6]
+set_location_assignment PIN_C22 -to b[7]
+set_location_assignment PIN_A17 -to r[0]
+set_location_assignment PIN_C18 -to r[1]
+set_location_assignment PIN_B18 -to r[2]
+set_location_assignment PIN_A18 -to r[3]
+set_location_assignment PIN_E18 -to r[4]
+set_location_assignment PIN_E19 -to r[5]
+set_location_assignment PIN_B19 -to r[6]
+set_location_assignment PIN_C19 -to r[7]
+set_location_assignment PIN_D20 -to g[0]
+set_location_assignment PIN_C20 -to g[1]
+set_location_assignment PIN_A20 -to g[2]
+set_location_assignment PIN_K19 -to g[3]
+set_location_assignment PIN_A21 -to g[4]
+set_location_assignment PIN_F21 -to g[5]
+set_location_assignment PIN_A22 -to g[6]
+set_location_assignment PIN_B22 -to g[7]
+set_location_assignment PIN_V28 -to reset
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
