@@ -32,7 +32,7 @@ def plot_line_vectorized(x1, y1, x2, y2, matrix, color):
             matrix[y_values, x_values] = color
             print("x_values: ",x_values,"y_values: ",y_values)
             for j in range(len(x_values)):
-                print("Direccion De memoria: ",calcCoordinates(x_values[j],y_values[j],25))
+                print("Direccion De memoria: ",calcCoordinates(x_values[j],y_values[j],25)," | x: ",x_values[j]," | y: ",y_values[j])
             
     else:
         # Si la diferencia en y es mayor que en x, se utiliza un enfoque similar
@@ -70,9 +70,10 @@ def main():
     #plot_line_vectorized(80, 10, 149, 80, image_matrix, black)
     #plot_line_vectorized(80, 79, 149, 80, image_matrix, black)
     #plot_line_vectorized(10, 10, 80, 10, image_matrix, black)
+
+
     plot_line_vectorized(3, 1, 20, 20, image_matrix, black)
-    #plot_line_vectorized(3,1, 20, 2, image_matrix, black)
-   
+    #plot_line_vectorized(3, 1, 20, 2, image_matrix, black)
     # Display the image
     plt.imshow(image_matrix)
 
