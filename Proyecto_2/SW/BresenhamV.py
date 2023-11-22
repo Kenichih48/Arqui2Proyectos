@@ -38,7 +38,7 @@ def plot_line_vectorized(x1, y1, x2, y2, matrix, color):
         # Si la diferencia en y es mayor que en x, se utiliza un enfoque similar
         num_iterations = (y2 - y1) // 4
         xdiv =  (x2 - x1) / dy
-        print("num_iterations: ",num_iterations," | xdiv: ",ydiv)
+        print("num_iterations: ",num_iterations," | xdiv: ",xdiv)
         for i in range(num_iterations):
             y1temp = y1 + i * 4
             y2temp = y1temp + 4
@@ -65,7 +65,7 @@ def main():
     black = np.array([0, 0, 0], dtype=np.uint8)  # Red color
     white = np.array([255, 255, 255], dtype=np.uint8)  # White color
     image_matrix = np.full((25, 25, 3), white, dtype=np.uint8)
-
+    #image_matrix = np.full((480, 640, 3), white, dtype=np.uint8)
     #plot_line_vectorized(10, 10, 80, 80, image_matrix, black)
     #plot_line_vectorized(80, 10, 149, 80, image_matrix, black)
     #plot_line_vectorized(80, 79, 149, 80, image_matrix, black)
